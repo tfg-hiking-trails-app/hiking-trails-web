@@ -1,1 +1,37 @@
-<p>LOGIN</p>
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <!-- Username -->
+  <mat-form-field class="w-full" appearance="fill">
+    <mat-label>Nombre de usuario:</mat-label>
+    <input matInput formControlName="username" required>
+    @if (submitted && form['username'].hasError('required')) {
+      <mat-error>El nombre de usuario es obligatorio</mat-error>
+    }
+  </mat-form-field>
+
+  <!-- Password -->
+  <mat-form-field class="w-full" appearance="fill">
+    <mat-label>Contraseña:</mat-label>
+    <input matInput type="password" formControlName="password" required>
+    @if (submitted && form['password'].hasError('required')) {
+      <mat-error>La contraseña es obligatoria</mat-error>
+    }
+  </mat-form-field>
+
+  <div class="flex justify-between items-center">
+    <!-- Remember Me -->
+    <mat-checkbox formControlName="rememberMe">
+      Recordarme
+    </mat-checkbox>
+    <!-- Forgot Password Link -->
+    <a
+      class="font-medium dark:text-cyan-800 hover:underline"
+      href="/auth/forgot-password"> <!-- TODO -->
+      ¿Olvidaste tu contraseña?
+    </a>
+  </div>
+
+  <button class="mt-1 w-full" matButton="filled">
+    <mat-icon>login</mat-icon>
+    Iniciar sesión
+  </button>
+</form>

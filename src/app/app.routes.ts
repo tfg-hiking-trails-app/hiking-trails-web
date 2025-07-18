@@ -6,6 +6,6 @@ import { FeedComponent } from './pages/private/feed/feed.component';
 export const routes: Routes = [
   { path: 'feed', component: FeedComponent },
   { path: 'auth', component: AuthComponent },
-  { path: '', redirectTo: '/feed', pathMatch: 'full' },
-  { path: '**', redirectTo: '/feed', pathMatch: 'full' }
+  { path: '', redirectTo: '/auth', pathMatch: 'full' },
+  { path: '**', redirectTo: '/auth', pathMatch: 'full' }
 ];
