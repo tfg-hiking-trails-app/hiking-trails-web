@@ -10,7 +10,7 @@
 
   <!-- Password -->
   <mat-form-field class="w-full" appearance="fill">
-    <mat-label>Contraseña:</mat-label>
+    <mat-label>{{ 'login.password' | translate }}:</mat-label>
     <input matInput type="password" formControlName="password" required>
     @if (submitted && form['password'].hasError('required')) {
       <mat-error>{{ 'login.passwordRequired' | translate }}</mat-error>
