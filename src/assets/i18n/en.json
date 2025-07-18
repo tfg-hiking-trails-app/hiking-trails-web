@@ -1,0 +1,17 @@
+{
+  "auth": {
+    "login": "Sign in",
+    "register": "Sign up",
+    "spanish": "Spanish",
+    "english": "English"
+  },
+  "login": {
+    "username": "Username",
+    "password": "Password",
+    "submit": "Sign in",
+    "forgotPassword": "Forgot Password?",
+    "rememberMe": "Remember Me",
+    "usernameRequired": "Username is required",
+    "passwordRequired": "Password is required"
+  }
+}

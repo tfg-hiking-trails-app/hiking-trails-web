@@ -1,0 +1,17 @@
+{
+  "auth": {
+    "login": "Iniciar sesión",
+    "register": "Registrarse",
+    "spanish": "Español",
+    "english": "Inglés"
+  },
+  "login": {
+    "username": "Nombre de usuario",
+    "password": "Contraseña",
+    "submit": "Iniciar sesión",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "rememberMe": "Recuérdame",
+    "usernameRequired": "El nombre de usuario es obligatorio",
+    "passwordRequired": "La contraseña es obligatoria"
+  }
+}

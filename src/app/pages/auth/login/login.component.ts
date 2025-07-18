@@ -7,6 +7,7 @@ import {
   Validators
 } from '@angular/forms';
 import { MaterialModules } from '@material/material.modules';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
@@ -14,6 +15,7 @@ import { MaterialModules } from '@material/material.modules';
     FormsModule,
     MaterialModules,
     ReactiveFormsModule,
+    TranslatePipe
   ],
   templateUrl: './login.component.html',
   styles: ``,
