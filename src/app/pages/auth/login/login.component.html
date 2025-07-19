@@ -11,7 +11,17 @@
   <!-- Password -->
   <mat-form-field class="w-full" appearance="fill">
     <mat-label>{{ 'login.password' | translate }}:</mat-label>
-    <input matInput type="password" formControlName="password" required>
+    <input matInput [type]="showPassword() ? 'text' : 'password'" formControlName="password" required>
+    <button
+      mat-icon-button
+      matSuffix
+      (click)="showPassword.set(!showPassword())"
+      matTooltip="{{ showPassword() ? ('login.hidePasswordTooltip' | translate) : ('login.showPasswordTooltip' | translate) }}"
+    >
+      <mat-icon>
+        {{ showPassword() ? 'visibility' : 'visibility_off' }}
+      </mat-icon>
+    </button>
     @if (submitted && form['password'].hasError('required')) {
       <mat-error>{{ 'login.passwordRequired' | translate }}</mat-error>
     }

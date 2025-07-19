@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -24,6 +24,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class LoginComponent {
   loginForm: FormGroup;
   submitted: boolean = false;
+  showPassword = signal(false);
 
   constructor(
     private formBuilder: FormBuilder,
