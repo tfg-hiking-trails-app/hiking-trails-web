@@ -37,8 +37,8 @@
     @if (submitted && form['password'].hasError('required')) {
       <mat-error>{{ 'register.passwordRequired' | translate }}</mat-error>
     }
-    @if (submitted && form['password'] !== form['confirmPassword']) {
-      <mat-error>{{ 'register.passwordMismatch' | translate }}</mat-error>
+    @if (submitted && form['password'].hasError('minlength')) {
+      <mat-error>{{ 'register.passwordMinLength' | translate }}</mat-error>
     }
   </mat-form-field>
 
@@ -58,6 +58,9 @@
     </button>
     @if (submitted && form['confirmPassword'].hasError('required')) {
       <mat-error>{{ 'register.confirmPasswordRequired' | translate }}</mat-error>
+    }
+    @if (submitted && form['password'] !== form['confirmPassword']) {
+      <mat-error>{{ 'register.passwordMismatch' | translate }}</mat-error>
     }
   </mat-form-field>
 

@@ -34,7 +34,8 @@ export class LoginComponent {
         Validators.required
       ]],
       password: ['', [
-        Validators.required
+        Validators.required,
+        Validators.minLength(6)
       ]],
       rememberMe: [false],
     });
