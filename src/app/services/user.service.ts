@@ -12,6 +12,8 @@ export class UserService {
 
   private routes = {
     loginPath: `${ environment.apiGatewayUrl }/auth/login`,
+    refreshPath: `${ environment.apiGatewayUrl }/auth/refresh`,
+    logoutPath: `${ environment.apiGatewayUrl }/auth/logout`,
   };
 
   constructor(
@@ -19,11 +21,22 @@ export class UserService {
   ) { }
 
   login(request: LoginRequest): Observable<LoginResponse> {
-    return this.apiService.post<LoginRequest, LoginResponse>(
+    return this.apiService.post<LoginResponse, LoginRequest>(
       this.routes.loginPath,
-      request,
+      { withCredentials: true },
+      request
+    );
+  }
+
+  refresh(): Observable<LoginResponse> {
+    return this.apiService.post<LoginResponse>(
+      this.routes.refreshPath,
       { withCredentials: true }
     );
+  }
+
+  logout(): Observable<void> {
+    return this.apiService.post<void>(this.routes.logoutPath);
   }
 
 }

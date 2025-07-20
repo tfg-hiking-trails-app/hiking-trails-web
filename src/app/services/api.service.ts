@@ -28,10 +28,10 @@ export class ApiService {
     return this.http.get<TResponse>(url, { params });
   }
 
-  post<TBody, TResponse>(
+  post<TResponse, TBody = undefined>(
     url: string,
-    body: TBody,
-    options: HttpOptions = {}
+    options: HttpOptions = {},
+    body?: TBody
   ): Observable<TResponse> {
     return this.http.post<TResponse>(url, body, options);
   }
