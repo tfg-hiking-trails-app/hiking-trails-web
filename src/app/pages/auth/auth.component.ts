@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { MaterialModules } from '@material/material.modules';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
-import { LanguageOption } from '../../interfaces/LanguageOption';
+import { LanguageOption } from '../../interfaces/common/LanguageOption';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 

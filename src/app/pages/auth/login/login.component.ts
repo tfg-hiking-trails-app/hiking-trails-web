@@ -9,6 +9,9 @@ import {
 import { MaterialModules } from '@material/material.modules';
 import { TranslatePipe } from '@ngx-translate/core';
 
+import { LoginRequest } from '../../../interfaces/auth/Login';
+import { UserService } from '../../../services/user.service';
+
 @Component({
   selector: 'app-login',
   imports: [
@@ -28,6 +31,7 @@ export class LoginComponent {
 
   constructor(
     private formBuilder: FormBuilder,
+    private userService: UserService
   ) {
     this.loginForm = this.formBuilder.group({
       username: ['', [
@@ -52,7 +56,22 @@ export class LoginComponent {
       return;
     }
 
-    console.log("usuario: ", this.loginForm.value);
+    const loginDto: LoginRequest = {
+      username: this.loginForm.value.username,
+      password: this.loginForm.value.password,
+    }
+
+    this.userService.login(loginDto).subscribe({
+      next: (response) => {
+        const { access_token } = response;
+
+        sessionStorage.setItem('access_token', access_token);
+      },
+      error: (error) => {
+        console.error("Login failed", error);
+      }
+    });
+
     this.loginForm.reset();
     this.submitted = false;
   }

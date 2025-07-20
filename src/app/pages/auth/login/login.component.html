@@ -1,4 +1,4 @@
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="loginForm">
   <!-- Username -->
   <mat-form-field class="w-full" appearance="fill">
     <mat-label>{{ 'login.username' | translate }}:</mat-label>
@@ -43,7 +43,7 @@
     </a>
   </div>
 
-  <button class="mt-1 w-full" matButton="filled">
+  <button (click)="onSubmit()" class="mt-1 w-full" matButton="filled">
     <mat-icon>login</mat-icon>
     {{ 'login.submit' | translate }}
   </button>
