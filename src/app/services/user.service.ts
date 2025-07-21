@@ -16,12 +16,6 @@ export class UserService {
     private apiService: ApiService
   ) { }
 
-  /* BORRAR */
-  getUsers() {
-    return this.apiService.get(
-      this.routes.getUsers,
-      { withCredentials: true }
-    );
-  }
+
 
 }

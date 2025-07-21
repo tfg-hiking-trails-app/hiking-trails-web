@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { LoginRequest, LoginResponse } from '../interfaces/auth/Login';
 import { ApiService } from './api.service';
+import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,8 @@ export class AuthService {
   };
 
   constructor(
-    private apiService: ApiService
+    private apiService: ApiService,
+    private tokenService: TokenService
   ) { }
 
   login(request: LoginRequest): Observable<LoginResponse> {
@@ -40,7 +42,7 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return !!sessionStorage.getItem('access_token');
+    return !!this.tokenService.getToken();
   }
 
 }

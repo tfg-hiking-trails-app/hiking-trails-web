@@ -19,6 +19,7 @@ import {
 
 import { LoginResponse } from '../interfaces/auth/Login';
 import { AuthService } from "../services/auth.service";
+import { TokenService } from "../services/token.service";
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -27,8 +28,9 @@ export class TokenInterceptor implements HttpInterceptor {
   private refreshSubject = new BehaviorSubject<string | null>(null);
 
   constructor(
+    private authService: AuthService,
     private router: Router,
-    private authService: AuthService
+    private tokenService: TokenService
   ) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -40,7 +42,7 @@ export class TokenInterceptor implements HttpInterceptor {
     // embed the token in the request
     request = request.clone({
       setHeaders: {
-        Authorization: `Bearer ${sessionStorage.getItem('access_token')}`
+        Authorization: `Bearer ${ this.tokenService.getToken() }`
       }
     });
 
@@ -79,7 +81,7 @@ export class TokenInterceptor implements HttpInterceptor {
         // the new access token is obtained
         const newToken = response.access_token;
 
-        sessionStorage.setItem('access_token', newToken);
+        this.tokenService.setToken(newToken, JSON.parse(localStorage.getItem('remember') || 'false'));
         this.refreshSubject.next(newToken);
         this.isRefreshing = false;
       }),
@@ -96,7 +98,7 @@ export class TokenInterceptor implements HttpInterceptor {
       catchError(err => {
         // an error occurred while trying to refresh the token
         this.isRefreshing = false;
-        sessionStorage.removeItem('access_token');
+        this.tokenService.clearToken();
         this.router.navigate(['auth']);
 
         return throwError(() => err);

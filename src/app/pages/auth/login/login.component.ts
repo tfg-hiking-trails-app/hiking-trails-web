@@ -8,10 +8,11 @@ import {
 } from '@angular/forms';
 import { MaterialModules } from '@material/material.modules';
 import { TranslatePipe } from '@ngx-translate/core';
-
 import { Router } from '@angular/router';
+
 import { LoginRequest } from '../../../interfaces/auth/Login';
 import { AuthService } from '../../../services/auth.service';
+import { TokenService } from '../../../services/token.service';
 
 @Component({
   selector: 'app-login',
@@ -33,13 +34,14 @@ export class LoginComponent {
   constructor(
     private authService: AuthService,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private tokenService: TokenService
   ) {
     this.loginForm = this.formBuilder.group({
-      username: ['', [
+      username: ['test', [
         Validators.required
       ]],
-      password: ['', [
+      password: ['password', [
         Validators.required,
         Validators.minLength(6)
       ]],
@@ -63,11 +65,13 @@ export class LoginComponent {
       password: this.loginForm.value.password,
     }
 
+    const remember = this.loginForm.value.rememberMe;
+
     this.authService.login(loginDto).subscribe({
       next: (response) => {
         const { access_token } = response;
 
-        sessionStorage.setItem('access_token', access_token);
+        this.tokenService.setToken(access_token, remember);
 
         this.router.navigate(['feed']);
       },

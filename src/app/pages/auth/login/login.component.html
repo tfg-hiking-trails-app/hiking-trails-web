@@ -1,4 +1,4 @@
-<form [formGroup]="loginForm">
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
   <!-- Username -->
   <mat-form-field class="w-full" appearance="fill">
     <mat-label>{{ 'login.username' | translate }}:</mat-label>
@@ -13,6 +13,7 @@
     <mat-label>{{ 'login.password' | translate }}:</mat-label>
     <input matInput [type]="showPassword() ? 'text' : 'password'" formControlName="password" required>
     <button
+      type="button"
       mat-icon-button
       matSuffix
       (click)="showPassword.set(!showPassword())"
@@ -43,7 +44,7 @@
     </a>
   </div>
 
-  <button (click)="onSubmit()" class="mt-1 w-full" matButton="filled">
+  <button type="submit" class="mt-1 w-full" matButton="filled">
     <mat-icon>login</mat-icon>
     {{ 'login.submit' | translate }}
   </button>
