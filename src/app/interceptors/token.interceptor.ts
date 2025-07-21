@@ -18,7 +18,7 @@ import {
 } from "rxjs";
 
 import { LoginResponse } from '../interfaces/auth/Login';
-import { UserService } from "../services/user.service";
+import { AuthService } from "../services/auth.service";
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -28,7 +28,7 @@ export class TokenInterceptor implements HttpInterceptor {
 
   constructor(
     private router: Router,
-    private userService: UserService
+    private authService: AuthService
   ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -74,7 +74,7 @@ export class TokenInterceptor implements HttpInterceptor {
     this.isRefreshing = true;
     this.refreshSubject.next(null);
 
-    return this.userService.refresh().pipe(
+    return this.authService.refresh().pipe(
       tap((response: LoginResponse) => {
         // the new access token is obtained
         const newToken = response.access_token;

@@ -8,7 +8,7 @@ import { ApiService } from './api.service';
 @Injectable({
   providedIn: 'root',
 })
-export class UserService {
+export class AuthService {
 
   private routes = {
     loginPath: `${ environment.apiGatewayUrl }/auth/login`,
@@ -37,6 +37,10 @@ export class UserService {
 
   logout(): Observable<void> {
     return this.apiService.post<void>(this.routes.logoutPath);
+  }
+
+  isAuthenticated(): boolean {
+    return !!sessionStorage.getItem('access_token');
   }
 
 }

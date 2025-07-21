@@ -9,8 +9,9 @@ import {
 import { MaterialModules } from '@material/material.modules';
 import { TranslatePipe } from '@ngx-translate/core';
 
+import { Router } from '@angular/router';
 import { LoginRequest } from '../../../interfaces/auth/Login';
-import { UserService } from '../../../services/user.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -30,8 +31,9 @@ export class LoginComponent {
   showPassword = signal(false);
 
   constructor(
+    private authService: AuthService,
     private formBuilder: FormBuilder,
-    private userService: UserService
+    private router: Router
   ) {
     this.loginForm = this.formBuilder.group({
       username: ['', [
@@ -61,11 +63,13 @@ export class LoginComponent {
       password: this.loginForm.value.password,
     }
 
-    this.userService.login(loginDto).subscribe({
+    this.authService.login(loginDto).subscribe({
       next: (response) => {
         const { access_token } = response;
 
         sessionStorage.setItem('access_token', access_token);
+
+        this.router.navigate(['/feed']);
       },
       error: (error) => {
         console.error("Login failed", error);
