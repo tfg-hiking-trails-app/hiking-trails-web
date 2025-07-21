@@ -19,5 +19,5 @@ export const nonAuthGuard: CanActivateFn = (
     return true;
   }
 
-  return router.navigate(['/feed']);
+  return router.navigate(['feed']);
 };

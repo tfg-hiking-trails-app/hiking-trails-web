@@ -69,7 +69,7 @@ export class LoginComponent {
 
         sessionStorage.setItem('access_token', access_token);
 
-        this.router.navigate(['/feed']);
+        this.router.navigate(['feed']);
       },
       error: (error) => {
         console.error("Login failed", error);

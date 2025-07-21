@@ -12,11 +12,18 @@ export class ApiService {
 
   private http = inject(HttpClient);
 
-  get<TResponse>(url: string): Observable<TResponse> {
-    return this.http.get<TResponse>(url);
+  get<TResponse>(
+    url: string,
+    options: HttpOptions = {}
+  ): Observable<TResponse> {
+    return this.http.get<TResponse>(url, options);
   }
 
-  getPaged<TResponse>(url: string, filter: Filter): Observable<TResponse> {
+  getPaged<TResponse>(
+    url: string,
+    filter: Filter,
+    options: HttpOptions = {}
+  ): Observable<TResponse> {
     let params = new HttpParams();
 
     Object.keys(filter).forEach(([key, value]) => {
@@ -25,7 +32,7 @@ export class ApiService {
       }
     });
 
-    return this.http.get<TResponse>(url, { params });
+    return this.http.get<TResponse>(url, { params, ...options });
   }
 
   post<TResponse, TBody = undefined>(
@@ -36,12 +43,19 @@ export class ApiService {
     return this.http.post<TResponse>(url, body, options);
   }
 
-  patch<TBody, TResponse>(url: string, body: TBody): Observable<TResponse> {
-    return this.http.patch<TResponse>(url, body);
+  patch<TBody, TResponse>(
+    url: string,
+    body: TBody,
+    options: HttpOptions = {}
+  ): Observable<TResponse> {
+    return this.http.patch<TResponse>(url, body, options);
   }
 
-  delete<TResponse>(url: string): Observable<TResponse> {
-    return this.http.delete<TResponse>(url);
+  delete<TResponse>(
+    url: string,
+    options: HttpOptions = {}
+  ): Observable<TResponse> {
+    return this.http.delete<TResponse>(url, options);
   }
 
 }

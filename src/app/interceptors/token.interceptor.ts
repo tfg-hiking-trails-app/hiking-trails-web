@@ -31,42 +31,42 @@ export class TokenInterceptor implements HttpInterceptor {
     private authService: AuthService
   ) {}
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log("INICIO INTERCEPTOR", req.url);
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // the login does not carry the token
-    if (req.url.includes('/auth/login')) {
-      return next.handle(req);
+    if (request.url.includes('/auth/login')) {
+      return next.handle(request);
     }
 
     // embed the token in the request
-    req = req.clone({
+    request = request.clone({
       setHeaders: {
         Authorization: `Bearer ${sessionStorage.getItem('access_token')}`
       }
     });
 
-    return next.handle(req).pipe(
+    return next.handle(request).pipe(
       //if the access_token is expired start the refresh process
       catchError(err => {
         if (err.status === 401 || err.status === 403) {
-          console.log("INICIA PROCESO REFRESH", sessionStorage.getItem('access_token'));
-          return this.handleAuthError(req, err);
+          return this.handleAuthError(request, next);
         }
         return throwError(() => err);
       })
     );
   }
 
-  private handleAuthError(originalReq: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  private handleAuthError(originalRequest: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (this.isRefreshing) {
       return this.refreshSubject.pipe(
         filter(token => token !== null),
         take(1),
         switchMap((token: string | null) => {
-          const clonedReq = originalReq.clone({
-            setHeaders: { Authorization: `Bearer ${ token }` }
+          const request = originalRequest.clone({
+            setHeaders: {
+              Authorization: `Bearer ${ token }`
+            }
           });
-          return next.handle(clonedReq);
+          return next.handle(request);
         })
       );
     }
@@ -82,26 +82,22 @@ export class TokenInterceptor implements HttpInterceptor {
         sessionStorage.setItem('access_token', newToken);
         this.refreshSubject.next(newToken);
         this.isRefreshing = false;
-
-        console.log("TOKEN REFRESCADO", newToken);
       }),
       switchMap((response: LoginResponse) => {
         // the request is re-requested with the new token.
-        const retried = originalReq.clone({
-          setHeaders: { Authorization: `Bearer ${ response.access_token }` }
+        const request = originalRequest.clone({
+          setHeaders: {
+            Authorization: `Bearer ${ response.access_token }`
+          }
         });
 
-        console.log("SE VUELVE A REALIZAR LA PETICION CON EL NUEVO TOKEN");
-
-        return next.handle(retried);
+        return next.handle(request);
       }),
       catchError(err => {
         // an error occurred while trying to refresh the token
         this.isRefreshing = false;
         sessionStorage.removeItem('access_token');
-        this.router.navigate(['/login']);
-
-        console.log("ERROR EN EL REFRESCO DEL TOKEN");
+        this.router.navigate(['auth']);
 
         return throwError(() => err);
       })
