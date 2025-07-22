@@ -1,0 +1,51 @@
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <!-- Username -->
+  <mat-form-field class="w-full" appearance="fill">
+    <mat-label>{{ 'login.username' | translate }}:</mat-label>
+    <input matInput formControlName="username" required>
+    @if (submitted && form['username'].hasError('required')) {
+      <mat-error>{{ 'login.usernameRequired' | translate }}</mat-error>
+    }
+  </mat-form-field>
+
+  <!-- Password -->
+  <mat-form-field class="w-full" appearance="fill">
+    <mat-label>{{ 'login.password' | translate }}:</mat-label>
+    <input matInput [type]="showPassword() ? 'text' : 'password'" formControlName="password" required>
+    <button
+      type="button"
+      mat-icon-button
+      matSuffix
+      (click)="showPassword.set(!showPassword())"
+      matTooltip="{{ showPassword() ? ('login.hidePasswordTooltip' | translate) : ('login.showPasswordTooltip' | translate) }}"
+    >
+      <mat-icon>
+        {{ showPassword() ? 'visibility' : 'visibility_off' }}
+      </mat-icon>
+    </button>
+    @if (submitted && form['password'].hasError('required')) {
+      <mat-error>{{ 'login.passwordRequired' | translate }}</mat-error>
+    }
+    @if (submitted && form['password'].hasError('minlength')) {
+      <mat-error>{{ 'login.passwordMinLength' | translate }}</mat-error>
+    }
+  </mat-form-field>
+
+  <div class="flex justify-between items-center">
+    <!-- Remember Me -->
+    <mat-checkbox formControlName="rememberMe">
+      {{ 'login.rememberMe' | translate }}
+    </mat-checkbox>
+    <!-- Forgot Password Link -->
+    <a
+      class="font-medium dark:text-cyan-800 hover:underline"
+      href="/auth/forgot-password"> <!-- TODO -->
+      {{ 'login.forgotPassword' | translate }}
+    </a>
+  </div>
+
+  <button type="submit" class="mt-1 w-full" matButton="filled">
+    <mat-icon>login</mat-icon>
+    {{ 'login.submit' | translate }}
+  </button>
+</form>

@@ -1,0 +1,73 @@
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  <!-- Username -->
+  <mat-form-field class="w-full" appearance="fill">
+    <mat-label>{{ 'register.username' | translate }}:</mat-label>
+    <input matInput formControlName="username" required>
+    @if (submitted && form['username'].hasError('required')) {
+      <mat-error>{{ 'register.usernameRequired' | translate }}</mat-error>
+    }
+  </mat-form-field>
+
+   <!-- Email -->
+  <mat-form-field class="w-full" appearance="fill">
+    <mat-label>{{ 'register.email' | translate }}:</mat-label>
+    <input matInput formControlName="email" required>
+    @if (submitted && form['email'].hasError('required')) {
+      <mat-error>{{ 'register.emailRequired' | translate }}</mat-error>
+    }
+    @if (submitted && form['email'].hasError('email')) {
+      <mat-error>{{ 'register.emailInvalid' | translate }}</mat-error>
+    }
+  </mat-form-field>
+
+  <!-- Password -->
+  <mat-form-field class="w-full" appearance="fill">
+    <mat-label>{{ 'register.password' | translate }}:</mat-label>
+    <input matInput [type]="showPassword() ? 'text' : 'password'" formControlName="password" required>
+    <button
+      type="button"
+      mat-icon-button
+      matSuffix
+      (click)="showPassword.set(!showPassword())"
+      matTooltip="{{ showPassword() ? ('login.hidePasswordTooltip' | translate) : ('login.showPasswordTooltip' | translate) }}"
+    >
+      <mat-icon>
+        {{ showPassword() ? 'visibility' : 'visibility_off' }}
+      </mat-icon>
+    </button>
+    @if (submitted && form['password'].hasError('required')) {
+      <mat-error>{{ 'register.passwordRequired' | translate }}</mat-error>
+    }
+    @if (submitted && form['password'].hasError('minlength')) {
+      <mat-error>{{ 'register.passwordMinLength' | translate }}</mat-error>
+    }
+  </mat-form-field>
+
+  <!-- Confirm Password -->
+  <mat-form-field class="w-full" appearance="fill">
+    <mat-label>{{ 'register.confirmPassword' | translate }}:</mat-label>
+    <input matInput [type]="showConfirmPassword() ? 'text' : 'password'" formControlName="confirmPassword" required>
+    <button
+      type="button"
+      mat-icon-button
+      matSuffix
+      (click)="showConfirmPassword.set(!showConfirmPassword())"
+      matTooltip="{{ showConfirmPassword() ? ('login.hidePasswordTooltip' | translate) : ('login.showPasswordTooltip' | translate) }}"
+    >
+      <mat-icon>
+        {{ showConfirmPassword() ? 'visibility' : 'visibility_off' }}
+      </mat-icon>
+    </button>
+    @if (submitted && form['confirmPassword'].hasError('required')) {
+      <mat-error>{{ 'register.confirmPasswordRequired' | translate }}</mat-error>
+    }
+    @if (submitted && form['password'] !== form['confirmPassword']) {
+      <mat-error>{{ 'register.passwordMismatch' | translate }}</mat-error>
+    }
+  </mat-form-field>
+
+  <button type="submit" class="mt-1 w-full" matButton="filled">
+    <mat-icon>person_add</mat-icon>
+    {{ 'register.submit' | translate }}
+  </button>
+</form>

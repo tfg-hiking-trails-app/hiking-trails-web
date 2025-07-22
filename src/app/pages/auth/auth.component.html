@@ -1,0 +1,53 @@
+<div class="w-screen h-screen bg-[url(/images/bg-montain.jpg)] gb-cover bg-center bg-no-repeat">
+  <!-- Header -->
+  <div class="absolute top-10 right-10 xl:right-36">
+    <button matButton="tonal" [matMenuTriggerFor]="languageMenu">
+      <mat-icon>translate</mat-icon>
+      <div class="flex items-center">
+        <span class="text-lg">
+          {{ currentLang() | uppercase }}
+        </span>
+        <mat-icon>keyboard_arrow_down</mat-icon>
+      </div>
+    </button>
+    <mat-menu #languageMenu="matMenu">
+      @for (language of languages; track $index) {
+        <button
+          mat-menu-item
+          (click)="setLanguage(language.code)"
+        >
+          <div class="flex items-center">
+            <img [src]="language.icon" [alt]="language.label" class="w-5 mr-2" />
+            <span>{{ language.label | translate }}</span>
+          </div>
+        </button>
+      }
+    </mat-menu>
+  </div>
+  <!-- Login/Register -->
+  <div class="w-full h-full flex justify-center items-center">
+    <div class="bg-white px-6 pb-4 rounded-lg shadow-lg w-full max-w-md mx-2 md:mx-0">
+      <mat-tab-group animationDuration="250ms">
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <span class="text-xl sm:text-2xl">
+              {{ 'auth.login' | translate }}
+            </span>
+          </ng-template>
+          <!-- Login Component -->
+          <app-login class="m-4" />
+        </mat-tab>
+
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <span class="text-xl sm:text-2xl">
+              {{ 'auth.register' | translate }}
+            </span>
+          </ng-template>
+          <!-- Register Component -->
+          <app-register class="m-4" />
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+</div>
