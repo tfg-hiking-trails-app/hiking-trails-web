@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
 
-import { authGuard } from './guards/auth.guard';
-import { nonAuthGuard } from './guards/nonAuth.guard';
 import { AuthComponent } from './pages/auth/auth.component';
-import { FeedComponent } from './pages/private/feed/feed.component';
+import { authGuard } from './guards/auth.guard';
 import { ExploreComponent } from './pages/public/explore/explore.component';
+import { FeedComponent } from './pages/private/feed/feed.component';
+import { nonAuthGuard } from './guards/nonAuth.guard';
 
 export const routes: Routes = [
   {

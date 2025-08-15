@@ -32,5 +32,9 @@
     "passwordMinLength": "La contraseña debe tener al menos 6 caracteres",
     "showPasswordTooltip": "Mostrar contraseña",
     "hidePasswordTooltip": "Ocultar contraseña"
+  },
+  "theme": {
+    "darkMode": "Modo oscuro",
+    "lightMode": "Modo claro"
   }
 }

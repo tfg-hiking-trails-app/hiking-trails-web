@@ -43,12 +43,12 @@ export class ApiService {
     return this.http.post<TResponse>(url, body, options);
   }
 
-  patch<TBody, TResponse>(
+  put<TBody, TResponse>(
     url: string,
     body: TBody,
     options: HttpOptions = {}
   ): Observable<TResponse> {
-    return this.http.patch<TResponse>(url, body, options);
+    return this.http.put<TResponse>(url, body, options);
   }
 
   delete<TResponse>(
