@@ -1,25 +1,41 @@
 import { Routes } from '@angular/router';
 
-import { AuthComponent } from './pages/auth/auth.component';
 import { authGuard } from './guards/auth.guard';
-import { ExploreComponent } from './pages/public/explore/explore.component';
-import { FeedComponent } from './pages/private/feed/feed.component';
 import { nonAuthGuard } from './guards/nonAuth.guard';
 
 export const routes: Routes = [
   {
-    path: 'feed',
-    component: FeedComponent,
-    canMatch: [authGuard],
-    canActivate: [authGuard]
+    path: '',
+    canActivateChild: [authGuard],
+    children: [
+      {
+        path: 'feed',
+        loadComponent: () =>
+          import('./pages/private/feed/feed.component').then(m => m.FeedComponent)
+      },
+      {
+        path: 'profile',
+        loadComponent: () =>
+          import('./pages/private/profile/profile.component').then(m => m.ProfileComponent)
+      },
+      {
+        path: 'settings',
+        loadComponent: () =>
+          import('./pages/private/settings/settings.component').then(m => m.SettingsComponent)
+      },
+    ],
   },
   {
     path: 'auth',
-    component: AuthComponent,
     canMatch: [nonAuthGuard],
-    canActivate: [nonAuthGuard],
+    loadComponent: () =>
+      import('./pages/auth/auth.component').then(m => m.AuthComponent)
   },
-  { path: 'explore', component: ExploreComponent },
+  {
+    path: 'explore',
+    loadComponent: () =>
+      import('./pages/public/explore/explore.component').then(m => m.ExploreComponent)
+  },
   { path: '', redirectTo: '/auth', pathMatch: 'full' },
   { path: '**', redirectTo: '/auth', pathMatch: 'full' }
 ];

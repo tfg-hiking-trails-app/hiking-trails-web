@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'app-search-bar',
+  selector: 'app-profile',
   imports: [],
-  templateUrl: './search-bar.component.html',
+  templateUrl: './profile.component.html',
   styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchBarComponent { }
+export class ProfileComponent { }

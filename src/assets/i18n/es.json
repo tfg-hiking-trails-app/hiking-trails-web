@@ -36,5 +36,17 @@
   "theme": {
     "darkMode": "Modo oscuro",
     "lightMode": "Modo claro"
+  },
+  "navbar": {
+    "open-icon": "Abrir menú",
+    "close-icon": "Cerrar menú",
+    "search-bar": {
+      "placeholder": "Busca Ubicaciones, Usuarios..."
+    },
+    "profile": {
+      "open": "Mi perfil",
+      "settings": "Ajustes",
+      "logout": "Cerrar sesión"
+    }
   }
 }

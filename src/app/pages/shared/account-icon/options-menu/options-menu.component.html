@@ -1,0 +1,9 @@
+<a routerLink="/profile" class="block px-4 py-2 text-lg text-white hover:bg-light-mode dark:hover:bg-dark-mode">
+  {{ 'navbar.profile.open' | translate }}
+</a>
+<a routerLink="/settings" class="block px-4 py-2 text-lg text-white hover:bg-light-mode dark:hover:bg-dark-mode">
+  {{ 'navbar.profile.settings' | translate }}
+</a>
+<a (click)="logout()" class="block px-4 py-2 text-lg cursor-pointer text-white hover:bg-light-mode dark:hover:bg-dark-mode">
+  {{ 'navbar.profile.logout' | translate }}
+</a>

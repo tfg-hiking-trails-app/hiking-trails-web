@@ -1,1 +1,38 @@
-<pre class="text-white">{{ account() | json }}</pre>
+<div class="flex items-center gap-2" #profileMenu>
+  <button
+    type="button"
+    (click)="toggleProfile()"
+    [attr.aria-expanded]="profileOpen"
+    aria-haspopup="menu"
+  >
+    <span class="sr-only">Abrir menú de usuario</span>
+    <img
+      [src]="ProfilePicture"
+      alt="account icon"
+      class="w-12 h-12 rounded-full object-cover cursor-pointer"
+    />
+  </button>
+  @if (account()?.firstName) {
+    <div class="flex flex-col gap-0">
+      <p class="text-white text-xl leading-none">{{ account()?.firstName }} {{ account()?.lastName }}</p>
+      <p class="text-gray-300 dark:text-gray-500 text-lg">@{{ account()?.username }}</p>
+    </div>
+  } @else {
+    <span class="text-white text-xl">@{{ account()?.username }}</span>
+  }
+</div>
+
+@if (profileOpen) {
+  <div
+      class="absolute right-0 mt-2 w-48 origin-top-right rounded-md
+            bg-gradient-to-b from-[#295e64] to-light-mode
+            dark:bg-gradient-to-b dark:from-[#0C0C0D] dark:to-dark-mode backdrop-blur
+            ring-1 ring-white/10 shadow-lg p-1
+            transition duration-100 ease-out
+            animate-[fadeIn_100ms_ease-out]"
+      role="menu"
+      tabindex="-1"
+    >
+      <app-profile-options-menu />
+  </div>
+}
