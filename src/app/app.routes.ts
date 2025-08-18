@@ -23,6 +23,7 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./pages/private/settings/settings.component').then(m => m.SettingsComponent)
       },
+      { path: '', redirectTo: '/auth', pathMatch: 'full' },
     ],
   },
   {
@@ -36,6 +37,5 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/public/explore/explore.component').then(m => m.ExploreComponent)
   },
-  { path: '', redirectTo: '/auth', pathMatch: 'full' },
   { path: '**', redirectTo: '/auth', pathMatch: 'full' }
 ];

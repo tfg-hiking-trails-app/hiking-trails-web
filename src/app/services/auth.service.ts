@@ -38,7 +38,10 @@ export class AuthService {
   }
 
   logout(): Observable<void> {
-    return this.apiService.post<void>(this.routes.logoutPath);
+    return this.apiService.post<void>(
+      this.routes.logoutPath,
+      { withCredentials: true }
+    );
   }
 
   isAuthenticated(): boolean {
