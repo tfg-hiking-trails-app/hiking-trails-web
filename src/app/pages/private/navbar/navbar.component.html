@@ -48,11 +48,11 @@
   <!-- Mobile menu -->
   <el-disclosure id="mobile-menu" hidden class="block sm:hidden">
     <div class="space-y-1 px-2 pt-2 pb-3">
-      <app-search-bar />
-      <div class="flex items-center justify-between gap-4 px-2 mt-3">
-        <app-account-icon />
+      <div class="flex items-center justify-between gap-4 px-2 mt-3 mb-2">
+        <app-account-icon [mobileView]="true" />
         <app-theme-toggle />
       </div>
+      <app-search-bar />
       <app-profile-options-menu />
     </div>
   </el-disclosure>

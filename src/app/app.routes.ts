@@ -7,6 +7,8 @@ export const routes: Routes = [
   {
     path: '',
     canActivateChild: [authGuard],
+    loadComponent: () =>
+      import('./pages/private/layout/layout.component').then(m => m.LayoutComponent),
     children: [
       {
         path: 'feed',

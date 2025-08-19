@@ -3,13 +3,13 @@ import { RouterLink } from '@angular/router';
 import { MaterialModules } from '@material/material.modules';
 import { TranslatePipe } from '@ngx-translate/core';
 
-import { AccountIconComponent } from '../account-icon/account-icon.component';
-import { OptionsMenuComponent } from '../account-icon/options-menu/options-menu.component';
-import { SearchBarComponent } from '../search-bar/search-bar.component';
-import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component';
+import { AccountIconComponent } from '../../shared/account-icon/account-icon.component';
+import { OptionsMenuComponent } from '../../shared/account-icon/options-menu/options-menu.component';
+import { SearchBarComponent } from '../../shared/search-bar/search-bar.component';
+import { ThemeToggleComponent } from '../../shared/theme-toggle/theme-toggle.component';
 
 @Component({
-  selector: 'app-navbar',
+  selector: 'app-private-navbar',
   imports: [
     AccountIconComponent,
     MaterialModules,

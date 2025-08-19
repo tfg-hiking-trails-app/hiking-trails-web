@@ -1,9 +1,17 @@
-import { ChangeDetectionStrategy, Component, ElementRef, HostListener, inject, OnInit, Signal, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  HostListener,
+  Input,
+  Signal,
+  ViewChild
+} from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MaterialModules } from '@material/material.modules';
 
-import { AccountService } from '../../../services/account.service';
 import { Account } from '../../../interfaces/account/Account';
+import { AccountService } from '../../../services/account.service';
 import { OptionsMenuComponent } from "./options-menu/options-menu.component";
 
 @Component({
@@ -18,41 +26,54 @@ import { OptionsMenuComponent } from "./options-menu/options-menu.component";
 })
 export class AccountIconComponent {
 
+  @Input({ required: false }) mobileView = false;
   @ViewChild('profileMenu', { static: true }) menuRef!: ElementRef;
+
+  readonly account: Signal<Account | undefined>;
   profileOpen = false;
+  private readonly defaultProfilePicture = '/images/default-profile-picture-male.png';
 
-  private readonly defaultProfilePicture = '/images/default-profile-picture.png';
-  private accountService: AccountService = inject(AccountService);
-
-  readonly account: Signal<Account | undefined> = toSignal(this.accountService.getLogged());
-
-  get ProfilePicture() {
-    if (this.account()?.profilePicture) {
-      return this.account()?.profilePicture;
-    }
-
-    if (this.account()?.gender?.genderValue && this.account()?.gender?.genderValue !== 'non-binary') {
-      return this.defaultProfilePicture.replace(/\.png$/, `-${this.account()?.gender?.genderValue}.png`);
-    }
-
-    return this.defaultProfilePicture;
+  constructor(
+    private readonly accountService: AccountService
+  ) {
+    this.account = toSignal(this.accountService.getLogged());
   }
 
-  toggleProfile() {
+  get ProfilePicture(): string {
+    const account = this.account();
+
+    if (account?.profilePicture) {
+      return account.profilePicture;
+    }
+
+    const gender = account?.gender?.genderValue;
+
+    return gender === 'female'
+      ? this.defaultProfilePicture.replace(/\.png$/, `-${gender}.png`)
+      : this.defaultProfilePicture;
+  }
+
+  toggleProfile(): void {
+    if (this.mobileView) {
+      this.profileOpen = false;
+      return;
+    }
+
     this.profileOpen = !this.profileOpen;
   }
 
-  closeProfile() {
+  closeProfile(): void {
     this.profileOpen = false;
   }
 
   @HostListener('document:click', ['$event'])
-  onDocClick(event: MouseEvent) {
-    if (!this.menuRef.nativeElement.contains(event.target)) this.profileOpen = false;
+  onDocClick(event: MouseEvent): void {
+    if (!this.menuRef.nativeElement.contains(event.target))
+      this.profileOpen = false;
   }
 
   @HostListener('document:keydown.escape')
-  onEsc() {
+  onEsc(): void {
     this.profileOpen = false;
   }
 

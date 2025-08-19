@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { inject, Injectable } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
 import { Filter } from "../interfaces/common/Filter";
@@ -10,7 +10,9 @@ import { HttpOptions } from "../interfaces/common/HttpOptions";
 })
 export class ApiService {
 
-  private http = inject(HttpClient);
+  constructor(
+    private http: HttpClient
+  ) { }
 
   get<TResponse>(
     url: string,

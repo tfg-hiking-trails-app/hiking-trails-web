@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../environments/environment';
@@ -19,7 +20,8 @@ export class AuthService {
 
   constructor(
     private apiService: ApiService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private router: Router
   ) { }
 
   login(request: LoginRequest): Observable<LoginResponse> {
@@ -37,15 +39,40 @@ export class AuthService {
     );
   }
 
-  logout(): Observable<void> {
-    return this.apiService.post<void>(
+  logout(): void {
+    this.apiService.post<void>(
       this.routes.logoutPath,
       { withCredentials: true }
-    );
+    ).subscribe({
+      next: () => {
+        this.tokenService.clearToken();
+        this.router.navigate(['/auth']);
+      }
+    });
   }
 
   isAuthenticated(): boolean {
     return !!this.tokenService.getToken();
+  }
+
+  getUserCode(): string | null {
+    const payload = this.tokenService.getPayload();
+
+    if (!payload) {
+      this.logout();
+    }
+
+    return payload?.userCode || null;
+  }
+
+  getUserName(): string | null {
+    const payload = this.tokenService.getPayload();
+
+    if (!payload) {
+      this.logout();
+    }
+
+    return payload?.username || null;
   }
 
 }
