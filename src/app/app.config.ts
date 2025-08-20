@@ -1,7 +1,11 @@
+import { registerLocaleData } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import localeEn from '@angular/common/locales/en';
+import localeEs from '@angular/common/locales/es';
 import {
   ApplicationConfig,
   importProvidersFrom,
+  LOCALE_ID,
   provideBrowserGlobalErrorListeners,
   provideZoneChangeDetection
 } from '@angular/core';
@@ -15,6 +19,9 @@ import { TokenInterceptor } from './interceptors/token.interceptor';
 export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
+
+registerLocaleData(localeEs, "es");
+registerLocaleData(localeEn, "en");
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -36,6 +43,7 @@ export const appConfig: ApplicationConfig = {
         })
       ]
     ),
-    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    { provide: LOCALE_ID, useValue: 'es' }
   ]
 };

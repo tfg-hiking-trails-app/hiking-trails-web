@@ -6,11 +6,11 @@
     aria-haspopup="menu"
   >
     <span class="sr-only">Abrir menú de usuario</span>
-    <img
-      [src]="ProfilePicture"
-      alt="account icon"
-      class="w-12 h-12 rounded-full object-cover cursor-pointer"
-    />
+
+    @if (account()) {
+      <app-profile-picture [account]="account()" />
+    }
+
   </button>
   @if (mobileView) {
     @if (account()?.firstName) {

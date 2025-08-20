@@ -1,13 +1,31 @@
-<h1 class="text-white">Feed</h1>
+@if (hikingTrails().length > 0) {
+  <div class="mt-5 px-3 md:px-0 w-full flex flex-col justify-center items-center gap-3">
+    @for (hikingTrail of hikingTrails(); track $index) {
+      <app-hiking-trail-card [hikingTrail]="hikingTrail" [accountLoggedCode]="accountLoggedCode" />
+    }
 
-@if (hikingTrails() === undefined) {
+    <app-up-button />
+  </div>
+} @else {
+  <div class="flex justify-center items-center">
+    <span class="text-white text-2xl">{{ 'feed.no-following' | translate }}</span>
+  </div>
+}
+
+@if (loading()) {
   <div class="flex justify-center items-center">
     <mat-spinner></mat-spinner>
   </div>
-} @else {
-  <p class="text-white">{{ hikingTrails()?.pageNumber }}</p>
-
-  @for (hikingTrail of hikingTrails()?.content; track $index) {
-    <pre class="text-white">{{ hikingTrail.name }}</pre>
-  }
 }
+
+@if (error()) {
+  <p class="text-red-500 text-2xl">{{ error() }}</p>
+}
+
+@if (isLastPage()) {
+  <footer>
+    <p class="text-white">Aqui podria ir un Footer</p>
+  </footer>
+}
+
+<div #sentinela class="h-1 w-full"></div>

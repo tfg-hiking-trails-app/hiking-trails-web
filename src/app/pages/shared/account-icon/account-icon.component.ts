@@ -12,13 +12,15 @@ import { MaterialModules } from '@material/material.modules';
 
 import { Account } from '../../../interfaces/account/Account';
 import { AccountService } from '../../../services/account.service';
+import { ProfilePictureComponent } from '../profile-picture/profile-picture.component';
 import { OptionsMenuComponent } from "./options-menu/options-menu.component";
 
 @Component({
   selector: 'app-account-icon',
   imports: [
     MaterialModules,
-    OptionsMenuComponent
+    OptionsMenuComponent,
+    ProfilePictureComponent,
 ],
   templateUrl: './account-icon.component.html',
   styles: ``,
@@ -31,26 +33,11 @@ export class AccountIconComponent {
 
   readonly account: Signal<Account | undefined>;
   profileOpen = false;
-  private readonly defaultProfilePicture = '/images/default-profile-picture-male.png';
 
   constructor(
     private readonly accountService: AccountService
   ) {
     this.account = toSignal(this.accountService.getLogged());
-  }
-
-  get ProfilePicture(): string {
-    const account = this.account();
-
-    if (account?.profilePicture) {
-      return account.profilePicture;
-    }
-
-    const gender = account?.gender?.genderValue;
-
-    return gender === 'female'
-      ? this.defaultProfilePicture.replace(/\.png$/, `-${gender}.png`)
-      : this.defaultProfilePicture;
   }
 
   toggleProfile(): void {

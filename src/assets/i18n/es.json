@@ -1,4 +1,7 @@
 {
+  "open": "Abrir",
+  "edit": "Editar",
+  "delete": "Eliminar",
   "auth": {
     "login": "Iniciar sesión",
     "register": "Registrarse",
@@ -48,5 +51,53 @@
       "settings": "Ajustes",
       "logout": "Cerrar sesión"
     }
+  },
+  "feed": {
+    "no-following": "¡No sigues a ningún usuario! Sigue a alguien para ver su actividad",
+    "error": "Ha ocurrido un error al cargar las rutas de senderismo"
+  },
+  "pet-friendly": {
+    "true": "Apto para mascotas",
+    "false": "No apto para mascotas"
+  },
+  "difficulty-level": {
+    "easy": "Fácil",
+    "medium": "Medio",
+    "hard": "Difícil",
+    "very-hard": "Muy difícil"
+  },
+  "terrain-type": {
+    "compacted-soil": "Suelo compactado",
+    "loose-soil": "Suelo suelto",
+    "rocky-terrain": "Terreno rocoso",
+    "gravel-path": "Camino de grava",
+    "sand": "Arena",
+    "mud": "Barro",
+    "snow": "Nieve",
+    "water-crossing": "Cruce de agua",
+    "forest-trail": "Sendero forestal",
+    "mountain-path": "Camino de montaña",
+    "desert-trail": "Sendero desértico",
+    "urban-trail": "Sendero urbano",
+    "paved-path": "Camino pavimentado",
+    "steep-incline": "Pendiente pronunciada",
+    "flat-terrain": "Terreno plano",
+    "rough-terrain": "Terreno irregular"
+  },
+  "trail-type": {
+    "loop": "Circular",
+    "round-trip": "Ida y vuelta",
+    "point-to-point": "Punto a punto"
+  },
+  "hiking-trail-card": {
+    "start-time": "Hora de inicio",
+    "end-time": "Hora de finalización",
+    "distance": "Distancia",
+    "duration": "Duración",
+    "difficulty-level": "Nivel de dificultad",
+    "terrain-type": "Tipo de terreno",
+    "trail-type": "Tipo de ruta",
+    "pet-friendly": "Apto para mascotas",
+    "hours": "Horas"
   }
 }
