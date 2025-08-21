@@ -15,23 +15,25 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { catchError, finalize, map, of, switchMap, tap } from 'rxjs';
 
 import { HikingTrailCardComponent } from '../../../components/hiking-trail-card/hiking-trail-card.component';
+import { LoadingSpinnerComponent } from '../../../components/loading-spinner/loading-spinner.component';
 import { Account } from '../../../interfaces/account/Account';
 import { Filter } from '../../../interfaces/common/Filter';
 import { Pagination } from '../../../interfaces/common/Pagination';
 import { HikingTrail } from '../../../interfaces/hiking-trail/HikingTrail';
 import { AccountFollowService } from '../../../services/account-follow.service';
+import { AccountService } from '../../../services/account.service';
 import { AuthService } from '../../../services/auth.service';
 import { HikingTrailService } from '../../../services/hiking-trail.service';
 import { UpButtonComponent } from '../../shared/up-button/up-button.component';
-import { AccountService } from '../../../services/account.service';
 
 @Component({
   selector: 'app-feed',
   imports: [
     HikingTrailCardComponent,
+    LoadingSpinnerComponent,
     MaterialModules,
+    TranslatePipe,
     UpButtonComponent,
-    TranslatePipe
   ],
   templateUrl: './feed.component.html',
   styles: ``,

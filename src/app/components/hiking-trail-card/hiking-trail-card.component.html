@@ -1,5 +1,5 @@
 <mat-card class="w-full md:mx-0 md:w-2xl xl:w-3xl" appearance="raised">
-  <mat-card-header class="relative flex flex-2/3 items-start dark:bg-neutral-900">
+  <mat-card-header [routerLink]="['/hiking-trail', hikingTrail.code]" class="relative flex flex-2/3 items-start dark:bg-neutral-900 cursor-pointer">
     <!-- Avatar -->
     <div mat-card-avatar>
       <app-profile-picture [account]="hikingTrail.account" />
@@ -27,7 +27,7 @@
 
   <app-carousel-images [images]="hikingTrail.images" />
 
-  <mat-card-content class="dark:bg-neutral-900">
+  <mat-card-content [routerLink]="['/hiking-trail', hikingTrail.code]" class="dark:bg-neutral-900 cursor-pointer">
     <div class="flex justify-between items-center gap-4 mt-2">
       <div class="flex-1/2">
         <h3 class="mt-2 text-2xl font-medium dark:text-white">{{ hikingTrail.name }}</h3>
@@ -52,7 +52,7 @@
       {{ hikingTrail.description }}
     </p>
   </mat-card-content>
-  <mat-card-footer class="dark:bg-neutral-900 p-4">
+  <mat-card-footer [routerLink]="['/hiking-trail', hikingTrail.code]" class="dark:bg-neutral-900 p-4 cursor-pointer">
     <div class="flex justify-around items-center">
       <span class="text-gray-600 dark:text-gray-300 text-xl font-medium">
         20 km

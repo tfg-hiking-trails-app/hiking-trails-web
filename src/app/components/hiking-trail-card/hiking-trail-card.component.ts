@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, ElementRef, HostListener, Input, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { MaterialModules } from '@material/material.modules';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
@@ -12,6 +13,7 @@ import { ProfilePictureComponent } from '../../pages/shared/profile-picture/prof
     CarouselImagesComponent,
     MaterialModules,
     ProfilePictureComponent,
+    RouterModule,
     TranslatePipe,
 ],
   templateUrl: './hiking-trail-card.component.html',
@@ -23,7 +25,7 @@ export class HikingTrailCardComponent {
   @Input() accountLoggedCode: string | null = null;
 
   constructor(
-    private translateService: TranslateService
+    private translateService: TranslateService,
   ) { }
 
   getLocale(): string {

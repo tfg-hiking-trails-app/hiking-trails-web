@@ -2,6 +2,7 @@
   "open": "Abrir",
   "edit": "Editar",
   "delete": "Eliminar",
+  "go-home": "Ir a inicio",
   "auth": {
     "login": "Iniciar sesión",
     "register": "Registrarse",
@@ -99,5 +100,8 @@
     "trail-type": "Tipo de ruta",
     "pet-friendly": "Apto para mascotas",
     "hours": "Horas"
+  },
+  "hiking-trail": {
+    "not-found": "Ruta de senderismo no encontrada"
   }
 }

@@ -1,0 +1,11 @@
+@if (loading()) {
+  <app-loading-spinner />
+}
+
+@if (hikingTrail()) {
+  :D
+}
+
+@if (!loading() && !hikingTrail()) {
+  <app-404 [message]="'hiking-trail.not-found' | translate" />
+}

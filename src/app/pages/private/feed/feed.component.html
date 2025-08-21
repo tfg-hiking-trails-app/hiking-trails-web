@@ -13,9 +13,7 @@
 }
 
 @if (loading()) {
-  <div class="flex justify-center items-center">
-    <mat-spinner></mat-spinner>
-  </div>
+  <app-loading-spinner />
 }
 
 @if (error()) {

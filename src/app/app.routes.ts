@@ -25,6 +25,11 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./pages/private/settings/settings.component').then(m => m.SettingsComponent)
       },
+      {
+        path: 'hiking-trail/:code',
+        loadComponent: () =>
+          import('./pages/private/hiking-trail-detail/hiking-trail-detail.component').then(m => m.HikingTrailDetailComponent)
+      },
       { path: '', redirectTo: '/auth', pathMatch: 'full' },
     ],
   },
