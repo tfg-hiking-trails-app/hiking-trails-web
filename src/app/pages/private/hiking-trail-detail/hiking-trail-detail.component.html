@@ -2,8 +2,15 @@
   <app-loading-spinner />
 }
 
-@if (hikingTrail()) {
-  :D
+@if (!loading() && hikingTrail()) {
+  <!-- CARD DE LA INFO DE LARUTA -->
+
+  <!-- Map -->
+  @if (coordinates()) {
+    <div class="flex justify-center items-center">
+      <app-trail-map [coordinates]="coordinates()" [center]="getCenterPosition()" />
+    </div>
+  }
 }
 
 @if (!loading() && !hikingTrail()) {

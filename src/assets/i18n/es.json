@@ -102,6 +102,8 @@
     "hours": "Horas"
   },
   "hiking-trail": {
-    "not-found": "Ruta de senderismo no encontrada"
+    "not-found": "Ruta de senderismo no encontrada",
+    "start": "Inicio",
+    "end": "Fin"
   }
 }

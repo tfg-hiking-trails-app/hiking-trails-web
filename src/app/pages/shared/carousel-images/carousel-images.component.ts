@@ -10,7 +10,7 @@ import { Images } from '../../../interfaces/hiking-trail/Images';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CarouselImagesComponent {
-  @Input() images: Images[] = [];
+  @Input({ required: true }) images: Images[] = [];
   index = signal<number>(0);
 
   next(): void {

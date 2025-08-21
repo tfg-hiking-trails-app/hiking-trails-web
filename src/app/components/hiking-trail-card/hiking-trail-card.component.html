@@ -34,15 +34,21 @@
 
       </div>
       <div class="flex flex-1/2 flex-wrap justify-center gap-2 mt-2">
-        <span class="px-1 md:px-3 py-1 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full">
-          {{ ("difficulty-level." + hikingTrail.difficultyLevel.difficultyLevelValue | translate)}}
-        </span>
-        <span class="px-1 md:px-3 py-1 bg-blue-100 text-green-700 text-sm font-semibold rounded-full">
-          {{ ("terrain-type." + hikingTrail.terrainType.terrain | translate) }}
-        </span>
-        <span class="px-1 md:px-3 py-1 bg-blue-100 text-purple-700 text-sm font-semibold rounded-full">
-          {{ ("trail-type." + hikingTrail.trailType.trail | translate) }}
-        </span>
+        @if (hikingTrail.difficultyLevel.difficultyLevelValue) {
+          <span class="px-1 md:px-3 py-1 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full">
+            {{ ("difficulty-level." + hikingTrail.difficultyLevel.difficultyLevelValue | translate)}}
+          </span>
+        }
+        @if (hikingTrail.terrainType.terrain) {
+          <span class="px-1 md:px-3 py-1 bg-blue-100 text-green-700 text-sm font-semibold rounded-full">
+            {{ ("terrain-type." + hikingTrail.terrainType.terrain | translate) }}
+          </span>
+        }
+        @if (hikingTrail.trailType.trail) {
+          <span class="px-1 md:px-3 py-1 bg-blue-100 text-purple-700 text-sm font-semibold rounded-full">
+            {{ ("trail-type." + hikingTrail.trailType.trail | translate) }}
+          </span>
+        }
         <span class="px-1 md:px-3 py-1 bg-blue-100 text-yellow-700 text-sm font-semibold rounded-full">
           {{ ("pet-friendly." + hikingTrail.petFriendly | translate) }}
         </span>
@@ -54,12 +60,16 @@
   </mat-card-content>
   <mat-card-footer [routerLink]="['/hiking-trail', hikingTrail.code]" class="dark:bg-neutral-900 p-4 cursor-pointer">
     <div class="flex justify-around items-center">
-      <span class="text-gray-600 dark:text-gray-300 text-xl font-medium">
-        20 km
-      </span>
-      <span class="text-gray-600 dark:text-gray-300 text-xl font-medium">
-        1000 Kcls
-      </span>
+      @if (getDistance()) {
+        <span class="text-gray-600 dark:text-gray-300 text-xl font-medium">
+          {{ getDistance() }} km
+        </span>
+      }
+      @if (getCalories()) {
+        <span class="text-gray-600 dark:text-gray-300 text-xl font-medium">
+          {{ getCalories() }} Kcls
+        </span>
+      }
       <span class="text-gray-600 dark:text-gray-300 text-xl font-medium">
         {{ getDuration() + ' ' + ('hiking-trail-card.hours' | translate) }}
       </span>

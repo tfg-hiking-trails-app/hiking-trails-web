@@ -21,8 +21,8 @@ import { ProfilePictureComponent } from '../../pages/shared/profile-picture/prof
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HikingTrailCardComponent {
-  @Input() hikingTrail!: HikingTrail;
-  @Input() accountLoggedCode: string | null = null;
+  @Input({ required: true }) hikingTrail!: HikingTrail;
+  @Input({ required: true }) accountLoggedCode: string | null = null;
 
   constructor(
     private translateService: TranslateService,
@@ -30,6 +30,24 @@ export class HikingTrailCardComponent {
 
   getLocale(): string {
     return this.translateService.currentLang;
+  }
+
+  getDistance(): number | null {
+    if (this.hikingTrail.metrics.length === 0 || !this.hikingTrail.metrics[0].distance) {
+      return null;
+    }
+
+    const kms = this.hikingTrail.metrics[0].distance / 1000;
+
+    return Math.round(kms * 100) / 100;
+  }
+
+  getCalories(): number | null {
+    if (this.hikingTrail.metrics.length === 0 || !this.hikingTrail.metrics[0].calories) {
+      return null;
+    }
+
+    return this.hikingTrail.metrics[0].calories;
   }
 
   getDuration(): number {
