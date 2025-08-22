@@ -1,19 +1,23 @@
-@if (hikingTrails().length > 0) {
-  <div class="mt-5 px-3 md:px-0 w-full flex flex-col justify-center items-center gap-3">
-    @for (hikingTrail of hikingTrails(); track $index) {
-      <app-hiking-trail-card [hikingTrail]="hikingTrail" [accountLoggedCode]="accountLoggedCode" />
-    }
-
-    <app-up-button />
-  </div>
-} @else {
-  <div class="flex justify-center items-center">
-    <span class="text-white text-2xl">{{ 'feed.no-following' | translate }}</span>
-  </div>
-}
-
 @if (loading()) {
   <app-loading-spinner />
+} @else {
+  @if (hikingTrails().length > 0) {
+    <div class="mt-5 px-3 md:px-0 w-full flex flex-col justify-center items-center gap-3">
+      @for (hikingTrail of hikingTrails(); track $index) {
+        <app-hiking-trail-card
+          [hikingTrail]="hikingTrail"
+          [belongLoggedUser]="accountLoggedCode === hikingTrail.account?.code"
+          [showResume]="true"
+        />
+      }
+
+      <app-up-button />
+    </div>
+  } @else {
+    <div class="flex justify-center items-center">
+      <span class="text-white text-2xl">{{ 'feed.no-following' | translate }}</span>
+    </div>
+  }
 }
 
 @if (error()) {

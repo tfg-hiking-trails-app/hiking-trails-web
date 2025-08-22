@@ -3,14 +3,21 @@
 }
 
 @if (!loading() && hikingTrail()) {
-  <!-- CARD DE LA INFO DE LARUTA -->
+  <div class="flex flex-wrap justify-center items-start gap-6 mt-5 px-3 md:px-0 w-full">
+    <!-- CARD DE LA INFO DE LARUTA -->
+    <app-hiking-trail-card
+      [hikingTrail]="hikingTrail()!"
+      [belongLoggedUser]="accountLoggedCode === hikingTrail()!.account?.code"
+    />
 
-  <!-- Map -->
-  @if (coordinates()) {
-    <div class="flex justify-center items-center">
-      <app-trail-map [coordinates]="coordinates()" [center]="getCenterPosition()" />
-    </div>
-  }
+    <!-- Map -->
+    @if (coordinates()) {
+      <div class="flex justify-center items-center">
+        <app-trail-map [coordinates]="coordinates()" [center]="getCenterPosition()" />
+      </div>
+    }
+  </div>
+
 }
 
 @if (!loading() && !hikingTrail()) {

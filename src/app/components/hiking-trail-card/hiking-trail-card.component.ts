@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MaterialModules } from '@material/material.modules';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { HikingTrail } from '../../interfaces/hiking-trail/HikingTrail';
 import { CarouselImagesComponent } from '../../pages/shared/carousel-images/carousel-images.component';
 import { ProfilePictureComponent } from '../../pages/shared/profile-picture/profile-picture.component';
+import { FriendlyDatePipe } from '../../pipes/FriendlyDatePipe';
 
 @Component({
   selector: 'app-hiking-trail-card',
@@ -15,6 +16,7 @@ import { ProfilePictureComponent } from '../../pages/shared/profile-picture/prof
     ProfilePictureComponent,
     RouterModule,
     TranslatePipe,
+    FriendlyDatePipe
 ],
   templateUrl: './hiking-trail-card.component.html',
   styles: ``,
@@ -22,15 +24,8 @@ import { ProfilePictureComponent } from '../../pages/shared/profile-picture/prof
 })
 export class HikingTrailCardComponent {
   @Input({ required: true }) hikingTrail!: HikingTrail;
-  @Input({ required: true }) accountLoggedCode: string | null = null;
-
-  constructor(
-    private translateService: TranslateService,
-  ) { }
-
-  getLocale(): string {
-    return this.translateService.currentLang;
-  }
+  @Input() belongLoggedUser: boolean = false;
+  @Input() showResume: boolean = false;
 
   getDistance(): number | null {
     if (this.hikingTrail.metrics.length === 0 || !this.hikingTrail.metrics[0].distance) {

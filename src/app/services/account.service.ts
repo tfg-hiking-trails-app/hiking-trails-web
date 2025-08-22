@@ -16,10 +16,15 @@ export class AccountService {
 
   private routes = {
     getAccountLogged: `${ environment.apiGatewayUrl }/account/logged`,
+    getByCode: `${ environment.apiGatewayUrl }/account/:code`, // /{code}
   };
 
   getLogged(): Observable<Account> {
     return this.apiService.get<Account>(this.routes.getAccountLogged);
+  }
+
+  getByCode(code: string): Observable<Account> {
+    return this.apiService.get<Account>(this.routes.getByCode.replace(':code', code));
   }
 
 }

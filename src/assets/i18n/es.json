@@ -105,5 +105,10 @@
     "not-found": "Ruta de senderismo no encontrada",
     "start": "Inicio",
     "end": "Fin"
+  },
+  "date": {
+    "today_at": "Hoy a las {{ time }}",
+    "yesterday_at": "Ayer a las {{ time }}",
+    "on_date_at": "{{ date }} a las {{ time }}"
   }
 }
