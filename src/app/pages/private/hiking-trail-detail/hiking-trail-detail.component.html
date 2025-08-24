@@ -1,25 +1,32 @@
-@if (loading()) {
+@if (loadingView()) {
   <app-loading-spinner />
-}
+} @else {
+  @if (hikingTrail()) {
 
-@if (!loading() && hikingTrail()) {
-  <div class="flex flex-wrap justify-center items-start gap-6 mt-5 px-3 md:px-0 w-full">
-    <!-- CARD DE LA INFO DE LARUTA -->
-    <app-hiking-trail-card
-      [hikingTrail]="hikingTrail()!"
-      [belongLoggedUser]="accountLoggedCode === hikingTrail()!.account?.code"
-    />
+    <div class="flex flex-wrap justify-center items-start gap-6 mt-5 pb-10 px-3 md:px-0 w-full">
+      <!-- Card -->
+      <app-hiking-trail-card
+        [hikingTrail]="hikingTrail()!"
+        [belongLoggedUser]="accountLoggedCode === hikingTrail()!.account?.code"
+      />
 
-    <!-- Map -->
-    @if (coordinates()) {
-      <div class="flex justify-center items-center">
-        <app-trail-map [coordinates]="coordinates()" [center]="getCenterPosition()" />
+      <!-- Mapa -->
+      @if (coordinates().length) {
+        <div class="flex justify-center items-center">
+          <app-trail-map [coordinates]="coordinates()" [center]="getCenterPosition()" />
+        </div>
+      }
+
+      <!-- Gráficas -->
+      <div class="w-full max-w-4xl">
+        @if (loadingGraphicsData()) {
+          <app-loading-spinner />
+        } @else if (graphicsData().length) {
+          <app-graphics [graphicsData]="graphicsData()" />
+        }
       </div>
-    }
-  </div>
-
-}
-
-@if (!loading() && !hikingTrail()) {
-  <app-404 [message]="'hiking-trail.not-found' | translate" />
+    </div>
+  } @else {
+    <app-404 [message]="'hiking-trail.not-found' | translate" />
+  }
 }

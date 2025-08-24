@@ -110,5 +110,12 @@
     "today_at": "Hoy a las {{ time }}",
     "yesterday_at": "Ayer a las {{ time }}",
     "on_date_at": "{{ date }} a las {{ time }}"
+  },
+  "graphics": {
+    "heart_rate": "Frecuencia cardíaca (bpm)",
+    "altitude": "Altitud (m)",
+    "cadence": "Cadencia (pasos/min)",
+    "distance": "Distancia (m)",
+    "speed": "Velocidad (m/s)"
   }
 }

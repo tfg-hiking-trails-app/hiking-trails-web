@@ -1,5 +1,6 @@
-import { Pipe, PipeTransform } from "@angular/core";
+import { inject, Pipe, PipeTransform } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
+import { LangService } from "../services/lang.service";
 
 @Pipe({
   name: "friendlyDate",
@@ -8,19 +9,8 @@ import { TranslateService } from "@ngx-translate/core";
 })
 export class FriendlyDatePipe implements PipeTransform {
 
-  constructor(
-    private translate: TranslateService
-  ) { }
-
-  private getLocale(): string {
-    const lang = (this.translate.currentLang || navigator.language);
-
-    if (lang.startsWith('en')) {
-      return 'en-GB';
-    }
-
-    return 'es-ES';
-  }
+  private translate = inject(TranslateService);
+  private langService = inject(LangService);
 
   private sameDay(date1: Date, date2: Date): boolean {
     return date1.getFullYear() === date2.getFullYear() &&
@@ -35,7 +25,7 @@ export class FriendlyDatePipe implements PipeTransform {
 
     const date = new Date(value);
     const now = new Date();
-    const locale = this.getLocale();
+    const locale = this.langService.getLocale();
 
     const timeOptions: Intl.DateTimeFormatOptions = {
       hour: '2-digit',

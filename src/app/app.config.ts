@@ -12,6 +12,7 @@ import {
 import { provideRouter } from '@angular/router';
 import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 import { routes } from './app.routes';
 import { TokenInterceptor } from './interceptors/token.interceptor';
@@ -43,6 +44,7 @@ export const appConfig: ApplicationConfig = {
         })
       ]
     ),
+    provideCharts(withDefaultRegisterables()),
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     { provide: LOCALE_ID, useValue: 'es' }
   ]

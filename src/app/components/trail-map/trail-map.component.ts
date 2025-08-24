@@ -71,17 +71,25 @@ export class TrailMapComponent implements AfterViewInit, OnDestroy {
     if (this.markerStart) {
       this.map.removeLayer(this.markerStart);
     }
+    if (this.markerEnd) {
+      this.map.removeLayer(this.markerEnd);
+    }
 
-    console.log(this.translate.instant('hiking-trail.start'));
-    this.markerStart = L.marker(start)
+    const icon = L.icon({
+      iconUrl: '/images/mark.png',
+      iconSize: [32, 32],
+      iconAnchor: [16, 32],
+      popupAnchor: [0, -32]
+    });
+
+    this.markerStart = L.marker(start, { icon })
                         .addTo(this.map)
                         .bindPopup(this.translate.instant('hiking-trail.start'));
-    this.markerEnd = L.marker(end)
+    this.markerEnd = L.marker(end, { icon })
                         .addTo(this.map)
                         .bindPopup(this.translate.instant('hiking-trail.end'));
 
     const bounds = this.polyline.getBounds();
-
     bounds.extend(this.markerStart.getLatLng());
     bounds.extend(this.markerEnd.getLatLng());
 
