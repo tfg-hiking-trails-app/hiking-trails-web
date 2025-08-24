@@ -22,4 +22,5 @@ export interface HikingTrail {
   generatedByFitFile: boolean;
   images: Images[];
   metrics: Metrics[];
+  productName?: string;
 }

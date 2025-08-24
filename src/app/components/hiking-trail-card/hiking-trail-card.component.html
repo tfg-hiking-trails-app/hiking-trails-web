@@ -92,11 +92,17 @@
         {{ getDuration() + ' ' + ('hiking-trail-card.hours' | translate) }}
       </span>
     </div>
+    <div class="flex items-center mt-5">
+      <span class="material-icons dark:text-white mr-2">watch</span>
+      <span class="dark:text-white text-xl font-medium">
+        {{ hikingTrail.productName }}
+      </span>
+    </div>
   </mat-card-footer>
 
   <!-- Actions -->
   <mat-card-actions class="dark:bg-neutral-900">
-    <div class="mt-5 flex justify-around items-center w-full">
+    <div class="flex justify-around items-center w-full">
       <button class="cursor-pointer hover:bg-gray-300 dark:hover:bg-neutral-600 rounded-full p-2">
         <span class="material-icons dark:text-white">thumb_up_off_alt</span>
       </button>

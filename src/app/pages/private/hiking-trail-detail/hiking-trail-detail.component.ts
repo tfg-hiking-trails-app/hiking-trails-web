@@ -5,6 +5,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import {
   catchError,
   concat,
+  concatMap,
   distinctUntilChanged,
   finalize,
   map,
@@ -20,6 +21,7 @@ import { PageNotFoundComponent } from '../../../components/page-not-found/page-n
 import { TrailMapComponent } from '../../../components/trail-map/trail-map.component';
 import { Account } from '../../../interfaces/account/Account';
 import { Coordinates } from '../../../interfaces/fit-data/Coordinates';
+import { FileId } from '../../../interfaces/fit-data/FileId';
 import { GraphicsData } from '../../../interfaces/fit-data/GraphicsData';
 import { HikingTrail } from '../../../interfaces/hiking-trail/HikingTrail';
 import { AccountService } from '../../../services/account.service';
@@ -89,6 +91,16 @@ export class HikingTrailDetailComponent implements OnInit {
               map((ac: Account) => ({ ...ht, account: ac } as HikingTrail)),
               catchError(() => of(ht))
             )
+        ),
+        concatMap((ht: HikingTrail) =>
+          ht.generatedByFitFile
+            ? this.fitDataService
+              .getFileId(hikingTrailCode)
+              .pipe(
+                tap((fl: FileId) => ht.productName = fl.productName),
+                map(() => ht),
+              )
+            : of(ht)
         ),
         tap((ht: HikingTrail) => this.hikingTrail.set(ht)),
         switchMap(() => this.fitDataService.getCoordinates(hikingTrailCode)),
