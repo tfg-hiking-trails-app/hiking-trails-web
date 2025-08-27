@@ -1,5 +1,11 @@
 import { ActivatedRoute } from '@angular/router';
-import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  OnInit,
+  signal
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslatePipe } from '@ngx-translate/core';
 import {
@@ -30,6 +36,7 @@ import { LapsComponent } from '../../../components/laps/laps.component';
 import { LoadingSpinnerComponent } from "../../../components/loading-spinner/loading-spinner.component";
 import { PageNotFoundComponent } from '../../../components/page-not-found/page-not-found.component';
 import { TrailMapComponent } from '../../../components/trail-map/trail-map.component';
+import { UpButtonComponent } from '../../shared/up-button/up-button.component';
 
 @Component({
   selector: 'app-hiking-trail-detail',
@@ -41,6 +48,7 @@ import { TrailMapComponent } from '../../../components/trail-map/trail-map.compo
     PageNotFoundComponent,
     TrailMapComponent,
     TranslatePipe,
+    UpButtonComponent,
 ],
   templateUrl: './hiking-trail-detail.component.html',
   styles: ``,
