@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
   selector: 'app-trail-map',
   imports: [],
   templateUrl: './trail-map.component.html',
-  styleUrls: ['./trail-map.component.css'],
+  styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TrailMapComponent implements AfterViewInit, OnDestroy {
@@ -21,6 +21,16 @@ export class TrailMapComponent implements AfterViewInit, OnDestroy {
   private polyline?: L.Polyline;
   private markerStart?: L.Marker;
   private markerEnd?: L.Marker;
+  private resizeObserver?: ResizeObserver;
+  private resizeRaf?: number;
+
+  private lightTileLayer!: L.TileLayer;
+  private darkTileLayer!: L.TileLayer;
+
+  private onThemeChange = (event: CustomEvent) => {
+    const isDarkMode = event.detail.isDarkMode ?? this.isDarkMode();
+    this.applyTheme(isDarkMode);
+  };
 
   constructor(
     private translate: TranslateService
@@ -29,15 +39,52 @@ export class TrailMapComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.map = L.map(this.mapContainer.nativeElement, {
       center: [this.center.positionLat, this.center.positionLong],
-      zoom: 12
+      zoom: 12,
+      scrollWheelZoom: false
     });
 
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    this.lightTileLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(this.map);
+    });
+
+    this.darkTileLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        className: 'map-tiles'
+    });
+
+    this.isDarkMode()
+      ? this.darkTileLayer.addTo(this.map)
+      : this.lightTileLayer.addTo(this.map);
 
     this.drawPolyline();
+
+    this.resizeObserver = new ResizeObserver(() => {
+      if (this.resizeRaf)
+        cancelAnimationFrame(this.resizeRaf);
+
+      this.resizeRaf = requestAnimationFrame(() => this.map.invalidateSize());
+    });
+    this.resizeObserver.observe(this.mapContainer.nativeElement);
+
+    window.addEventListener('theme-changed', this.onThemeChange as EventListener);
+  }
+
+  private isDarkMode(): boolean {
+    return document.documentElement.classList.contains('dark');
+  }
+
+  private applyTheme(isDarkMode: boolean): void {
+    if (this.map.hasLayer(this.darkTileLayer))
+      this.map.removeLayer(this.darkTileLayer);
+
+    if (this.map.hasLayer(this.lightTileLayer))
+      this.map.removeLayer(this.lightTileLayer);
+
+    isDarkMode
+      ? this.map.addLayer(this.darkTileLayer)
+      : this.map.addLayer(this.lightTileLayer);
   }
 
   private drawPolyline(): void {

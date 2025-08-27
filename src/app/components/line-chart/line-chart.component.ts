@@ -18,7 +18,7 @@ import { BaseChartDirective } from "ng2-charts";
     BaseChartDirective
   ],
   templateUrl: './line-chart.component.html',
-  styleUrls: ['./line-chart.component.css'],
+  styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LineChartComponent implements OnChanges, AfterViewInit {

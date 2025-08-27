@@ -3,6 +3,8 @@
   "edit": "Editar",
   "delete": "Eliminar",
   "go-home": "Ir a inicio",
+  "expand-all": "Expandir todo",
+  "collapse-all": "Colapsar todo",
   "auth": {
     "login": "Iniciar sesión",
     "register": "Registrarse",
@@ -117,5 +119,31 @@
     "cadence": "Cadencia (pasos/min)",
     "distance": "Distancia (m)",
     "speed": "Velocidad (m/s)"
+  },
+  "metrics": {
+    "distance": "Distancia",
+    "calories": "Calorías",
+    "duration": "Duración",
+    "steps": "Pasos",
+    "averagePace": "Ritmo medio",
+    "maxPace": "Ritmo máximo",
+    "elevationGain": "Desnivel positivo",
+    "elevationLoss": "Desnivel negativo",
+    "averageSpeed": "Velocidad media",
+    "maxSpeed": "Velocidad máxima",
+    "averageHeartRate": "Frecuencia cardíaca media",
+    "maxHeartRate": "Frecuencia cardíaca máxima",
+    "minHeartRate": "Frecuencia cardíaca mínima",
+    "averageCadence": "Cadencia media",
+    "maxCadence": "Cadencia máxima",
+    "maxAltitude": "Altitud máxima",
+    "minAltitude": "Altitud mínima",
+    "totalAscent": "Ascenso total",
+    "totalDescent": "Descenso total"
+  },
+  "laps": {
+    "title": "Parciales",
+    "lap": "Parcial {{ lap }}",
+    "kilometer": "Kilómetro"
   }
 }

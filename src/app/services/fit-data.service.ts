@@ -1,10 +1,11 @@
 import { Injectable } from "@angular/core";
 
-import { environment } from "../../environments/environment";
-import { Coordinates } from "../interfaces/fit-data/Coordinates";
-import { GraphicsData } from "../interfaces/fit-data/GraphicsData";
 import { ApiService } from "./api.service";
+import { Coordinates } from "../interfaces/fit-data/Coordinates";
+import { environment } from "../../environments/environment";
 import { FileId } from "../interfaces/fit-data/FileId";
+import { GraphicsData } from "../interfaces/fit-data/GraphicsData";
+import { Lap } from "../interfaces/fit-data/Lap";
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,7 @@ export class FitDataService {
 
   private routes = {
     getFileId: (hikingTrailCode: string) => `${ environment.apiGatewayUrl }/fit-file-data/file-id/${ hikingTrailCode }`,
+    getLaps: (hikingTrailCode: string) => `${ environment.apiGatewayUrl }/fit-file-data/laps/${ hikingTrailCode }`,
     getCoordinates: (hikingTrailCode: string) => `${ environment.apiGatewayUrl }/fit-file-data/records/${ hikingTrailCode }/coordinates`,
     getGraphicsData: (hikingTrailCode: string) => `${ environment.apiGatewayUrl }/fit-file-data/records/${ hikingTrailCode }/graphics-data`,
     getHeartRateData: (hikingTrailCode: string) => `${ environment.apiGatewayUrl }/fit-file-data/records/${ hikingTrailCode }/heart-rate`,
@@ -30,6 +32,12 @@ export class FitDataService {
     const url: string = this.routes.getFileId(hikingTrailCode);
 
     return this.apiService.get<FileId>(url);
+  }
+
+  getLaps(hikingTrailCode: string) {
+    const url: string = this.routes.getLaps(hikingTrailCode);
+
+    return this.apiService.get<Lap[]>(url);
   }
 
   getCoordinates(hikingTrailCode: string) {

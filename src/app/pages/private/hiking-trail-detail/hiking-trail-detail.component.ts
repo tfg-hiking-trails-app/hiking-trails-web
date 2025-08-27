@@ -1,6 +1,6 @@
+import { ActivatedRoute } from '@angular/router';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActivatedRoute } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import {
   catchError,
@@ -14,26 +14,29 @@ import {
   tap
 } from 'rxjs';
 
+import { Account } from '../../../interfaces/account/Account';
+import { AccountService } from '../../../services/account.service';
+import { AuthService } from '../../../services/auth.service';
+import { Coordinates } from '../../../interfaces/fit-data/Coordinates';
+import { FileId } from '../../../interfaces/fit-data/FileId';
+import { FitDataService } from '../../../services/fit-data.service';
 import { GraphicsComponent } from '../../../components/graphics/graphics.component';
+import { GraphicsData } from '../../../interfaces/fit-data/GraphicsData';
+import { HikingTrail } from '../../../interfaces/hiking-trail/HikingTrail';
 import { HikingTrailCardComponent } from '../../../components/hiking-trail-card/hiking-trail-card.component';
+import { HikingTrailService } from '../../../services/hiking-trail.service';
+import { Lap } from '../../../interfaces/fit-data/Lap';
+import { LapsComponent } from '../../../components/laps/laps.component';
 import { LoadingSpinnerComponent } from "../../../components/loading-spinner/loading-spinner.component";
 import { PageNotFoundComponent } from '../../../components/page-not-found/page-not-found.component';
 import { TrailMapComponent } from '../../../components/trail-map/trail-map.component';
-import { Account } from '../../../interfaces/account/Account';
-import { Coordinates } from '../../../interfaces/fit-data/Coordinates';
-import { FileId } from '../../../interfaces/fit-data/FileId';
-import { GraphicsData } from '../../../interfaces/fit-data/GraphicsData';
-import { HikingTrail } from '../../../interfaces/hiking-trail/HikingTrail';
-import { AccountService } from '../../../services/account.service';
-import { AuthService } from '../../../services/auth.service';
-import { FitDataService } from '../../../services/fit-data.service';
-import { HikingTrailService } from '../../../services/hiking-trail.service';
 
 @Component({
   selector: 'app-hiking-trail-detail',
   imports: [
-    HikingTrailCardComponent,
     GraphicsComponent,
+    HikingTrailCardComponent,
+    LapsComponent,
     LoadingSpinnerComponent,
     PageNotFoundComponent,
     TrailMapComponent,
@@ -45,12 +48,14 @@ import { HikingTrailService } from '../../../services/hiking-trail.service';
 })
 export class HikingTrailDetailComponent implements OnInit {
 
-  hikingTrail = signal<HikingTrail | null>(null);
   accountLoggedCode: string | null = null;
   coordinates = signal<Coordinates[]>([]);
   graphicsData = signal<GraphicsData[]>([]);
-  loadingView = signal<boolean>(true);
+  hikingTrail = signal<HikingTrail | null>(null);
+  laps = signal<Lap[]>([]);
   loadingGraphicsData = signal<boolean>(true);
+  loadingLaps = signal<boolean>(true);
+  loadingView = signal<boolean>(true);
 
   constructor(
     private accountService: AccountService,
@@ -74,7 +79,8 @@ export class HikingTrailDetailComponent implements OnInit {
         }),
         switchMap(code => concat(
           this.hikingDetail$(code),
-          this.graphicsData$(code)
+          this.graphicsData$(code),
+          this.lapsData$(code)
         )),
         takeUntilDestroyed(this.destroyRef)
       ).subscribe();
@@ -115,6 +121,15 @@ export class HikingTrailDetailComponent implements OnInit {
       .pipe(
         tap((graphicsData: GraphicsData[]) => this.graphicsData.set(graphicsData)),
         finalize(() => this.loadingGraphicsData.set(false))
+      );
+  }
+
+  private lapsData$(hikingTrailCode: string) {
+    return this.fitDataService
+      .getLaps(hikingTrailCode)
+      .pipe(
+        tap((laps: Lap[]) => this.laps.set(laps)),
+        finalize(() => this.loadingLaps.set(false))
       );
   }
 

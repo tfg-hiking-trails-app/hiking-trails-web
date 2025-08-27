@@ -25,6 +25,8 @@ export class ThemeToggleComponent implements OnInit {
     );
 
     this.isDarkMode = document.documentElement.classList.contains('dark');
+
+    window.dispatchEvent(new CustomEvent('theme-changed', { detail: { isDarkMode: this.isDarkMode } }));
   }
 
   toggleTheme(): void {
@@ -33,6 +35,8 @@ export class ThemeToggleComponent implements OnInit {
     localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
 
     document.documentElement.classList.toggle('dark', this.isDarkMode);
+
+    window.dispatchEvent(new CustomEvent('theme-changed', { detail: { isDarkMode: this.isDarkMode } }));
   }
 
   get themeIcon(): string {

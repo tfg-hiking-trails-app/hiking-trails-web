@@ -72,28 +72,32 @@
         <mat-divider class="my-4"></mat-divider>
       }
     </div>
-
   </mat-card-content>
 
   <!-- Metrics -->
   <mat-card-footer [routerLink]="['/hiking-trail', hikingTrail.code]" class="dark:bg-neutral-900 p-4 cursor-pointer">
-    <div class="flex justify-around items-center">
-      @if (getDistance()) {
-        <span class="text-gray-600 dark:text-gray-300 text-xl font-medium">
-          {{ getDistance() }} km
-        </span>
-      }
-      @if (getCalories()) {
-        <span class="text-gray-600 dark:text-gray-300 text-xl font-medium">
-          {{ getCalories() }} Kcls
-        </span>
-      }
-      <span class="text-gray-600 dark:text-gray-300 text-xl font-medium">
-        {{ getDuration() + ' ' + ('hiking-trail-card.hours' | translate) }}
-      </span>
+    <div class="w-full flex justify-center items-center">
+      <div class="w-4/5">
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 gap-x-16 justify-items-start items-center">
+          @for (metric of metricsDisplay; track $index) {
+            @if (metric.display && metricsValues[metric.key]) {
+              <div>
+                <span class="text-gray-500 dark:text-gray-300 text-sm">{{ metric.label | translate }}</span>
+                <div class="flex items-center" [matTooltip]="(metric.label | translate)">
+                  <span [class]="'mdi ' + metric.icon + ' dark:text-white text-2xl font-medium'">
+                    <span class="dark:text-white text-xl font-medium">
+                      {{ metricsValues[metric.key] }} <span class="text-lg">{{ metric.unit }}</span>
+                    </span>
+                  </span>
+                </div>
+              </div>
+            }
+          }
+        </div>
+      </div>
     </div>
-    @if (hikingTrail.productName) {
-      <div class="flex items-center mt-5">
+    @if (!showResume && hikingTrail.productName) {
+      <div class="flex items-center mt-10">
         <span class="material-icons dark:text-white mr-2">watch</span>
         <span class="dark:text-white text-xl font-medium">
           {{ hikingTrail.productName }}
