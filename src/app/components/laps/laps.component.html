@@ -1,17 +1,17 @@
 <div class="dark:bg-dark-mode">
   <div class="py-4">
-    <span class="font-medium text-2xl ml-3 text-white">{{ 'laps.title' | translate }}</span>
+    <span class="font-medium text-2xl ml-3 text-white">{{ 'laps.laps' | translate }}</span>
   </div>
   <div class="flex gap-2 mb-3">
     <button
-      class="bg-amber-400 hover:bg-amber-500 dark:bg-blue-500 dark:hover:bg-blue-700 dark:text-white font-medium py-2 px-4 rounded-full"
+      class="bg-amber-400 hover:bg-amber-500 dark:bg-blue-500 dark:hover:bg-blue-700 dark:text-white font-medium py-2 px-4 rounded-full cursor-pointer"
       (click)="accordion().openAll()"
     >
       <span class="mdi mdi-expand-all text-xl"></span>
       {{ 'expand-all' | translate }}
     </button>
     <button
-      class="bg-amber-400 hover:bg-amber-500 dark:bg-blue-500 dark:hover:bg-blue-700 dark:text-white font-medium py-2 px-4 rounded-full"
+      class="bg-amber-400 hover:bg-amber-500 dark:bg-blue-500 dark:hover:bg-blue-700 dark:text-white font-medium py-2 px-4 rounded-full cursor-pointer"
       (click)="accordion().closeAll()"
     >
       <span class="mdi mdi-collapse-all text-xl"></span>

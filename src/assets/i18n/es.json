@@ -1,149 +1,156 @@
 {
-  "open": "Abrir",
-  "edit": "Editar",
-  "delete": "Eliminar",
-  "go-home": "Ir a inicio",
-  "expand-all": "Expandir todo",
-  "collapse-all": "Colapsar todo",
   "auth": {
+    "english": "Inglés",
     "login": "Iniciar sesión",
     "register": "Registrarse",
-    "spanish": "Español",
-    "english": "Inglés"
+    "spanish": "Español"
+  },
+  "collapse-all": "Colapsar todo",
+  "date": {
+    "on_date_at": "{{ date }} a las {{ time }}",
+    "today_at": "Hoy a las {{ time }}",
+    "yesterday_at": "Ayer a las {{ time }}"
+  },
+  "delete": "Eliminar",
+  "difficulty-level": {
+    "easy": "Fácil",
+    "hard": "Difícil",
+    "medium": "Medio",
+    "very-hard": "Muy difícil"
+  },
+  "edit": "Editar",
+  "expand-all": "Expandir todo",
+  "feed": {
+    "error": "Ha ocurrido un error al cargar las rutas de senderismo",
+    "no-following": "¡No sigues a ningún usuario! Sigue a alguien para ver su actividad"
+  },
+  "go-home": "Ir a inicio",
+  "graphics": {
+    "altitude": "Altitud (m)",
+    "cadence": "Cadencia (pasos/min)",
+    "distance": "Distancia (m)",
+    "heart_rate": "Frecuencia cardíaca (bpm)",
+    "speed": "Velocidad (m/s)"
+  },
+  "hiking-trail": {
+    "end": "Fin",
+    "not-found": "Ruta de senderismo no encontrada",
+    "start": "Inicio"
+  },
+  "hiking-trail-card": {
+    "difficulty-level": "Nivel de dificultad",
+    "distance": "Distancia",
+    "duration": "Duración",
+    "end-time": "Hora de finalización",
+    "hours": "Horas",
+    "pet-friendly": "Apto para mascotas",
+    "start-time": "Hora de inicio",
+    "terrain-type": "Tipo de terreno",
+    "trail-type": "Tipo de ruta"
+  },
+  "laps": {
+    "kilometer": "Kilómetro",
+    "lap": "Parcial {{ lap }}",
+    "laps": "Parciales"
   },
   "login": {
-    "username": "Nombre de usuario",
-    "password": "Contraseña",
-    "submit": "Iniciar sesión",
     "forgotPassword": "¿Olvidaste tu contraseña?",
-    "rememberMe": "Recuérdame",
-    "usernameRequired": "El nombre de usuario es obligatorio",
-    "passwordRequired": "La contraseña es obligatoria",
+    "hidePasswordTooltip": "Ocultar contraseña",
+    "password": "Contraseña",
     "passwordMinLength": "La contraseña debe tener al menos 6 caracteres",
+    "passwordRequired": "La contraseña es obligatoria",
+    "rememberMe": "Recuérdame",
     "showPasswordTooltip": "Mostrar contraseña",
-    "hidePasswordTooltip": "Ocultar contraseña"
+    "submit": "Iniciar sesión",
+    "username": "Nombre de usuario",
+    "usernameRequired": "El nombre de usuario es obligatorio"
+  },
+  "metrics": {
+    "averageCadence": "Cadencia media",
+    "averageHeartRate": "Frecuencia cardíaca media",
+    "averagePace": "Ritmo medio",
+    "averageSpeed": "Velocidad media",
+    "calories": "Calorías",
+    "distance": "Distancia",
+    "duration": "Duración",
+    "elevationGain": "Desnivel positivo",
+    "elevationLoss": "Desnivel negativo",
+    "maxAltitude": "Altitud máxima",
+    "maxCadence": "Cadencia máxima",
+    "maxHeartRate": "Frecuencia cardíaca máxima",
+    "maxPace": "Ritmo máximo",
+    "maxSpeed": "Velocidad máxima",
+    "minAltitude": "Altitud mínima",
+    "minHeartRate": "Frecuencia cardíaca mínima",
+    "steps": "Pasos",
+    "totalAscent": "Ascenso total",
+    "totalDescent": "Descenso total"
+  },
+  "navbar": {
+    "close-icon": "Cerrar menú",
+    "open-icon": "Abrir menú",
+    "profile": {
+      "logout": "Cerrar sesión",
+      "open": "Mi perfil",
+      "settings": "Ajustes"
+    },
+    "search-bar": {
+      "placeholder": "Busca Ubicaciones, Usuarios..."
+    }
+  },
+  "open": "Abrir",
+  "pet-friendly": {
+    "false": "No apto para mascotas",
+    "true": "Apto para mascotas"
   },
   "register": {
-    "username": "Nombre de usuario",
-    "email": "Correo electrónico",
-    "password": "Contraseña",
     "confirmPassword": "Confirmar contraseña",
-    "submit": "Registrarse",
-    "usernameRequired": "El nombre de usuario es obligatorio",
-    "emailRequired": "El correo electrónico es obligatorio",
-    "emailInvalid": "El correo electrónico no es válido",
-    "passwordRequired": "La contraseña es obligatoria",
     "confirmPasswordRequired": "La confirmación de la contraseña es obligatoria",
-    "passwordMismatch": "Las contraseñas no coinciden",
+    "email": "Correo electrónico",
+    "emailInvalid": "El correo electrónico no es válido",
+    "emailRequired": "El correo electrónico es obligatorio",
+    "hidePasswordTooltip": "Ocultar contraseña",
+    "password": "Contraseña",
     "passwordMinLength": "La contraseña debe tener al menos 6 caracteres",
+    "passwordMismatch": "Las contraseñas no coinciden",
+    "passwordRequired": "La contraseña es obligatoria",
     "showPasswordTooltip": "Mostrar contraseña",
-    "hidePasswordTooltip": "Ocultar contraseña"
+    "submit": "Registrarse",
+    "username": "Nombre de usuario",
+    "usernameRequired": "El nombre de usuario es obligatorio"
+  },
+  "settings": {
+    "options": {
+      "profile": "Perfil",
+      "account": "Cuenta",
+      "screen": "Pantalla"
+    }
+  },
+  "terrain-type": {
+    "compacted-soil": "Suelo compactado",
+    "desert-trail": "Sendero desértico",
+    "flat-terrain": "Terreno plano",
+    "forest-trail": "Sendero forestal",
+    "gravel-path": "Camino de grava",
+    "loose-soil": "Suelo suelto",
+    "mountain-path": "Camino de montaña",
+    "mud": "Barro",
+    "paved-path": "Camino pavimentado",
+    "rocky-terrain": "Terreno rocoso",
+    "rough-terrain": "Terreno irregular",
+    "sand": "Arena",
+    "snow": "Nieve",
+    "steep-incline": "Pendiente pronunciada",
+    "urban-trail": "Sendero urbano",
+    "water-crossing": "Cruce de agua"
   },
   "theme": {
     "darkMode": "Modo oscuro",
     "lightMode": "Modo claro"
   },
-  "navbar": {
-    "open-icon": "Abrir menú",
-    "close-icon": "Cerrar menú",
-    "search-bar": {
-      "placeholder": "Busca Ubicaciones, Usuarios..."
-    },
-    "profile": {
-      "open": "Mi perfil",
-      "settings": "Ajustes",
-      "logout": "Cerrar sesión"
-    }
-  },
-  "feed": {
-    "no-following": "¡No sigues a ningún usuario! Sigue a alguien para ver su actividad",
-    "error": "Ha ocurrido un error al cargar las rutas de senderismo"
-  },
-  "pet-friendly": {
-    "true": "Apto para mascotas",
-    "false": "No apto para mascotas"
-  },
-  "difficulty-level": {
-    "easy": "Fácil",
-    "medium": "Medio",
-    "hard": "Difícil",
-    "very-hard": "Muy difícil"
-  },
-  "terrain-type": {
-    "compacted-soil": "Suelo compactado",
-    "loose-soil": "Suelo suelto",
-    "rocky-terrain": "Terreno rocoso",
-    "gravel-path": "Camino de grava",
-    "sand": "Arena",
-    "mud": "Barro",
-    "snow": "Nieve",
-    "water-crossing": "Cruce de agua",
-    "forest-trail": "Sendero forestal",
-    "mountain-path": "Camino de montaña",
-    "desert-trail": "Sendero desértico",
-    "urban-trail": "Sendero urbano",
-    "paved-path": "Camino pavimentado",
-    "steep-incline": "Pendiente pronunciada",
-    "flat-terrain": "Terreno plano",
-    "rough-terrain": "Terreno irregular"
-  },
   "trail-type": {
     "loop": "Circular",
-    "round-trip": "Ida y vuelta",
-    "point-to-point": "Punto a punto"
-  },
-  "hiking-trail-card": {
-    "start-time": "Hora de inicio",
-    "end-time": "Hora de finalización",
-    "distance": "Distancia",
-    "duration": "Duración",
-    "difficulty-level": "Nivel de dificultad",
-    "terrain-type": "Tipo de terreno",
-    "trail-type": "Tipo de ruta",
-    "pet-friendly": "Apto para mascotas",
-    "hours": "Horas"
-  },
-  "hiking-trail": {
-    "not-found": "Ruta de senderismo no encontrada",
-    "start": "Inicio",
-    "end": "Fin"
-  },
-  "date": {
-    "today_at": "Hoy a las {{ time }}",
-    "yesterday_at": "Ayer a las {{ time }}",
-    "on_date_at": "{{ date }} a las {{ time }}"
-  },
-  "graphics": {
-    "heart_rate": "Frecuencia cardíaca (bpm)",
-    "altitude": "Altitud (m)",
-    "cadence": "Cadencia (pasos/min)",
-    "distance": "Distancia (m)",
-    "speed": "Velocidad (m/s)"
-  },
-  "metrics": {
-    "distance": "Distancia",
-    "calories": "Calorías",
-    "duration": "Duración",
-    "steps": "Pasos",
-    "averagePace": "Ritmo medio",
-    "maxPace": "Ritmo máximo",
-    "elevationGain": "Desnivel positivo",
-    "elevationLoss": "Desnivel negativo",
-    "averageSpeed": "Velocidad media",
-    "maxSpeed": "Velocidad máxima",
-    "averageHeartRate": "Frecuencia cardíaca media",
-    "maxHeartRate": "Frecuencia cardíaca máxima",
-    "minHeartRate": "Frecuencia cardíaca mínima",
-    "averageCadence": "Cadencia media",
-    "maxCadence": "Cadencia máxima",
-    "maxAltitude": "Altitud máxima",
-    "minAltitude": "Altitud mínima",
-    "totalAscent": "Ascenso total",
-    "totalDescent": "Descenso total"
-  },
-  "laps": {
-    "title": "Parciales",
-    "lap": "Parcial {{ lap }}",
-    "kilometer": "Kilómetro"
+    "point-to-point": "Punto a punto",
+    "round-trip": "Ida y vuelta"
   }
 }

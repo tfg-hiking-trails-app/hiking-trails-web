@@ -1,36 +1,149 @@
 {
   "auth": {
-    "login": "Login",
+    "english": "English",
+    "login": "Log in",
     "register": "Register",
-    "spanish": "Spanish",
-    "english": "English"
+    "spanish": "Spanish"
+  },
+  "collapse-all": "Collapse all",
+  "date": {
+    "on_date_at": "{{ date }} at {{ time }}",
+    "today_at": "Today at {{ time }}",
+    "yesterday_at": "Yesterday at {{ time }}"
+  },
+  "delete": "Delete",
+  "difficulty-level": {
+    "easy": "Easy",
+    "hard": "Hard",
+    "medium": "Medium",
+    "very-hard": "Very hard"
+  },
+  "edit": "Edit",
+  "expand-all": "Expand all",
+  "feed": {
+    "error": "An error occurred while loading hiking trails",
+    "no-following": "You are not following any user! Follow someone to see their activity"
+  },
+  "go-home": "Go home",
+  "graphics": {
+    "altitude": "Altitude (m)",
+    "cadence": "Cadence (steps/min)",
+    "distance": "Distance (m)",
+    "heart_rate": "Heart rate (bpm)",
+    "speed": "Speed (m/s)"
+  },
+  "hiking-trail": {
+    "end": "End",
+    "not-found": "Hiking trail not found",
+    "start": "Start"
+  },
+  "hiking-trail-card": {
+    "difficulty-level": "Difficulty level",
+    "distance": "Distance",
+    "duration": "Duration",
+    "end-time": "End time",
+    "hours": "Hours",
+    "pet-friendly": "Pet-friendly",
+    "start-time": "Start time",
+    "terrain-type": "Terrain type",
+    "trail-type": "Trail type"
+  },
+  "laps": {
+    "kilometer": "Kilometer",
+    "lap": "Lap {{ lap }}",
+    "laps": "Laps"
   },
   "login": {
-    "username": "Username",
-    "password": "Password",
-    "submit": "Login",
     "forgotPassword": "Forgot your password?",
-    "rememberMe": "Remember me",
-    "usernameRequired": "Username is required",
-    "passwordRequired": "Password is required",
+    "hidePasswordTooltip": "Hide password",
+    "password": "Password",
     "passwordMinLength": "Password must be at least 6 characters long",
+    "passwordRequired": "Password is required",
+    "rememberMe": "Remember me",
     "showPasswordTooltip": "Show password",
-    "hidePasswordTooltip": "Hide password"
+    "submit": "Log in",
+    "username": "Username",
+    "usernameRequired": "Username is required"
+  },
+  "metrics": {
+    "averageCadence": "Average cadence",
+    "averageHeartRate": "Average heart rate",
+    "averagePace": "Average pace",
+    "averageSpeed": "Average speed",
+    "calories": "Calories",
+    "distance": "Distance",
+    "duration": "Duration",
+    "elevationGain": "Elevation gain",
+    "elevationLoss": "Elevation loss",
+    "maxAltitude": "Max altitude",
+    "maxCadence": "Max cadence",
+    "maxHeartRate": "Max heart rate",
+    "maxPace": "Max pace",
+    "maxSpeed": "Max speed",
+    "minAltitude": "Min altitude",
+    "minHeartRate": "Min heart rate",
+    "steps": "Steps",
+    "totalAscent": "Total ascent",
+    "totalDescent": "Total descent"
+  },
+  "navbar": {
+    "close-icon": "Close menu",
+    "open-icon": "Open menu",
+    "profile": {
+      "logout": "Log out",
+      "open": "My profile",
+      "settings": "Settings"
+    },
+    "search-bar": {
+      "placeholder": "Search Locations, Users..."
+    }
+  },
+  "open": "Open",
+  "pet-friendly": {
+    "false": "Not pet-friendly",
+    "true": "Pet-friendly"
   },
   "register": {
-    "username": "Username",
-    "email": "Email",
-    "password": "Password",
     "confirmPassword": "Confirm password",
-    "submit": "Register",
-    "usernameRequired": "Username is required",
-    "emailRequired": "Email is required",
-    "emailInvalid": "Invalid email address",
-    "passwordRequired": "Password is required",
     "confirmPasswordRequired": "Password confirmation is required",
-    "passwordMismatch": "Passwords do not match",
+    "email": "Email",
+    "emailInvalid": "Email is not valid",
+    "emailRequired": "Email is required",
+    "hidePasswordTooltip": "Hide password",
+    "password": "Password",
     "passwordMinLength": "Password must be at least 6 characters long",
+    "passwordMismatch": "Passwords do not match",
+    "passwordRequired": "Password is required",
     "showPasswordTooltip": "Show password",
-    "hidePasswordTooltip": "Hide password"
+    "submit": "Register",
+    "username": "Username",
+    "usernameRequired": "Username is required"
+  },
+  "terrain-type": {
+    "compacted-soil": "Compacted soil",
+    "desert-trail": "Desert trail",
+    "flat-terrain": "Flat terrain",
+    "forest-trail": "Forest trail",
+    "gravel-path": "Gravel path",
+    "loose-soil": "Loose soil",
+    "mountain-path": "Mountain path",
+    "mud": "Mud",
+    "paved-path": "Paved path",
+    "rocky-terrain": "Rocky terrain",
+    "rough-terrain": "Rough terrain",
+    "sand": "Sand",
+    "snow": "Snow",
+    "steep-incline": "Steep incline",
+    "urban-trail": "Urban trail",
+    "water-crossing": "Water crossing"
+  },
+  "theme": {
+    "darkMode": "Dark mode",
+    "lightMode": "Light mode"
+  },
+  "trail-type": {
+    "loop": "Loop",
+    "point-to-point": "Point to point",
+    "round-trip": "Round trip"
   }
 }

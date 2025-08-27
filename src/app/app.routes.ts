@@ -23,7 +23,25 @@ export const routes: Routes = [
       {
         path: 'settings',
         loadComponent: () =>
-          import('./pages/private/settings/settings.component').then(m => m.SettingsComponent)
+          import('./pages/private/settings/settings.component').then(m => m.SettingsComponent),
+        children: [
+          {
+            path: 'profile',
+            loadComponent: () =>
+              import('./pages/private/settings/profile-settings/profile-settings.component').then(m => m.ProfileSettingsComponent)
+          },
+          {
+            path: 'account',
+            loadComponent: () =>
+              import('./pages/private/settings/account-settings/account-settings.component').then(m => m.AccountSettingsComponent)
+          },
+          {
+            path: 'screen',
+            loadComponent: () =>
+              import('./pages/private/settings/screen-settings/screen-settings.component').then(m => m.ScreenSettingsComponent)
+          },
+          { path: '', redirectTo: 'profile', pathMatch: 'full' }
+        ]
       },
       {
         path: 'hiking-trail/:code',
