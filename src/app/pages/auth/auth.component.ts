@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { MaterialModules } from '@material/material.modules';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { LanguageOption } from '../../interfaces/common/LanguageOption';
+import { LangService } from '../../services/lang.service';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 
@@ -21,16 +22,16 @@ import { RegisterComponent } from './register/register.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthComponent {
-  private translate: TranslateService = inject(TranslateService);
+  private langService: LangService = inject(LangService);
 
   languages: LanguageOption[] = [
     { code: 'es', label: 'auth.spanish', icon: 'images/es.png' },
     { code: 'en', label: 'auth.english', icon: 'images/en.png' }
   ];
-  currentLang = signal(this.translate.currentLang || this.translate.currentLang || 'es');
+  currentLang = signal(this.langService.getLocale());
 
   setLanguage(lang: string): void {
-    this.translate.use(lang);
+    this.langService.setLanguage(lang);
     this.currentLang.set(lang);
   }
 }

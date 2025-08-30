@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { MaterialModules } from '@material/material.modules';
+import { RouterOutlet } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { SettingsOptionsComponent } from './settings-options/settings-options.component';
@@ -17,4 +18,18 @@ import { SettingsOptionsComponent } from './settings-options/settings-options.co
   styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SettingsComponent { }
+export class SettingsComponent {
+
+  isMobile = signal<boolean>(false);
+
+  constructor(
+    private breakPointObserver: BreakpointObserver
+  ) { }
+
+  ngOnInit() {
+    this.breakPointObserver
+      .observe([Breakpoints.XSmall])
+      .subscribe((state) => this.isMobile.set(state.matches));
+  }
+
+}

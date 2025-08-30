@@ -1,6 +1,8 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MaterialModules } from '@material/material.modules';
 import { TranslatePipe } from '@ngx-translate/core';
+
+import { ThemeService } from '../../../services/theme.service';
 
 @Component({
   selector: 'app-theme-toggle',
@@ -12,39 +14,22 @@ import { TranslatePipe } from '@ngx-translate/core';
   styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ThemeToggleComponent implements OnInit {
-  isDarkMode: boolean = false;
+export class ThemeToggleComponent {
   darkModeIcon: string = 'nightlight';
   lightModeIcon: string = 'light_mode';
 
-  ngOnInit(): void {
-    document.documentElement.classList.toggle(
-      'dark',
-      localStorage.getItem('theme') === 'dark' ||
-      (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)
-    );
-
-    this.isDarkMode = document.documentElement.classList.contains('dark');
-
-    window.dispatchEvent(new CustomEvent('theme-changed', { detail: { isDarkMode: this.isDarkMode } }));
-  }
+  constructor(private themeService: ThemeService) { }
 
   toggleTheme(): void {
-    this.isDarkMode = !this.isDarkMode;
-
-    localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
-
-    document.documentElement.classList.toggle('dark', this.isDarkMode);
-
-    window.dispatchEvent(new CustomEvent('theme-changed', { detail: { isDarkMode: this.isDarkMode } }));
+    this.themeService.toggleTheme();
   }
 
   get themeIcon(): string {
-    return this.isDarkMode ? this.darkModeIcon : this.lightModeIcon;
+    return this.themeService.isDarkMode ? this.darkModeIcon : this.lightModeIcon;
   }
 
   get themeTooltip(): string {
-    return this.isDarkMode ? 'theme.darkMode' : 'theme.lightMode';
+    return this.themeService.isDarkMode ? 'theme.darkMode' : 'theme.lightMode';
   }
 
 }

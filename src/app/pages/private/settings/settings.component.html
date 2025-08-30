@@ -1,7 +1,10 @@
-<!-- Mobile -->
-<div class="sm:hidden">
+@if (isMobile()) {
+  <!-- Mobile -->
   <mat-drawer-container
-    class="h-[calc(100vh-4rem)] !bg-transparent dark:text-white"
+    [class]="
+        (drawer.opened) ? 'h-[calc(100vh-4rem)] !bg-transparent ' : '' +
+        '!bg-transparent dark:text-white'
+      "
     autosize
     [hasBackdrop]="true"
     (backdropClick)="drawer.close()"
@@ -38,16 +41,18 @@
       </button>
     </div>
   </mat-drawer-container>
-</div>
 
-<!-- Desktop -->
-<div class="hidden sm:flex sm:justify-center h-[calc(100vh-4rem)]">
-  <div class="w-full lg:w-4/5 flex mt-5">
-    <div class="w-2/6 lg:w-1/4">
-      <app-settings-options />
-    </div>
-    <div class="w-4/6 lg:w-3/4 flex justify-center">
-      <router-outlet />
+  <router-outlet />
+} @else {
+  <!-- Desktop -->
+  <div class="hidden sm:flex sm:justify-center h-[calc(100vh-4rem)]">
+    <div class="w-full lg:w-4/5 flex mt-5">
+      <div class="w-2/6 lg:w-1/4">
+        <app-settings-options />
+      </div>
+      <div class="w-4/6 lg:w-3/4 flex justify-center">
+        <router-outlet />
+      </div>
     </div>
   </div>
-</div>
+}

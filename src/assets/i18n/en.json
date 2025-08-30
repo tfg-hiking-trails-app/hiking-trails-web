@@ -119,6 +119,24 @@
     "username": "Username",
     "usernameRequired": "Username is required"
   },
+  "settings": {
+    "options": {
+      "account": "Account",
+      "close-options": "Close options",
+      "open-options": "Open options",
+      "profile": "Profile",
+      "screen": "Screen"
+    },
+    "screen": {
+      "theme": "Screen theme",
+      "light-mode": "Light mode",
+      "dark-mode": "Dark mode",
+      "browser-default": "Browser default",
+      "language": "Language",
+      "english": "English",
+      "spanish": "Spanish"
+    }
+  },
   "terrain-type": {
     "compacted-soil": "Compacted soil",
     "desert-trail": "Desert trail",

@@ -126,6 +126,15 @@
       "open-options": "Abrir opciones",
       "profile": "Perfil",
       "screen": "Pantalla"
+    },
+    "screen": {
+      "theme": "Tema de pantalla",
+      "light-mode": "Modo claro",
+      "dark-mode": "Modo oscuro",
+      "browser-default": "Predeterminado del navegador",
+      "language": "Idioma",
+      "english": "Inglés",
+      "spanish": "Español"
     }
   },
   "terrain-type": {

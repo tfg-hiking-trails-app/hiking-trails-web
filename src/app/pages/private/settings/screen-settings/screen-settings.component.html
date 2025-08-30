@@ -1,1 +1,33 @@
-<span class="text-white">Pantalla</span>
+<div class="flex flex-col rounded-lg w-full">
+  @for (option of options; track $index) {
+    <div class="w-full">
+      <div class="flex gap-3">
+        @if (option.icon.includes('mdi')) {
+          <span [class]="'text-white text-xl mdi ' + option.icon">
+            <span class="ml-2 text-white">{{ `settings.screen.${ option.label }` | translate }}</span>
+          </span>
+        } @else {
+          <div class="flex align-middle">
+            <span class="material-icons text-white">{{ option.icon }}</span>
+            <span class="ml-2 text-white text-xl">{{ `settings.screen.${ option.label }` | translate }}</span>
+          </div>
+        }
+      </div>
+      <mat-form-field>
+        <mat-select
+          [value]="option.selected"
+          (selectionChange)="onChange(option.label, $event.value)"
+        >
+          @for (selector of option.selectors; track $index) {
+            <mat-option [value]="selector.key">
+              {{ `settings.screen.${ selector.label }` | translate }}
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-divider />
+    </div>
+  }
+</div>
+
