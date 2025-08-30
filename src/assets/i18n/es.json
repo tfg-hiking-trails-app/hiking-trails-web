@@ -121,8 +121,10 @@
   },
   "settings": {
     "options": {
-      "profile": "Perfil",
       "account": "Cuenta",
+      "close-options": "Cerrar opciones",
+      "open-options": "Abrir opciones",
+      "profile": "Perfil",
       "screen": "Pantalla"
     }
   },

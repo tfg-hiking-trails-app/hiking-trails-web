@@ -1,4 +1,4 @@
-<div class="mt-5 flex flex-col rounded-lg border-1">
+<div class="flex flex-col rounded-lg w-full">
   @for (option of options; track $index) {
     <div
       [routerLink]="['/settings', option.key]"
@@ -6,12 +6,15 @@
       #rla="routerLinkActive"
       [routerLinkActiveOptions]="{ exact: true }"
       [class]="
-        (rla.isActive ? 'dark:bg-neutral-600 ' : '') +
+        (rla.isActive ? 'dark:bg-neutral-900 border-b-2 border-b-white ' : '') +
         ($index === 0 ? 'rounded-t-sm ' : '') +
         ($index === options.length - 1 ? 'rounded-b-sm ' : '') +
-        'border-1 border-gray-300 h-12 w-44 flex justify-start items-center cursor-pointer'
+        'h-12 flex justify-start items-center cursor-pointer w-full'
       "
     >
+      <span class="ml-6 material-icons text-white">
+        {{ option.icon }}
+      </span>
       <span class="text-white ml-2">
         {{ option.label | translate }}
       </span>

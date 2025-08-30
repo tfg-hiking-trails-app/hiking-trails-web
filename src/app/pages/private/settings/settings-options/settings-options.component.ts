@@ -17,17 +17,16 @@ export class SettingsOptionsComponent {
 
   url: string = '';
 
-  options: { key: string, label: string }[] = [
-    { key: 'profile', label: 'settings.options.profile' },
-    { key: 'account', label: 'settings.options.account' },
-    { key: 'screen', label: 'settings.options.screen' },
+  options: { key: string, label: string, icon: string }[] = [
+    { key: 'profile', label: 'settings.options.profile', icon: 'person' },
+    { key: 'account', label: 'settings.options.account', icon: 'account_circle' },
+    { key: 'screen', label: 'settings.options.screen', icon: 'computer' },
   ];
 
   constructor(
     private router: Router
   ) {
     this.url = this.router.url;
-    console.log(this.url);
   }
 
 }
