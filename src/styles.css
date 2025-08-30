@@ -7,6 +7,8 @@
 @theme {
   --color-light-mode: #3C8D96;
   --color-dark-mode: #28282B;
+  --color-light-mode-primary: #295e64;
+  --color-light-mode-secondary: #224E53;
 }
 
 html, body { height: 100%; }

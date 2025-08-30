@@ -6,16 +6,20 @@
       #rla="routerLinkActive"
       [routerLinkActiveOptions]="{ exact: true }"
       [class]="
-        (rla.isActive ? 'dark:bg-neutral-900 border-b-2 border-b-white ' : '') +
+        (rla.isActive
+          ? 'bg-light-mode-primary dark:bg-neutral-900 border-b-2 border-b-white '
+          : 'hover:bg-light-mode-secondary hover:dark:bg-neutral-950 ') +
         ($index === 0 ? 'rounded-t-sm ' : '') +
         ($index === options.length - 1 ? 'rounded-b-sm ' : '') +
         'h-12 flex justify-start items-center cursor-pointer w-full'
       "
     >
-      <span class="ml-6 material-icons text-white">
+      <span class="text-white ml-6 material-icons"
+      >
         {{ option.icon }}
       </span>
-      <span class="text-white ml-2">
+      <span class="text-white ml-2"
+      >
         {{ option.label | translate }}
       </span>
     </div>
