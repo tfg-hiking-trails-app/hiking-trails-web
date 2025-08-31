@@ -1,1 +1,9 @@
-<span class="text-white">Cuenta</span>
+<div class="flex flex-col rounded-lg">
+  <span class="text-white font-medium text-2xl">
+    {{ `settings.account.edit-password` | translate }}:
+  </span>
+
+  <app-settings-edit-password />
+
+  <mat-divider class="!mt-5 !border-t-white" />
+</div>

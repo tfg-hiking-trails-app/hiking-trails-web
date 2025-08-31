@@ -1,10 +1,10 @@
-<div class="flex flex-col rounded-lg w-full">
+<div class="flex flex-col rounded-lg">
   @for (option of options; track $index) {
-    <div class="w-full">
-      <div class="flex gap-3">
+    <div class="flex justify-between items-center my-3">
+      <div class="flex-2/5">
         @if (option.icon.includes('mdi')) {
-          <span [class]="'text-white text-xl mdi ' + option.icon">
-            <span class="ml-2 text-white">{{ `settings.screen.${ option.label }` | translate }}</span>
+          <span [class]="'text-white text-2xl mdi ' + option.icon">
+            <span class="ml-2 text-white text-xl">{{ `settings.screen.${ option.label }` | translate }}</span>
           </span>
         } @else {
           <div class="flex align-middle">
@@ -13,21 +13,24 @@
           </div>
         }
       </div>
-      <mat-form-field>
-        <mat-select
-          [value]="option.selected"
-          (selectionChange)="onChange(option.label, $event.value)"
-        >
-          @for (selector of option.selectors; track $index) {
-            <mat-option [value]="selector.key">
-              {{ `settings.screen.${ selector.label }` | translate }}
-            </mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-
-      <mat-divider />
+      <div class="flex-3/5">
+        <mat-form-field subscriptSizing="dynamic" class="w-full">
+          <mat-select
+            [value]="option.selected"
+            (selectionChange)="onChange(option.label, $event.value)"
+          >
+            @for (selector of option.selectors; track $index) {
+              <mat-option [value]="selector.key">
+                {{ `settings.screen.${ selector.label }` | translate }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
     </div>
+
+    @if ($index !== options.length - 1) {
+      <mat-divider class="!border-t-white" />
+    }
   }
 </div>
-

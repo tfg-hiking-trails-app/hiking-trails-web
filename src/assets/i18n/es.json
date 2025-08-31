@@ -120,6 +120,13 @@
     "usernameRequired": "El nombre de usuario es obligatorio"
   },
   "settings": {
+    "account": {
+      "edit-password": "Editar contraseña",
+      "current-password": "Contraseña actual",
+      "new-password": "Nueva contraseña",
+      "confirm-password": "Confirmar contraseña",
+      "save-changes": "Guardar cambios"
+    },
     "options": {
       "account": "Cuenta",
       "close-options": "Cerrar opciones",

@@ -28,7 +28,6 @@ interface Option {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScreenSettingsComponent {
-
   private langService: LangService = inject(LangService);
   private themeService: ThemeService = inject(ThemeService);
 
