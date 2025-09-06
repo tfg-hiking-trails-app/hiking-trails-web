@@ -17,8 +17,8 @@ export interface HikingTrail {
   petFriendly: boolean;
   startTime: Date;
   endTime: Date;
-  ubicationLatitude: number;
-  ubicationLongitude: number;
+  locationLatitude: number;
+  locationLongitude: number;
   generatedByFitFile: boolean;
   images: Images[];
   metrics: Metrics[];

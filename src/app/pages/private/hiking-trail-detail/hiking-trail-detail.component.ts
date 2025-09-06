@@ -142,8 +142,8 @@ export class HikingTrailDetailComponent implements OnInit {
   }
 
   getCenterPosition(): Coordinates {
-    const lat = this.hikingTrail()?.ubicationLatitude ?? 40.4168;
-    const long = this.hikingTrail()?.ubicationLongitude ?? -3.7038;
+    const lat = this.hikingTrail()?.locationLatitude ?? 40.4168;
+    const long = this.hikingTrail()?.locationLongitude ?? -3.7038;
 
     return { positionLat: lat, positionLong: long };
   }
