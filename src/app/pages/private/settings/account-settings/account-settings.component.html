@@ -1,9 +1,11 @@
 <div class="flex flex-col rounded-lg">
-  <span class="text-white font-medium text-2xl">
-    {{ `settings.account.edit-password` | translate }}:
-  </span>
 
   <app-settings-edit-password />
+  <mat-divider class="!mt-5 !mb-2 !border-t-white" />
 
-  <mat-divider class="!mt-5 !border-t-white" />
+  <app-settings-edit-username />
+  <mat-divider class="!mt-5 !mb-2 !border-t-white" />
+
+  <h1 class="text-white">BORRAR CUENTA</h1>
+  <mat-divider class="!mt-5 !mb-2 !border-t-white" />
 </div>

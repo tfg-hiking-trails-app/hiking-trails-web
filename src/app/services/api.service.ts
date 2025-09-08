@@ -37,20 +37,28 @@ export class ApiService {
     return this.http.get<TResponse>(url, { params, ...options });
   }
 
-  post<TResponse, TBody = undefined>(
+  post<TResponse>(
     url: string,
     options: HttpOptions = {},
-    body?: TBody
+    body?: any
   ): Observable<TResponse> {
     return this.http.post<TResponse>(url, body, options);
   }
 
-  put<TBody, TResponse>(
+  put<TResponse>(
     url: string,
-    body: TBody,
+    body: any,
     options: HttpOptions = {}
   ): Observable<TResponse> {
     return this.http.put<TResponse>(url, body, options);
+  }
+
+  patch<TResponse>(
+    url: string,
+    body: any,
+    options: HttpOptions = {}
+  ): Observable<TResponse> {
+    return this.http.patch<TResponse>(url, body, options);
   }
 
   delete<TResponse>(

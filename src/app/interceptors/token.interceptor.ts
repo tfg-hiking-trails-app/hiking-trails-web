@@ -10,10 +10,10 @@ import {
   BehaviorSubject,
   catchError,
   filter,
-  finalize,
   Observable,
   switchMap,
   take,
+  tap,
   throwError
 } from "rxjs";
 
@@ -60,6 +60,7 @@ export class TokenInterceptor implements HttpInterceptor {
   private handleAuthError(originalRequest: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (this.isRefreshing) {
       return this.refreshSubject.pipe(
+        filter(token => token !== null),
         take(1),
         switchMap((token: string | null) => {
           const request = originalRequest.clone({
@@ -68,25 +69,27 @@ export class TokenInterceptor implements HttpInterceptor {
             }
           });
           return next.handle(request);
-        }),
-        catchError(err => throwError(() => err))
+        })
       );
     }
 
     this.isRefreshing = true;
+    this.refreshSubject.next(null);
 
     return this.authService.refresh().pipe(
-      switchMap((response: LoginResponse) => {
+      tap((response: LoginResponse) => {
         // the new access token is obtained
         const newToken = response.access_token;
 
         this.tokenService.setToken(newToken, JSON.parse(localStorage.getItem('remember') || 'false'));
         this.refreshSubject.next(newToken);
-
+        this.isRefreshing = false;
+      }),
+      switchMap((response: LoginResponse) => {
         // the request is re-requested with the new token.
         const request = originalRequest.clone({
           setHeaders: {
-            Authorization: `Bearer ${ newToken }`
+            Authorization: `Bearer ${ response.access_token }`
           }
         });
 
@@ -94,22 +97,13 @@ export class TokenInterceptor implements HttpInterceptor {
       }),
       catchError(err => {
         // an error occurred while trying to refresh the token
-        this.logoutAndRedirect();
-
-        this.refreshSubject.error(err);
+        this.isRefreshing = false;
+        this.tokenService.clearToken();
+        this.router.navigate(['auth']);
 
         return throwError(() => err);
-      }),
-      finalize(() => {
-        this.isRefreshing = false;
-        this.refreshSubject.next(null);
       })
     );
-  }
-
-  private logoutAndRedirect() {
-    this.tokenService.clearToken();
-    this.router.navigate(['auth']);
   }
 
 }

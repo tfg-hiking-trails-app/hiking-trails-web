@@ -16,6 +16,7 @@ import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 import { routes } from './app.routes';
 import { TokenInterceptor } from './interceptors/token.interceptor';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -44,6 +45,7 @@ export const appConfig: ApplicationConfig = {
         })
       ]
     ),
+    importProvidersFrom(MatSnackBarModule),
     provideCharts(withDefaultRegisterables()),
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     { provide: LOCALE_ID, useValue: 'es' }

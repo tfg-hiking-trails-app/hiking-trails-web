@@ -5,6 +5,8 @@
     "register": "Registrarse",
     "spanish": "Español"
   },
+  "clear-data": "Limpiar datos",
+  "close": "Cerrar",
   "collapse-all": "Colapsar todo",
   "date": {
     "on_date_at": "{{ date }} a las {{ time }}",
@@ -19,6 +21,19 @@
     "very-hard": "Muy difícil"
   },
   "edit": "Editar",
+  "errors": {
+    "forbidden": "No tienes permisos para realizar esta acción",
+    "internal-server-error": "Error interno del servidor",
+    "not-found": "Recurso no encontrado",
+    "password-from-user-is-incorrect": "La contraseña del usuario es incorrecta",
+    "server-unreachable": "El servidor no está disponible",
+    "the-passwords-do-not-match": "Las contraseñas no coinciden",
+    "the-username-field-is-required": "El campo de nombre de usuario es obligatorio",
+    "this-is-your-username": "Este es tu nombre de usuario",
+    "unauthorized": "No estás autorizado para realizar esta acción",
+    "unknown-error": "Ha ocurrido un error",
+    "username-already-exists": "Este nombre de usuario ya existe"
+  },
   "expand-all": "Expandir todo",
   "feed": {
     "error": "Ha ocurrido un error al cargar las rutas de senderismo",
@@ -121,11 +136,16 @@
   },
   "settings": {
     "account": {
-      "edit-password": "Editar contraseña",
+      "change-password": "Cambiar contraseña",
+      "change-username": "Cambiar nombre de usuario",
+      "confirm-password": "Confirmar contraseña",
       "current-password": "Contraseña actual",
       "new-password": "Nueva contraseña",
-      "confirm-password": "Confirmar contraseña",
-      "save-changes": "Guardar cambios"
+      "new-username": "Nuevo nombre de usuario",
+      "password-changed-successfully": "Contraseña cambiada con éxito",
+      "save-changes": "Guardar cambios",
+      "username-changed-successfully": "Nombre de usuario cambiado con éxito",
+      "username-required": "El nombre de usuario es obligatorio"
     },
     "options": {
       "account": "Cuenta",

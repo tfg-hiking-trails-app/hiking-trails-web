@@ -31,7 +31,7 @@ export class HikingTrailService {
     const url: string = this.routes.getByAccountCodesPaged;
     const body: HikingTrailFilter = { accountCodes, filter };
 
-    return this.apiService.post<Pagination<HikingTrail>, HikingTrailFilter>(url, {}, body);
+    return this.apiService.post<Pagination<HikingTrail>>(url, {}, body);
   }
 
 }

@@ -74,9 +74,6 @@ export class LoginComponent {
         this.tokenService.setToken(access_token, remember);
 
         this.router.navigate(['feed']);
-      },
-      error: (error) => {
-        console.error("Login failed", error);
       }
     });
 

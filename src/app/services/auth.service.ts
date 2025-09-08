@@ -6,6 +6,7 @@ import { environment } from '../../environments/environment';
 import { LoginRequest, LoginResponse } from '../interfaces/auth/Login';
 import { ApiService } from './api.service';
 import { TokenService } from './token.service';
+import { EditPasswordRequest, EditUsernameRequest } from '../interfaces/auth/Auth';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +17,8 @@ export class AuthService {
     loginPath: `${ environment.apiGatewayUrl }/auth/login`,
     refreshPath: `${ environment.apiGatewayUrl }/auth/refresh`,
     logoutPath: `${ environment.apiGatewayUrl }/auth/logout`,
+    editPasswordPath: `${ environment.apiGatewayUrl }/auth/edit/password`,
+    editUsernamePath: `${ environment.apiGatewayUrl }/auth/edit/username`
   };
 
   constructor(
@@ -25,7 +28,7 @@ export class AuthService {
   ) { }
 
   login(request: LoginRequest): Observable<LoginResponse> {
-    return this.apiService.post<LoginResponse, LoginRequest>(
+    return this.apiService.post<LoginResponse>(
       this.routes.loginPath,
       { withCredentials: true },
       request
@@ -49,6 +52,20 @@ export class AuthService {
         this.router.navigate(['/auth']);
       }
     });
+  }
+
+  editPassword(request: EditPasswordRequest): Observable<void> {
+    return this.apiService.put<void>(
+      this.routes.editPasswordPath,
+      request
+    );
+  }
+
+  editUsername(username: EditUsernameRequest): Observable<void> {
+    return this.apiService.put<void>(
+      this.routes.editUsernamePath,
+      username
+    );
   }
 
   isAuthenticated(): boolean {

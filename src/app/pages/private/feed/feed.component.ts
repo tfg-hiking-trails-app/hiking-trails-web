@@ -143,7 +143,6 @@ export class FeedComponent implements OnInit, AfterViewInit, OnDestroy {
           this.page.update(p => ++p);
         }),
         catchError(err => {
-          console.log(err);
           this.error.set(this.translate.instant('feed.error'));
           return of(null);
         }),
