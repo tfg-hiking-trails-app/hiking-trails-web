@@ -2,7 +2,7 @@
   <!-- Mobile -->
   <mat-drawer-container
     [class]="
-        (drawer.opened) ? 'h-[calc(100vh-4rem)] !bg-transparent ' : '' +
+        (drawer.opened) ? 'min-h-[calc(100vh-4rem)] !bg-transparent ' : '' +
         '!bg-transparent dark:text-white'
       "
     autosize
@@ -47,7 +47,7 @@
   </div>
 } @else {
   <!-- Desktop -->
-  <div class="sm:flex sm:justify-center h-[calc(100vh-4rem)]">
+  <div class="sm:flex sm:justify-center min-h-[calc(100vh-4rem)]">
     <div class="w-full lg:w-4/5 xl:w-3/5 px-2 lg:px-0 flex mt-5">
       <div class="w-2/6 lg:w-1/4 pr-5 lg:pr-0">
         <app-settings-options />

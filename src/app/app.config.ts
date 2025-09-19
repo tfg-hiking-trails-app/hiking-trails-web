@@ -17,6 +17,7 @@ import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { routes } from './app.routes';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
 
 export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -47,7 +48,9 @@ export const appConfig: ApplicationConfig = {
     ),
     importProvidersFrom(MatSnackBarModule),
     provideCharts(withDefaultRegisterables()),
+    provideNativeDateAdapter(),
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
-    { provide: LOCALE_ID, useValue: 'es' }
+    { provide: LOCALE_ID, useValue: 'es' },
+    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' }
   ]
 };

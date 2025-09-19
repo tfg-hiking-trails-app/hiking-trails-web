@@ -12,6 +12,8 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { EditPasswordRequest } from '../../../../../interfaces/auth/Auth';
 import { AlertManagerService } from '../../../../../services/alert-manager.service';
 import { AuthService } from '../../../../../services/auth.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogConfirmComponent } from '../../../../../components/dialog-confirm/dialog-confirm.component';
 
 @Component({
   selector: 'app-settings-edit-password',
@@ -33,8 +35,9 @@ export class EditPasswordComponent {
   showConfirmPassword = signal(false);
 
   constructor(
-    private authService: AuthService,
     private alertManagerService: AlertManagerService,
+    private authService: AuthService,
+    private dialog: MatDialog,
     private formBuilder: FormBuilder,
     private translateService: TranslateService
   ) {
@@ -64,27 +67,40 @@ export class EditPasswordComponent {
     if (this.editPasswordForm.invalid)
       return;
 
-    const request: EditPasswordRequest = {
-      password: this.editPasswordControls['currentPassword'].value,
-      newPassword: this.editPasswordControls['newPassword'].value,
-      confirmNewPassword: this.editPasswordControls['confirmPassword'].value
-    };
+    const dialogRef = this.dialog.open(DialogConfirmComponent, {
+      data: {
+        title: this.translateService.instant('settings.account.change-password'),
+        message: this.translateService.instant('settings.account.confirm-password-change'),
+        focusCancel: true
+      }
+    });
 
-    this.authService
-      .editPassword(request)
-      .subscribe({
-        next: () => {
-          this.submitted = false;
-          this.editPasswordForm.reset();
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result)
+        return;
 
-          const successMessage = this.translateService.instant('settings.account.password-changed-successfully');
-          this.alertManagerService.alertSuccess(successMessage);
-        },
-        error: (error) => {
-          this.submitted = false;
-          this.alertManagerService.manageError(error);
-        }
-      });
+      const request: EditPasswordRequest = {
+        password: this.editPasswordControls['currentPassword'].value,
+        newPassword: this.editPasswordControls['newPassword'].value,
+        confirmNewPassword: this.editPasswordControls['confirmPassword'].value
+      };
+
+      this.authService
+        .editPassword(request)
+        .subscribe({
+          next: () => {
+            this.submitted = false;
+            this.editPasswordForm.reset();
+
+            const successMessage = this.translateService.instant('settings.account.password-changed-successfully');
+            this.alertManagerService.alertSuccess(successMessage);
+          },
+          error: (error) => {
+            this.submitted = false;
+            this.alertManagerService.manageError(error);
+          }
+        });
+    });
   }
 
 }

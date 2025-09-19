@@ -14,6 +14,10 @@
     "yesterday_at": "Ayer a las {{ time }}"
   },
   "delete": "Eliminar",
+  "dialog": {
+    "yes": "Sí",
+    "no": "No"
+  },
   "difficulty-level": {
     "easy": "Fácil",
     "hard": "Difícil",
@@ -138,7 +142,9 @@
     "account": {
       "change-password": "Cambiar contraseña",
       "change-username": "Cambiar nombre de usuario",
+      "confirm-password-change": "¿Estás seguro de que quieres cambiar tu contraseña?",
       "confirm-password": "Confirmar contraseña",
+      "confirm-username-change": "¿Estás seguro de que quieres cambiar tu nombre de usuario?",
       "current-password": "Contraseña actual",
       "new-password": "Nueva contraseña",
       "new-username": "Nuevo nombre de usuario",
@@ -153,6 +159,35 @@
       "open-options": "Abrir opciones",
       "profile": "Perfil",
       "screen": "Pantalla"
+    },
+    "profile": {
+      "change-profile-image": "Cambiar imagen de perfil",
+      "upload-image": "Subir imagen",
+      "remove-image": "Eliminar imagen",
+      "gender": {
+        "label": "Género",
+        "male": "Masculino",
+        "female": "Femenino",
+        "non-binary": "No binario",
+        "prefer-not-to-say": "Prefiero no decirlo"
+      },
+      "private-profile": "Perfil privado",
+      "first-name": "Nombre",
+      "last-name": "Apellido",
+      "biography": "Biografía",
+      "weight": "Peso",
+      "weightMin": "El peso debe ser un valor positivo en kilogramos",
+      "weightMax": "El peso no puede superar los 500 kilogramos",
+      "height": "Altura",
+      "heightMin": "La altura debe ser un valor positivo en centímetros",
+      "heightMax": "La altura no puede superar los 300 centímetros",
+      "birthdate": "Fecha de nacimiento",
+      "country": "País",
+      "state": "Estado",
+      "city": "Ciudad",
+      "save-changes": "Guardar cambios",
+      "confirm-changes": "Confirmar cambios",
+      "profile-updated-successfully": "Perfil actualizado con éxito"
     },
     "screen": {
       "theme": "Tema de pantalla",

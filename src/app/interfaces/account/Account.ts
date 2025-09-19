@@ -16,3 +16,21 @@ export interface Account {
   private?: boolean;
   profilePicture?: string;
 }
+
+export interface AccountUpdate {
+  genderCode?: string;
+  username?: string;
+  firstName?: string;
+  lastName?: string;
+  city?: string;
+  state?: string;
+  country?: string;
+  biography?: string;
+  dateOfBirth?: string;
+  weight?: number;
+  height?: number;
+  private?: boolean;
+  profilePicture?: string;
+  uploadImage?: File;
+  removedImage?: boolean;
+}
