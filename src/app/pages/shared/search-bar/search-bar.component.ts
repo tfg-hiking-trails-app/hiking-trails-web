@@ -1,8 +1,11 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
+  HostListener,
   OnInit,
-  signal
+  signal,
+  ViewChild
 } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import {
@@ -40,8 +43,11 @@ export class SearchBarComponent implements OnInit {
   hikingTrailsFound = signal<HikingTrail[]>([]);
   isLoading = signal(false);
   searcher$ = new Subject<string>();
+  showResults = signal(false);
 
   private numberResults: number = 5;
+
+  @ViewChild('wrapper', { static: true }) wrapper!: ElementRef<HTMLElement>;
 
   constructor(
     private accountService: AccountService,
@@ -80,7 +86,21 @@ export class SearchBarComponent implements OnInit {
   }
 
   search(query: string): void {
+    this.showResults.set(true);
     this.searcher$.next(query);
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const target = event.target as Node;
+    if (!this.wrapper.nativeElement.contains(target)) {
+      this.showResults.set(false);
+    }
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape() {
+    this.showResults.set(false);
   }
 
 }
