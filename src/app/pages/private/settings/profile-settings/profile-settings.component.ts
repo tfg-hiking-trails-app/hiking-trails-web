@@ -111,6 +111,7 @@ export class ProfileSettingsComponent {
       return;
 
     this.accountUpdate = {
+      ...this.accountUpdate,
       firstName: this.editProfileInfoControls['firstName'].value,
       lastName: this.editProfileInfoControls['lastName'].value,
       genderCode: this.editProfileInfoControls['gender'].value,
@@ -157,8 +158,10 @@ export class ProfileSettingsComponent {
   onSelectCountry(): void {
     const countryId = this.editProfileInfoControls['country'].value;
 
-    if (!countryId)
+    if (!countryId) {
+      this.editProfileInfoControls['state'].disable();
       return;
+    }
 
     this.loadStates(countryId);
   }
@@ -166,8 +169,10 @@ export class ProfileSettingsComponent {
   onSelectState(): void {
     const stateId = this.editProfileInfoControls['state'].value;
 
-    if (!stateId)
+    if (!stateId) {
+      this.editProfileInfoControls['city'].disable();
       return;
+    }
 
     this.loadCities(stateId);
   }
