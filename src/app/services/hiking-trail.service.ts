@@ -20,6 +20,8 @@ export class HikingTrailService {
   private routes = {
     getByCode: (code: string) => `${ environment.apiGatewayUrl }/hiking-trail/${ code }`,
     getByAccountCodesPaged: `${ environment.apiGatewayUrl }/hiking-trail/account-codes`,
+    search: (query: string, numberResults: number) =>
+      `${ environment.apiGatewayUrl }/hiking-trail/searcher?search=${ encodeURIComponent(query) }&numberResults=${ numberResults }`
   };
 
   getByCode(code: string): Observable<HikingTrail> {
@@ -32,6 +34,11 @@ export class HikingTrailService {
     const body: HikingTrailFilter = { accountCodes, filter };
 
     return this.apiService.post<Pagination<HikingTrail>>(url, {}, body);
+  }
+
+  search(query: string, numberResults: number = 5): Observable<HikingTrail[]> {
+    const url: string = this.routes.search(query, numberResults);
+    return this.apiService.get<HikingTrail[]>(url);
   }
 
 }

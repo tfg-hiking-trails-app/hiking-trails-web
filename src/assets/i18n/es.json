@@ -114,7 +114,11 @@
       "settings": "Ajustes"
     },
     "search-bar": {
-      "placeholder": "Busca Ubicaciones, Usuarios..."
+      "placeholder": "Busca Ubicaciones, Usuarios...",
+      "accounts": "Cuentas",
+      "no-accounts-found": "No se han encontrado cuentas",
+      "hiking-trails": "Rutas de senderismo",
+      "no-hiking-trails-found": "No se han encontrado rutas de senderismo"
     }
   },
   "open": "Abrir",
