@@ -24,6 +24,7 @@ import { Gender } from '../../../../interfaces/account/Gender';
 import { LoadingSpinnerComponent } from '../../../../components/loading-spinner/loading-spinner.component';
 import { StateSummary } from '../../../../interfaces/account/State';
 import { UploadProfileImageComponent } from './upload-profile-image/upload-profile-image.component';
+import { isEmptyCode } from '../../../../Utils/Utils';
 
 @Component({
   selector: 'app-profile-settings',
@@ -160,6 +161,7 @@ export class ProfileSettingsComponent {
 
     if (!countryId) {
       this.editProfileInfoControls['state'].disable();
+      this.editProfileInfoControls['city'].disable();
       return;
     }
 
@@ -183,10 +185,10 @@ export class ProfileSettingsComponent {
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           tap((account: Account) => {
-            if (account.country) {
+            if (account.country && !isEmptyCode(account.country.code)) {
               this.editProfileInfoControls['state'].enable();
             }
-            if (account.state) {
+            if (account.state && !isEmptyCode(account.state.code)) {
               this.editProfileInfoControls['city'].enable();
             }
 
@@ -204,14 +206,14 @@ export class ProfileSettingsComponent {
               privateProfile: account.private
             });
 
-            if (account.country?.code)
+            if (account.country?.code && !isEmptyCode(account.country.code))
               this.loadStates(account.country.code);
 
-            if (account.state?.code)
+            if (account.state?.code && !isEmptyCode(account.state.code))
               this.loadCities(account.state.code);
 
             this.accountUpdate = {
-              ...this.editProfileInfoForm.value,
+              ...this.editProfileInfoForm.getRawValue(),
               username: account.username
             } as AccountUpdate;
           }),
