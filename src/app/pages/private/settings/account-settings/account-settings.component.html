@@ -6,6 +6,12 @@
   <app-settings-edit-username />
   <mat-divider class="!mt-5 !mb-2 !border-t-white" />
 
-  <h1 class="text-white">BORRAR CUENTA</h1>
-  <mat-divider class="!mt-5 !mb-2 !border-t-white" />
+  <div class="flex justify-end mt-2">
+    <button
+      class="bg-red-500 hover:bg-red-700 text-white font-medium py-2 rounded-full px-10 cursor-pointer"
+      (click)="deleteAccount()"
+    >
+      {{ 'settings.account.delete-account' | translate }}
+    </button>
+  </div>
 </div>

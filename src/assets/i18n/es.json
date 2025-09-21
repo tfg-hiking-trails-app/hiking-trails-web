@@ -151,7 +151,11 @@
       "password-changed-successfully": "Contraseña cambiada con éxito",
       "save-changes": "Guardar cambios",
       "username-changed-successfully": "Nombre de usuario cambiado con éxito",
-      "username-required": "El nombre de usuario es obligatorio"
+      "username-required": "El nombre de usuario es obligatorio",
+      "delete-account": "Eliminar cuenta",
+      "delete-account-confirmation": "¿Estás seguro de que quieres eliminar tu cuenta?",
+      "delete-account-message": "Si eliminas tu cuenta, se borrarán todos tus datos y no podrás recuperarla.",
+      "delete-account-success": "Cuenta eliminada con éxito"
     },
     "options": {
       "account": "Cuenta",
