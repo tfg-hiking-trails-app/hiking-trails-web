@@ -5,6 +5,9 @@ import { Account, AccountUpdate } from '../interfaces/account/Account';
 import { ApiService } from './api.service';
 import { environment } from '../../environments/environment';
 import { Gender } from '../interfaces/account/Gender';
+import { CountrySummary } from '../interfaces/account/Country';
+import { StateSummary } from '../interfaces/account/State';
+import { CitySummary } from '../interfaces/account/City';
 
 @Injectable({
   providedIn: 'root'
@@ -17,9 +20,12 @@ export class AccountService {
 
   private routes = {
     getAccountLogged: `${ environment.apiGatewayUrl }/account/logged`,
-    getByCode: `${ environment.apiGatewayUrl }/account/:code`, // /{code}
+    getByCode: `${ environment.apiGatewayUrl }/account/:code`,
     update: `${ environment.apiGatewayUrl }/account/:code`,
-    getAllGenders: `${ environment.apiGatewayUrl }/gender/all`
+    getAllGenders: `${ environment.apiGatewayUrl }/gender/all`,
+    getAllCountriesSummary: `${ environment.apiGatewayUrl }/country/all/summary`,
+    getStatesByCountrySummary: `${ environment.apiGatewayUrl }/state/country/:countryCode/all/summary`,
+    getCitiesByStateSummary: `${ environment.apiGatewayUrl }/city/state/:stateCode/all/summary`,
   };
 
   getLogged(): Observable<Account> {
@@ -45,6 +51,18 @@ export class AccountService {
 
   getAllGenders(): Observable<Gender[]> {
     return this.apiService.get<Gender[]>(this.routes.getAllGenders);
+  }
+
+  getAllCountriesSummary(): Observable<CountrySummary[]> {
+    return this.apiService.get<CountrySummary[]>(this.routes.getAllCountriesSummary);
+  }
+
+  getStatesByCountrySummary(countryCode: string): Observable<StateSummary[]> {
+    return this.apiService.get<StateSummary[]>(this.routes.getStatesByCountrySummary.replace(':countryCode', countryCode));
+  }
+
+  getCitiesByStateSummary(stateCode: string): Observable<CitySummary[]> {
+    return this.apiService.get<CitySummary[]>(this.routes.getCitiesByStateSummary.replace(':stateCode', stateCode));
   }
 
 }

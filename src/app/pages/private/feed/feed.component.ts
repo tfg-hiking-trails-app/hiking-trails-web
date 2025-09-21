@@ -95,12 +95,11 @@ export class FeedComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.loading.set(true);
     this.error.set(null);
-
     const filter: Filter = {
       pageNumber: this.page(),
       pageSize: this.pageSize,
       sortField: "StartTime",
-      sortDirection: "asc"
+      sortDirection: "desc"
     };
 
     this.accountFollowService
@@ -155,7 +154,7 @@ export class FeedComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!this.totalPages())
       return false;
 
-    return this.page() >= this.totalPages()!;
+    return this.page() > this.totalPages()!;
   }
 
 }

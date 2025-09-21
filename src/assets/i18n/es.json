@@ -187,7 +187,8 @@
       "city": "Ciudad",
       "save-changes": "Guardar cambios",
       "confirm-changes": "Confirmar cambios",
-      "profile-updated-successfully": "Perfil actualizado con éxito"
+      "profile-updated-successfully": "Perfil actualizado con éxito",
+      "none": "Ninguno"
     },
     "screen": {
       "theme": "Tema de pantalla",

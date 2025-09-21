@@ -4,7 +4,7 @@
     (imageChanged)="onImageChange($event)"
   />
 
-  <form class="mt-4" [formGroup]="editProfileInfoForm" (ngSubmit)="saveChanges()">
+  <form class="mt-4" [formGroup]="editProfileInfoForm">
 
     <!-- Private Profile -->
     <mat-slide-toggle
@@ -54,10 +54,10 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
       <mat-form-field class="w-full" appearance="fill">
         <mat-label>{{ 'settings.profile.country' | translate }}:</mat-label>
-        <mat-select formControlName="country">
+        <mat-select formControlName="country" (selectionChange)="onSelectCountry()">
           @for (country of countries(); track $index) {
-            <mat-option [value]="country">
-              {{ country }}
+            <mat-option [value]="country.code">
+              {{ country.name }}
             </mat-option>
           }
         </mat-select>
@@ -65,10 +65,10 @@
 
       <mat-form-field class="w-full" appearance="fill">
         <mat-label>{{ 'settings.profile.state' | translate }}:</mat-label>
-        <mat-select formControlName="state">
+        <mat-select formControlName="state" (selectionChange)="onSelectState()">
           @for (state of states(); track $index) {
-            <mat-option [value]="state">
-              {{ state }}
+            <mat-option [value]="state.code">
+              {{ state.name }}
             </mat-option>
           }
         </mat-select>
@@ -78,8 +78,8 @@
         <mat-label>{{ 'settings.profile.city' | translate }}:</mat-label>
         <mat-select formControlName="city">
           @for (city of cities(); track $index) {
-            <mat-option [value]="city">
-              {{ city }}
+            <mat-option [value]="city.code">
+              {{ city.name }}
             </mat-option>
           }
         </mat-select>
@@ -118,10 +118,10 @@
     </div>
 
     <div class="flex gap-2">
-      <button class="w-full" type="reset" matButton="tonal">
+      <button class="w-full" matButton="tonal" (click)="resetForm()">
         {{ 'clear-data' | translate }}
       </button>
-      <button class="w-full" type="submit" matButton="filled">
+      <button class="w-full" matButton="filled" (click)="saveChanges()">
         {{ 'settings.profile.save-changes' | translate }}
       </button>
     </div>
