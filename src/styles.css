@@ -14,6 +14,13 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+.scale-500 {
+    --tw-scale-x: 500%;
+    --tw-scale-y: 500%;
+    --tw-scale-z: 500%;
+    scale: var(--tw-scale-x) var(--tw-scale-y);
+}
+
 /* Dark Mode Trail Map */
 :root {
     --map-tiles-filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3) brightness(0.7);

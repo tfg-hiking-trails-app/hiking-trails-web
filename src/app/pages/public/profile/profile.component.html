@@ -1,0 +1,85 @@
+@if (isLoading()) {
+  <app-loading-spinner />
+} @else {
+  <div class="flex justify-center xl:m-0 w-full">
+    <div class="flex flex-col w-full lg:w-1/2 px-4">
+      <div class="flex justify-around items-center mt-5">
+        <img
+          [src]="account()?.profilePicture || getDefaultProfileImageUrl(account()?.gender?.genderValue)"
+          alt="profilePicture.jpg"
+          class="w-28 h-28 xl:w-48 xl:h-48 rounded-full object-cover"
+        />
+        <div>
+          <!-- Info user -->
+          <div>
+            <h2 class="text-5xl font-medium text-white">{{ account()?.username }}</h2>
+            <p class="text-lg text-gray-100 dark:text-gray-300">
+              {{ account()?.firstName }} {{ account()?.lastName }}
+            </p>
+          </div>
+          <!-- Stats user -->
+          <div class="mt-2 min-w-56">
+            <div class="flex justify-between mb-3">
+              <div class="flex flex-col">
+                <span class="text-white text-lg font-medium">{{ followersCount() }}</span>
+                <span class="text-white text-lg font-medium">{{ "profile.followers" | translate}}</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-white text-lg font-medium">{{ followedCount() }}</span>
+                <span class="text-white text-lg font-medium">{{ "profile.followed" | translate}}</span>
+              </div>
+            </div>
+
+            @if (canSeeFollowButton()) {
+              <button matButton="tonal">
+                <mat-icon>add</mat-icon>
+                {{ "profile.follow" | translate }}
+              </button>
+            }
+            @if (canSeeUnfollowButton()) {
+              <button matButton="filled">
+                <mat-icon>check</mat-icon>
+                {{ "profile.following" | translate }}
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+      <div class="flex justify-center">
+        <p class="mt-4 text-lg text-white italic">
+          {{ account()?.biography }}
+        </p>
+      </div>
+    </div>
+  </div>
+  <div>
+    @if (isPrivateProfile()) {
+      <div class="mt-28 px-3 md:px-0 w-full flex flex-col justify-center items-center gap-3">
+        <mat-icon class="text-white scale-500">lock</mat-icon>
+        <span class="text-white text-4xl mt-14">
+          {{ 'profile.private-profile' | translate }}
+        </span>
+      </div>
+    } @else {
+      <div class="mt-5 px-3 md:px-0 w-full flex flex-col justify-center items-center gap-3">
+        @for (hikingTrail of hikingTrails(); track $index) {
+          <app-hiking-trail-card
+            [hikingTrail]="hikingTrail"
+            [belongLoggedUser]="accountLoggedCode() === hikingTrail.account?.code"
+            [showResume]="true"
+          />
+        }
+
+        <app-up-button />
+
+        @if (isLoadingHikingTrails()) {
+          <app-loading-spinner />
+        }
+
+      </div>
+
+      <div #sentinela class="h-1 w-full"></div>
+    }
+  </div>
+}
+

@@ -6,49 +6,61 @@ import { nonAuthGuard } from './guards/nonAuth.guard';
 export const routes: Routes = [
   {
     path: '',
-    canActivateChild: [authGuard],
     loadComponent: () =>
       import('./pages/private/layout/layout.component').then(m => m.LayoutComponent),
     children: [
+      // public routes
       {
-        path: 'feed',
+        path: 'profile/:code',
         loadComponent: () =>
-          import('./pages/private/feed/feed.component').then(m => m.FeedComponent)
+          import('./pages/public/profile/profile.component').then(m => m.ProfileComponent)
       },
+      // private routes
       {
-        path: 'profile',
-        loadComponent: () =>
-          import('./pages/private/profile/profile.component').then(m => m.ProfileComponent)
-      },
-      {
-        path: 'settings',
-        loadComponent: () =>
-          import('./pages/private/settings/settings.component').then(m => m.SettingsComponent),
+        path: '',
+        canActivateChild: [authGuard],
         children: [
           {
+            path: 'feed',
+            loadComponent: () =>
+              import('./pages/private/feed/feed.component').then(m => m.FeedComponent)
+          },
+          /*{
             path: 'profile',
             loadComponent: () =>
-              import('./pages/private/settings/profile-settings/profile-settings.component').then(m => m.ProfileSettingsComponent)
+              import('./pages/private/profile/profile.component').then(m => m.ProfileComponent)
+          },*/
+          {
+            path: 'settings',
+            loadComponent: () =>
+              import('./pages/private/settings/settings.component').then(m => m.SettingsComponent),
+            children: [
+              {
+                path: 'profile',
+                loadComponent: () =>
+                  import('./pages/private/settings/profile-settings/profile-settings.component').then(m => m.ProfileSettingsComponent)
+              },
+              {
+                path: 'account',
+                loadComponent: () =>
+                  import('./pages/private/settings/account-settings/account-settings.component').then(m => m.AccountSettingsComponent)
+              },
+              {
+                path: 'screen',
+                loadComponent: () =>
+                  import('./pages/private/settings/screen-settings/screen-settings.component').then(m => m.ScreenSettingsComponent)
+              },
+              { path: '', redirectTo: 'profile', pathMatch: 'full' }
+            ]
           },
           {
-            path: 'account',
+            path: 'hiking-trail/:code',
             loadComponent: () =>
-              import('./pages/private/settings/account-settings/account-settings.component').then(m => m.AccountSettingsComponent)
+              import('./pages/private/hiking-trail-detail/hiking-trail-detail.component').then(m => m.HikingTrailDetailComponent)
           },
-          {
-            path: 'screen',
-            loadComponent: () =>
-              import('./pages/private/settings/screen-settings/screen-settings.component').then(m => m.ScreenSettingsComponent)
-          },
-          { path: '', redirectTo: 'profile', pathMatch: 'full' }
+          { path: '', redirectTo: '/feed', pathMatch: 'full' },
         ]
-      },
-      {
-        path: 'hiking-trail/:code',
-        loadComponent: () =>
-          import('./pages/private/hiking-trail-detail/hiking-trail-detail.component').then(m => m.HikingTrailDetailComponent)
-      },
-      { path: '', redirectTo: '/auth', pathMatch: 'full' },
+      }
     ],
   },
   {

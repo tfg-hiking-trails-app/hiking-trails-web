@@ -26,6 +26,7 @@ import { AccountService } from '../../../services/account.service';
 import { HikingTrail } from '../../../interfaces/hiking-trail/HikingTrail';
 import { HikingTrailService } from '../../../services/hiking-trail.service';
 import { RouterModule } from '@angular/router';
+import { getDefaultProfileImageUrl } from '../../../Utils/Utils';
 
 @Component({
   selector: 'app-search-bar',
@@ -48,6 +49,7 @@ export class SearchBarComponent implements OnInit {
   private numberResults: number = 5;
 
   @ViewChild('wrapper', { static: true }) wrapper!: ElementRef<HTMLElement>;
+  @ViewChild('searchInput') searchInput!: ElementRef<HTMLInputElement>;
 
   constructor(
     private accountService: AccountService,
@@ -94,13 +96,22 @@ export class SearchBarComponent implements OnInit {
   onDocumentClick(event: MouseEvent) {
     const target = event.target as Node;
     if (!this.wrapper.nativeElement.contains(target)) {
-      this.showResults.set(false);
+      this.closeResults();
     }
   }
 
   @HostListener('document:keydown.escape')
   onEscape() {
+    this.closeResults();
+  }
+
+  closeResults() {
     this.showResults.set(false);
+    this.searchInput.nativeElement.value = '';
+  }
+
+  getDefaultProfileImageUrl(gender?: string): string {
+    return getDefaultProfileImageUrl(gender);
   }
 
 }

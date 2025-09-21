@@ -78,6 +78,8 @@ export class FeedComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     this.observer.observe(this.sentinela.nativeElement);
+
+    this.destroyRef.onDestroy(() => this.observer?.disconnect());
   }
 
   ngOnDestroy(): void {

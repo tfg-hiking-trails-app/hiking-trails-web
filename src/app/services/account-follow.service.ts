@@ -15,30 +15,42 @@ export class AccountFollowService {
   ) { }
 
   private routes = {
-    GetFollowersByAccountCode: (accountCode: string) => `${ environment.apiGatewayUrl }/account-follow/followers/${ accountCode }`,
-    GetAllFollowersByAccountCode: (accountCode: string) => `${ environment.apiGatewayUrl }/account-follow/followers/${ accountCode }/all`,
-    GetFollowedByAccountCode: (accountCode: string) => `${ environment.apiGatewayUrl }/account-follow/followed/${ accountCode }`,
-    GetAllFollowedByAccountCode: (accountCode: string) => `${ environment.apiGatewayUrl }/account-follow/followed/${ accountCode }/all`,
+    getFollowersByAccountCode: (accountCode: string) => `${ environment.apiGatewayUrl }/account-follow/followers/${ accountCode }`,
+    getAllFollowersByAccountCode: (accountCode: string) => `${ environment.apiGatewayUrl }/account-follow/followers/${ accountCode }/all`,
+    getFollowedByAccountCode: (accountCode: string) => `${ environment.apiGatewayUrl }/account-follow/followed/${ accountCode }`,
+    getAllFollowedByAccountCode: (accountCode: string) => `${ environment.apiGatewayUrl }/account-follow/followed/${ accountCode }/all`,
+    getFollowedCountByAccountCode: (accountCode: string) => `${ environment.apiGatewayUrl }/account-follow/followed/${ accountCode }/count`,
+    getFollowersCountByAccountCode: (accountCode: string) => `${ environment.apiGatewayUrl }/account-follow/followers/${ accountCode }/count`,
   };
 
   getFollowersByAccountCode(accountCode: string): Observable<Account[]> {
-    const url = this.routes.GetFollowersByAccountCode(accountCode);
+    const url = this.routes.getFollowersByAccountCode(accountCode);
     return this.apiService.get<Account[]>(url);
   }
 
   getAllFollowersByAccountCode(accountCode: string): Observable<Account[]> {
-    const url = this.routes.GetAllFollowersByAccountCode(accountCode);
+    const url = this.routes.getAllFollowersByAccountCode(accountCode);
     return this.apiService.get<Account[]>(url);
   }
 
   getFollowedByAccountCode(accountCode: string): Observable<Account[]> {
-    const url = this.routes.GetFollowedByAccountCode(accountCode);
+    const url = this.routes.getFollowedByAccountCode(accountCode);
     return this.apiService.get<Account[]>(url);
   }
 
   getAllFollowedByAccountCode(accountCode: string): Observable<Account[]> {
-    const url = this.routes.GetAllFollowedByAccountCode(accountCode);
+    const url = this.routes.getAllFollowedByAccountCode(accountCode);
     return this.apiService.get<Account[]>(url);
+  }
+
+  getFollowedCountByAccountCode(accountCode: string): Observable<number> {
+    const url = this.routes.getFollowedCountByAccountCode(accountCode);
+    return this.apiService.get<number>(url);
+  }
+
+  getFollowersCountByAccountCode(accountCode: string): Observable<number> {
+    const url = this.routes.getFollowersCountByAccountCode(accountCode);
+    return this.apiService.get<number>(url);
   }
 
 }

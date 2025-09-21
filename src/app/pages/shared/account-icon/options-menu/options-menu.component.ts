@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { AuthService } from '../../../../services/auth.service';
@@ -16,9 +16,21 @@ import { AuthService } from '../../../../services/auth.service';
 })
 export class OptionsMenuComponent {
 
+  userLoggedCode = signal<string | null>(null);
+
   constructor(
     private authService: AuthService,
-  ) { }
+    private router: Router
+  ) {
+    const code: string | null = this.authService.getUserCode();
+
+    if (!code) {
+      this.router.navigate(['/feed']);
+      return;
+    }
+
+    this.userLoggedCode.set(code);
+  }
 
   logout() {
     this.authService.logout();

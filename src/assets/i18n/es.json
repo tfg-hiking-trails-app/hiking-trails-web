@@ -126,6 +126,14 @@
     "false": "No apto para mascotas",
     "true": "Apto para mascotas"
   },
+  "profile": {
+    "follow": "Seguir",
+    "followed": "Siguiendo",
+    "followers": "Seguidores",
+    "following": "Siguiendo",
+    "private-profile": "Perfil privado",
+    "unfollow": "Dejar de seguir"
+  },
   "register": {
     "confirmPassword": "Confirmar contraseña",
     "confirmPasswordRequired": "La confirmación de la contraseña es obligatoria",

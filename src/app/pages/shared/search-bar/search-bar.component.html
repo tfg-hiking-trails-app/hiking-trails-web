@@ -34,11 +34,11 @@
             <li class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" role="option">
               <a
                 [routerLink]="['/profile', account.code]"
-                (click)="search('')"
+                (click)="closeResults()"
                 class="flex items-center gap-3"
               >
                 <img
-                  [src]="account.profilePicture || '/images/default-profile-picture-male.png'"
+                  [src]="account.profilePicture || getDefaultProfileImageUrl(account.gender?.genderValue)"
                   alt="Foto de perfil"
                   class="w-8 h-8 rounded-full"
                 />
@@ -64,7 +64,7 @@
         <ul class="divide-y divide-gray-200 dark:divide-gray-700">
           @for (trail of hikingTrails; track trail.code) {
             <li class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" role="option">
-              <a [routerLink]="['/trails', trail.code]" (click)="search('')"
+              <a [routerLink]="['/hiking-trail', trail.code]" (click)="closeResults()"
                 class="flex items-center">
                 <span class="text-gray-900 dark:text-gray-100">{{ trail.name }}</span>
               </a>

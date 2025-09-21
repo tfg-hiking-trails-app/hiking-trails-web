@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { Account } from '../../../interfaces/account/Account';
+import { getDefaultProfileImageUrl } from '../../../Utils/Utils';
 
 @Component({
   selector: 'app-profile-picture',
@@ -13,8 +14,6 @@ export class ProfilePictureComponent {
 
   @Input() account?: Account;
 
-  private readonly defaultProfilePicture = '/images/default-profile-picture-male.png';
-
   get ProfilePicture(): string {
     if (this.account?.profilePicture) {
       return this.account?.profilePicture;
@@ -22,9 +21,7 @@ export class ProfilePictureComponent {
 
     const gender = this.account?.gender?.genderValue;
 
-    return gender === 'female'
-      ? this.defaultProfilePicture.replace("male", `${gender}`)
-      : this.defaultProfilePicture;
+    return getDefaultProfileImageUrl(gender);
   }
 
 }
