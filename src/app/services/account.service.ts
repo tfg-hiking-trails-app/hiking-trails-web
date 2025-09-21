@@ -40,7 +40,8 @@ export class AccountService {
     const formData = new FormData();
 
     for (const [key, value] of Object.entries(account)) {
-      formData.append(key, value);
+      if (value !== null && value !== undefined)
+        formData.append(key, value);
     }
 
     return this.apiService.put<Account>(

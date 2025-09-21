@@ -1,4 +1,4 @@
 export interface Gender {
-  code: string | undefined;
+  code: string | null;
   genderValue: string;
 }

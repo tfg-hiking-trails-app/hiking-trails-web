@@ -4,127 +4,130 @@
     (imageChanged)="onImageChange($event)"
   />
 
-  <form class="mt-4" [formGroup]="editProfileInfoForm">
+  @if (isLoading()) {
+    <app-loading-spinner />
+  } @else {
+    <form class="mt-4" [formGroup]="editProfileInfoForm">
+      <!-- Private Profile -->
+      <mat-slide-toggle
+        class="mb-5"
+        formControlName="privateProfile"
+      >
+        <span class="font-medium text-xl ml-2">
+          {{ 'settings.profile.private-profile' | translate }}
+        </span>
+      </mat-slide-toggle>
 
-    <!-- Private Profile -->
-    <mat-slide-toggle
-      class="mb-5"
-      formControlName="privateProfile"
-    >
-      <span class="font-medium text-xl ml-2">
-        {{ 'settings.profile.private-profile' | translate }}
-      </span>
-    </mat-slide-toggle>
+      <!-- First Name / Last Name -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+        <mat-form-field class="w-full" appearance="fill">
+          <mat-label>{{ 'settings.profile.first-name' | translate }}:</mat-label>
+          <input matInput formControlName="firstName">
+        </mat-form-field>
 
-    <!-- First Name / Last Name -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+        <mat-form-field class="w-full" appearance="fill">
+          <mat-label>{{ 'settings.profile.last-name' | translate }}:</mat-label>
+          <input matInput formControlName="lastName">
+        </mat-form-field>
+      </div>
+
+      <!-- Gender / Date of Birth -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+        <mat-form-field class="w-full" appearance="fill">
+          <mat-label>{{ 'settings.profile.gender.label' | translate }}:</mat-label>
+          <mat-select formControlName="gender">
+            @for (gender of genders(); track $index) {
+              <mat-option [value]="gender.code">
+                {{ `settings.profile.gender.${ gender.genderValue }` | translate }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="w-full" appearance="fill">
+          <mat-label>{{ 'settings.profile.birthdate' | translate }}:</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="dateOfBirth">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <!-- Country / State / City -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+        <mat-form-field class="w-full" appearance="fill">
+          <mat-label>{{ 'settings.profile.country' | translate }}:</mat-label>
+          <mat-select formControlName="country" (selectionChange)="onSelectCountry()">
+            @for (country of countries(); track $index) {
+              <mat-option [value]="country.code">
+                {{ country.name }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="w-full" appearance="fill">
+          <mat-label>{{ 'settings.profile.state' | translate }}:</mat-label>
+          <mat-select formControlName="state" (selectionChange)="onSelectState()">
+            @for (state of states(); track $index) {
+              <mat-option [value]="state.code">
+                {{ state.name }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="w-full" appearance="fill">
+          <mat-label>{{ 'settings.profile.city' | translate }}:</mat-label>
+          <mat-select formControlName="city">
+            @for (city of cities(); track $index) {
+              <mat-option [value]="city.code">
+                {{ city.name }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- Biography -->
       <mat-form-field class="w-full" appearance="fill">
-        <mat-label>{{ 'settings.profile.first-name' | translate }}:</mat-label>
-        <input matInput formControlName="firstName">
+        <mat-label>{{ 'settings.profile.biography' | translate }}:</mat-label>
+        <textarea matInput formControlName="biography" rows="4"></textarea>
       </mat-form-field>
 
-      <mat-form-field class="w-full" appearance="fill">
-        <mat-label>{{ 'settings.profile.last-name' | translate }}:</mat-label>
-        <input matInput formControlName="lastName">
-      </mat-form-field>
-    </div>
-
-    <!-- Gender / Date of Birth -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
-      <mat-form-field class="w-full" appearance="fill">
-        <mat-label>{{ 'settings.profile.gender.label' | translate }}:</mat-label>
-        <mat-select formControlName="gender">
-          @for (gender of genders(); track $index) {
-            <mat-option [value]="gender.code">
-              {{ `settings.profile.gender.${ gender.genderValue }` | translate }}
-            </mat-option>
+      <!-- Weight / Height -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+        <mat-form-field class="w-full" appearance="fill">
+          <mat-label>{{ 'settings.profile.weight' | translate }} (kg):</mat-label>
+          <input matInput type="number" formControlName="weight">
+          @if (submitted && editProfileInfoControls['weight'].hasError('min')) {
+            <mat-error>{{ 'settings.profile.weightMin' | translate }}</mat-error>
           }
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field class="w-full" appearance="fill">
-        <mat-label>{{ 'settings.profile.birthdate' | translate }}:</mat-label>
-        <input matInput [matDatepicker]="picker" formControlName="dateOfBirth">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
-    </div>
-
-    <!-- Country / State / City -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
-      <mat-form-field class="w-full" appearance="fill">
-        <mat-label>{{ 'settings.profile.country' | translate }}:</mat-label>
-        <mat-select formControlName="country" (selectionChange)="onSelectCountry()">
-          @for (country of countries(); track $index) {
-            <mat-option [value]="country.code">
-              {{ country.name }}
-            </mat-option>
+          @if (submitted && editProfileInfoControls['weight'].hasError('max')) {
+            <mat-error>{{ 'settings.profile.weightMax' | translate }}</mat-error>
           }
-        </mat-select>
-      </mat-form-field>
+        </mat-form-field>
 
-      <mat-form-field class="w-full" appearance="fill">
-        <mat-label>{{ 'settings.profile.state' | translate }}:</mat-label>
-        <mat-select formControlName="state" (selectionChange)="onSelectState()">
-          @for (state of states(); track $index) {
-            <mat-option [value]="state.code">
-              {{ state.name }}
-            </mat-option>
+        <mat-form-field class="w-full" appearance="fill">
+          <mat-label>{{ 'settings.profile.height' | translate }} (cm):</mat-label>
+          <input matInput type="number" formControlName="height">
+          @if (submitted && editProfileInfoControls['height'].hasError('min')) {
+            <mat-error>{{ 'settings.profile.heightMin' | translate }}</mat-error>
           }
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field class="w-full" appearance="fill">
-        <mat-label>{{ 'settings.profile.city' | translate }}:</mat-label>
-        <mat-select formControlName="city">
-          @for (city of cities(); track $index) {
-            <mat-option [value]="city.code">
-              {{ city.name }}
-            </mat-option>
+          @if (submitted && editProfileInfoControls['height'].hasError('max')) {
+            <mat-error>{{ 'settings.profile.heightMax' | translate }}</mat-error>
           }
-        </mat-select>
-      </mat-form-field>
-    </div>
+        </mat-form-field>
+      </div>
 
-    <!-- Biography -->
-    <mat-form-field class="w-full" appearance="fill">
-      <mat-label>{{ 'settings.profile.biography' | translate }}:</mat-label>
-      <textarea matInput formControlName="biography" rows="4"></textarea>
-    </mat-form-field>
-
-    <!-- Weight / Height -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
-      <mat-form-field class="w-full" appearance="fill">
-        <mat-label>{{ 'settings.profile.weight' | translate }} (kg):</mat-label>
-        <input matInput type="number" formControlName="weight">
-        @if (submitted && editProfileInfoControls['weight'].hasError('min')) {
-          <mat-error>{{ 'settings.profile.weightMin' | translate }}</mat-error>
-        }
-        @if (submitted && editProfileInfoControls['weight'].hasError('max')) {
-          <mat-error>{{ 'settings.profile.weightMax' | translate }}</mat-error>
-        }
-      </mat-form-field>
-
-      <mat-form-field class="w-full" appearance="fill">
-        <mat-label>{{ 'settings.profile.height' | translate }} (cm):</mat-label>
-        <input matInput type="number" formControlName="height">
-        @if (submitted && editProfileInfoControls['height'].hasError('min')) {
-          <mat-error>{{ 'settings.profile.heightMin' | translate }}</mat-error>
-        }
-        @if (submitted && editProfileInfoControls['height'].hasError('max')) {
-          <mat-error>{{ 'settings.profile.heightMax' | translate }}</mat-error>
-        }
-      </mat-form-field>
-    </div>
-
-    <div class="flex gap-2">
-      <button class="w-full" matButton="tonal" (click)="resetForm()">
-        {{ 'clear-data' | translate }}
-      </button>
-      <button class="w-full" matButton="filled" (click)="saveChanges()">
-        {{ 'settings.profile.save-changes' | translate }}
-      </button>
-    </div>
-  </form>
+      <div class="flex gap-2">
+        <button class="w-full" matButton="tonal" (click)="resetForm()">
+          {{ 'clear-data' | translate }}
+        </button>
+        <button class="w-full" matButton="filled" (click)="saveChanges()">
+          {{ 'settings.profile.save-changes' | translate }}
+        </button>
+      </div>
+    </form>
+  }
 
 </div>

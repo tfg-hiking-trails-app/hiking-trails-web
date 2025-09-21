@@ -1,5 +1,6 @@
 import { formatDate } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FormBuilder,
   FormGroup,
@@ -10,7 +11,7 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { MaterialModules } from '@material/material.modules';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { tap } from 'rxjs';
+import { finalize, forkJoin, Observable, switchMap, tap } from 'rxjs';
 
 import { Account, AccountUpdate } from '../../../../interfaces/account/Account';
 import { AccountService } from '../../../../services/account.service';
@@ -20,32 +21,34 @@ import { CitySummary } from '../../../../interfaces/account/City';
 import { CountrySummary } from '../../../../interfaces/account/Country';
 import { DialogConfirmComponent } from '../../../../components/dialog-confirm/dialog-confirm.component';
 import { Gender } from '../../../../interfaces/account/Gender';
+import { LoadingSpinnerComponent } from '../../../../components/loading-spinner/loading-spinner.component';
 import { StateSummary } from '../../../../interfaces/account/State';
 import { UploadProfileImageComponent } from './upload-profile-image/upload-profile-image.component';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-profile-settings',
   imports: [
     FormsModule,
+    LoadingSpinnerComponent,
     MaterialModules,
     ReactiveFormsModule,
+    TranslatePipe,
     UploadProfileImageComponent,
-    TranslatePipe
   ],
   templateUrl: './profile-settings.component.html',
   styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileSettingsComponent {
-  editProfileInfoForm: FormGroup;
   accountUpdate: AccountUpdate | null = null;
-  genders = signal<Gender[]>([]);
-  countries = signal<CountrySummary[]>([]);
-  states = signal<StateSummary[]>([]);
-  enableStateSelect = signal<boolean>(false);
   cities = signal<CitySummary[]>([]);
+  countries = signal<CountrySummary[]>([]);
+  editProfileInfoForm: FormGroup;
   enableCitySelect = signal<boolean>(false);
+  enableStateSelect = signal<boolean>(false);
+  genders = signal<Gender[]>([]);
+  isLoading = signal<boolean>(true);
+  states = signal<StateSummary[]>([]);
   submitted: boolean = false;
 
   private accountCode: string | null = null;
@@ -80,8 +83,6 @@ export class ProfileSettingsComponent {
     }
 
     this.loadUserData();
-    this.loadGenders();
-    this.loadCountries();
   }
 
   get editProfileInfoControls() {
@@ -110,21 +111,18 @@ export class ProfileSettingsComponent {
       return;
 
     this.accountUpdate = {
-      ...this.accountUpdate,
       firstName: this.editProfileInfoControls['firstName'].value,
       lastName: this.editProfileInfoControls['lastName'].value,
       genderCode: this.editProfileInfoControls['gender'].value,
-      countryCode: this.editProfileInfoControls['country'].value.code,
-      stateCode: this.editProfileInfoControls['state'].value.code,
-      cityCode: this.editProfileInfoControls['city'].value.code,
+      countryCode: this.editProfileInfoControls['country'].value,
+      stateCode: this.editProfileInfoControls['state'].value,
+      cityCode: this.editProfileInfoControls['city'].value,
       biography: this.editProfileInfoControls['biography'].value,
       dateOfBirth: formatDate(this.editProfileInfoControls['dateOfBirth'].value, 'yyyy-MM-dd', 'en-US'),
       weight: this.editProfileInfoControls['weight'].value,
       height: this.editProfileInfoControls['height'].value,
       private: this.editProfileInfoControls['privateProfile'].value
     };
-
-    console.log(this.accountUpdate);
 
     const dialogRef = this.dialog.open(DialogConfirmComponent, {
       data: {
@@ -159,11 +157,17 @@ export class ProfileSettingsComponent {
   onSelectCountry(): void {
     const countryId = this.editProfileInfoControls['country'].value;
 
+    if (!countryId)
+      return;
+
     this.loadStates(countryId);
   }
 
   onSelectState(): void {
     const stateId = this.editProfileInfoControls['state'].value;
+
+    if (!stateId)
+      return;
 
     this.loadCities(stateId);
   }
@@ -203,31 +207,35 @@ export class ProfileSettingsComponent {
 
             this.accountUpdate = {
               ...this.editProfileInfoForm.value,
-              genderCode: account.gender?.code,
               username: account.username
             } as AccountUpdate;
-          })
+          }),
+          switchMap(() => forkJoin([
+            this.loadGenders(),
+            this.loadCountries()
+          ])),
+          finalize(() => this.isLoading.set(false))
         ).subscribe();
   }
 
-  private loadGenders(): void {
-    this.accountService
+  private loadGenders(): Observable<Gender[]> {
+    return this.accountService
       .getAllGenders()
         .pipe(
         tap((genders: Gender[]) => {
           this.genders.set([
             {
-              genderValue: 'prefer-not-to-say',
-              code: undefined
+              code: null,
+              genderValue: 'prefer-not-to-say'
             },
             ...genders
           ]);
         })
-      ).subscribe();
+      );
   }
 
-  private loadCountries(): void {
-    this.accountService
+  private loadCountries(): Observable<CountrySummary[]> {
+    return this.accountService
       .getAllCountriesSummary()
         .pipe(
         tap((countries: CountrySummary[]) => {
@@ -239,7 +247,7 @@ export class ProfileSettingsComponent {
             ...countries
           ]);
         })
-      ).subscribe();
+      );
   }
 
   private loadStates(countryCode: string): void {
