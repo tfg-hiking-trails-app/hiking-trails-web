@@ -1,4 +1,5 @@
 import { Account } from "../account/Account";
+import { Comment } from "./Comment";
 import { DifficultyLevel } from "./DifficultyLevel";
 import { Images } from "./Images";
 import { Metrics } from "./Metrics";

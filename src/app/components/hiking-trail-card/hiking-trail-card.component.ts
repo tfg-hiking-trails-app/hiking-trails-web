@@ -5,19 +5,21 @@ import {
   OnInit,
   signal
 } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 import { MaterialModules } from '@material/material.modules';
+import { RouterModule } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { AuthService } from '../../services/auth.service';
 import { CarouselImagesComponent } from '../../pages/shared/carousel-images/carousel-images.component';
+import { CommentsCardComponent } from '../comments-card/comments-card.component';
+import { CreatePrestige, DeletePrestige, Prestige } from '../../interfaces/hiking-trail/Prestige';
 import { FriendlyDatePipe } from '../../pipes/FriendlyDatePipe';
 import { HikingTrail } from '../../interfaces/hiking-trail/HikingTrail';
 import { HikingTrailService } from '../../services/hiking-trail.service';
 import { Metric } from '../../interfaces/display/Metric';
 import { Metrics } from '../../interfaces/hiking-trail/Metrics';
 import { ProfilePictureComponent } from '../../pages/shared/profile-picture/profile-picture.component';
-import { CreatePrestige, DeletePrestige, Prestige } from '../../interfaces/hiking-trail/Prestige';
 
 @Component({
   selector: 'app-hiking-trail-card',
@@ -44,7 +46,8 @@ export class HikingTrailCardComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private hikingService: HikingTrailService
+    private hikingService: HikingTrailService,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -83,14 +86,14 @@ export class HikingTrailCardComponent implements OnInit {
 
     if (this.userGavePrestige()) {
       this.hikingService
-        .addPrestige(this.hikingTrail.code, body)
+        .addPrestige(body)
         .subscribe({
           next: (prestige: Prestige) => this.prestiges.update(prestiges => [...prestiges, prestige]),
           error: () => this.userGavePrestige.set(false)
         });
     } else {
       this.hikingService
-        .removePrestige(this.hikingTrail.code, body)
+        .removePrestige(body)
         .subscribe({
           next: (code: string) => this.prestiges.update(prestiges => prestiges.filter(p => p.code !== code)),
           error: () => this.userGavePrestige.set(true)
@@ -108,6 +111,12 @@ export class HikingTrailCardComponent implements OnInit {
     }
 
     this.userGavePrestige.set(prestiges.some(p => p?.giverAccountCode === userCode));
+  }
+
+  public openCommentsDialog(): void {
+    this.dialog.open(CommentsCardComponent, {
+      data: this.hikingTrail
+    });
   }
 
   get metricsDisplay(): Metric[] {

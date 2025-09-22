@@ -8,6 +8,11 @@
   "clear-data": "Limpiar datos",
   "close": "Cerrar",
   "collapse-all": "Colapsar todo",
+  "comment": {
+    "title": "Comentarios",
+    "required": "El comentario no puede estar vacío",
+    "placeholder": "Escribe tu comentario..."
+  },
   "date": {
     "on_date_at": "{{ date }} a las {{ time }}",
     "today_at": "Hoy a las {{ time }}",

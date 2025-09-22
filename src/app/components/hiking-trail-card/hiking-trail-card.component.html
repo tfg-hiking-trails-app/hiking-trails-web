@@ -127,7 +127,10 @@
             <span class="mdi mdi-octagram-outline text-3xl"></span>
           }
         </button>
-        <button class="cursor-pointer hover:bg-gray-300 dark:hover:bg-neutral-600 rounded-full p-2">
+        <button
+          class="cursor-pointer hover:bg-gray-300 dark:hover:bg-neutral-600 rounded-full p-2"
+          (click)="openCommentsDialog()"
+        >
           <span class="material-icons dark:text-white">comment</span>
         </button>
         @if (belongLoggedUser) {
