@@ -1,9 +1,9 @@
 <div class="sm:min-w-[400px] flex justify-between items-center">
-  <h2 mat-dialog-title>{{ 'comment.title' | translate }}</h2>
+  <h2 mat-dialog-title>{{ 'comments.title' | translate }}</h2>
   <button
     class="mr-3"
     mat-icon-button
-    mat-dialog-close
+    (click)="close()"
     aria-label="Cerrar"
   >
     <mat-icon>close</mat-icon>
@@ -17,23 +17,34 @@
       @for (comment of hikingTrail()!.comments; track $index) {
         @let account = accounts.get(comment.code);
 
-        <div class="mb-4 p-4 border border-gray-300 rounded-lg dark:border-gray-700">
-          <div class="flex items-center mb-2">
-            <img
-              [src]="account?.profilePicture || defaultProfileImage(account?.gender?.genderValue || '')"
-              alt="Profile Picture"
-              class="w-10 h-10 rounded-full mr-4"
-            >
-            <div class="flex flex-col">
-              <span class="font-medium text-lg dark:text-white">
-                {{ account?.username || '' }}
-              </span>
-              <span class="font-medium text-sm dark:text-gray-400">
-                {{ comment.createdAt | date:'dd/MM/yyyy HH:mm' }}
-              </span>
+        <div class="mb-4 p-4 mr-4 border border-gray-300 rounded-lg dark:border-gray-700">
+          <div class="flex justify-between items-center">
+            <div class="flex items-center mb-2">
+              <img
+                [src]="account?.profilePicture || defaultProfileImage(account?.gender?.genderValue || '')"
+                alt="Profile Picture"
+                class="w-10 h-10 rounded-full mr-4"
+              >
+              <div class="flex flex-col">
+                <span class="font-medium text-lg dark:text-white">
+                  {{ account?.username || '' }}
+                </span>
+                <span class="font-medium text-sm dark:text-gray-400">
+                  {{ comment.createdAt | date:'dd/MM/yyyy HH:mm' }}
+                </span>
+              </div>
             </div>
+            <button
+              class="top-0"
+              mat-icon-button
+              (click)="deleteComment(comment.code)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
           </div>
-          <p class="dark:text-white whitespace-pre-line">{{ comment.commentText }}</p>
+          <p class="dark:text-white whitespace-pre-line">
+            {{ comment.commentText }}
+          </p>
         </div>
       }
     }
@@ -43,16 +54,16 @@
   <!-- Form to add a comment -->
   <form [formGroup]="commentForm" class="flex items-center w-full gap-2">
     <mat-form-field class="w-full" subscriptSizing="dynamic">
-      <mat-label for="comment">Comentario</mat-label>
+      <mat-label for="comment">{{ 'comments.comment' | translate}}</mat-label>
       <input
         matInput
-        [placeholder]="'comment.placeholder' | translate"
+        [placeholder]="'comments.placeholder' | translate"
         formControlName="comment"
         autocomplete="off"
         required
       />
       @if (submitted && commentControls['comment'].hasError('required')) {
-        <mat-error>{{ 'comment.required' | translate }}</mat-error>
+        <mat-error>{{ 'comments.required' | translate }}</mat-error>
       }
     </mat-form-field>
     <button

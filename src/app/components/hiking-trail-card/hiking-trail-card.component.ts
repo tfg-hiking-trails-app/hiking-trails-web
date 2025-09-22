@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   Input,
   OnInit,
@@ -46,8 +47,9 @@ export class HikingTrailCardComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private cdr: ChangeDetectorRef,
+    private dialog: MatDialog,
     private hikingService: HikingTrailService,
-    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -114,8 +116,15 @@ export class HikingTrailCardComponent implements OnInit {
   }
 
   public openCommentsDialog(): void {
-    this.dialog.open(CommentsCardComponent, {
+    const dialogRef = this.dialog.open(CommentsCardComponent, {
       data: this.hikingTrail
+    });
+
+    dialogRef.afterClosed().subscribe((updated: HikingTrail) => {
+      if (updated) {
+        this.hikingTrail = updated;
+        this.cdr.markForCheck();
+      }
     });
   }
 

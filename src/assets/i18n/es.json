@@ -8,10 +8,13 @@
   "clear-data": "Limpiar datos",
   "close": "Cerrar",
   "collapse-all": "Colapsar todo",
-  "comment": {
+  "comments": {
+    "comment": "Comentario",
     "title": "Comentarios",
     "required": "El comentario no puede estar vacío",
-    "placeholder": "Escribe tu comentario..."
+    "placeholder": "Escribe tu comentario...",
+    "delete-comment-title": "Eliminar comentario",
+    "delete-comment-message": "¿Estás seguro de que quieres eliminar este comentario?"
   },
   "date": {
     "on_date_at": "{{ date }} a las {{ time }}",

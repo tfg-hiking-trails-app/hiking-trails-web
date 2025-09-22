@@ -2,8 +2,11 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
+  HostListener,
   Inject,
-  signal
+  signal,
+  ViewChild
 } from '@angular/core';
 import {
   FormBuilder,
@@ -12,18 +15,19 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MaterialModules } from '@material/material.modules';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { filter, finalize, tap } from 'rxjs';
 
 import { Account } from '../../interfaces/account/Account';
 import { AccountService } from '../../services/account.service';
+import { AuthService } from '../../services/auth.service';
+import { Comment, CreateComment } from '../../interfaces/hiking-trail/Comment';
+import { DialogConfirmComponent } from '../dialog-confirm/dialog-confirm.component';
 import { getDefaultProfileImageUrl } from '../../Utils/Utils';
 import { HikingTrail } from '../../interfaces/hiking-trail/HikingTrail';
 import { HikingTrailService } from '../../services/hiking-trail.service';
-import { Comment, CreateComment } from '../../interfaces/hiking-trail/Comment';
-import { AuthService } from '../../services/auth.service';
-import { finalize, tap } from 'rxjs';
 
 @Component({
   selector: 'app-comments-card',
@@ -39,6 +43,7 @@ import { finalize, tap } from 'rxjs';
 })
 export class CommentsCardComponent {
 
+  @ViewChild('dialogComment', { static: true }) dialogComponentRef!: ElementRef;
   accounts = new Map<string, Account | null>();
   commentForm: FormGroup;
   hikingTrail = signal<HikingTrail | null>(null);
@@ -49,8 +54,11 @@ export class CommentsCardComponent {
     private accountService: AccountService,
     private authService: AuthService,
     private cdr: ChangeDetectorRef,
+    private dialog: MatDialog,
+    private dialogRef: MatDialogRef<CommentsCardComponent>,
     private formBuilder: FormBuilder,
     private hikingTrailService: HikingTrailService,
+    private translateService: TranslateService,
   ) {
     this.hikingTrail.set(hikingTrail);
     this.commentForm = this.formBuilder.group({
@@ -73,6 +81,19 @@ export class CommentsCardComponent {
           }
         });
     });
+
+    // Close the dialog when clicking outside
+    this.dialogRef
+      .backdropClick()
+      .subscribe(() => this.close());
+
+    // Close the dialog when pressing the Escape key
+    this.dialogRef
+      .keydownEvents()
+        .pipe(
+          filter(ev => ev.key === 'Escape')
+        )
+        .subscribe(() => this.close());
   }
 
   get commentControls() {
@@ -127,8 +148,46 @@ export class CommentsCardComponent {
       .subscribe();
   }
 
+  deleteComment(commentCode: string): void {
+    const dialogRef = this.dialog.open(DialogConfirmComponent, {
+      data: {
+        title: this.translateService.instant('comments.delete-comment-title'),
+        message: this.translateService.instant('comments.delete-comment-message'),
+        focusCancel: true
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result)
+        return;
+
+      this.hikingTrailService
+        .removeComment(commentCode)
+        .subscribe({
+          next: () => {
+            this.hikingTrail.update(ht => {
+              if (!ht) return ht;
+
+              return {
+                ...ht!,
+                comments: ht!.comments.filter(c => c.code !== commentCode)
+              } as HikingTrail;
+            });
+          },
+          error: () => {
+            this.cdr.markForCheck();
+          }
+        });
+    });
+  }
+
   defaultProfileImage(gender: string): string {
     return getDefaultProfileImageUrl(gender);
+  }
+
+  close(): void {
+    const updated = { ...this.hikingTrail()!, comments: [...this.hikingTrail()!.comments] };
+    this.dialogRef.close(updated);
   }
 
 }
