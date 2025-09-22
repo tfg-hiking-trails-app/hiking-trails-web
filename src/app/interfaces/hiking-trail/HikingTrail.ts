@@ -2,6 +2,7 @@ import { Account } from "../account/Account";
 import { DifficultyLevel } from "./DifficultyLevel";
 import { Images } from "./Images";
 import { Metrics } from "./Metrics";
+import { Prestige } from "./Prestige";
 import { TerrainType } from './TerrainType';
 import { TrailType } from "./TrailType";
 
@@ -22,5 +23,7 @@ export interface HikingTrail {
   generatedByFitFile: boolean;
   images: Images[];
   metrics: Metrics[];
+  prestiges: Prestige[];
+  comments: Comment[];
   productName?: string;
 }

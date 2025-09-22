@@ -68,4 +68,12 @@ export class ApiService {
     return this.http.delete<TResponse>(url, options);
   }
 
+  deleteWithBody<TResponse>(
+    url: string,
+    body: any,
+    options: HttpOptions = {}
+  ): Observable<TResponse> {
+    return this.http.request<TResponse>('delete', url, { body, ...options });
+  }
+
 }

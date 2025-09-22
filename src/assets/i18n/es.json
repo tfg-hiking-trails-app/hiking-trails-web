@@ -65,7 +65,9 @@
     "pet-friendly": "Apto para mascotas",
     "start-time": "Hora de inicio",
     "terrain-type": "Tipo de terreno",
-    "trail-type": "Tipo de ruta"
+    "trail-type": "Tipo de ruta",
+    "single-prestige": "prestigio",
+    "multiple-prestiges": "prestigios"
   },
   "laps": {
     "kilometer": "Kilómetro",

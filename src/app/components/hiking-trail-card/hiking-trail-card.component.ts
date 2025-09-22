@@ -1,14 +1,23 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+  signal
+} from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MaterialModules } from '@material/material.modules';
 import { TranslatePipe } from '@ngx-translate/core';
 
-import { HikingTrail } from '../../interfaces/hiking-trail/HikingTrail';
+import { AuthService } from '../../services/auth.service';
 import { CarouselImagesComponent } from '../../pages/shared/carousel-images/carousel-images.component';
-import { ProfilePictureComponent } from '../../pages/shared/profile-picture/profile-picture.component';
 import { FriendlyDatePipe } from '../../pipes/FriendlyDatePipe';
-import { Metrics } from '../../interfaces/hiking-trail/Metrics';
+import { HikingTrail } from '../../interfaces/hiking-trail/HikingTrail';
+import { HikingTrailService } from '../../services/hiking-trail.service';
 import { Metric } from '../../interfaces/display/Metric';
+import { Metrics } from '../../interfaces/hiking-trail/Metrics';
+import { ProfilePictureComponent } from '../../pages/shared/profile-picture/profile-picture.component';
+import { CreatePrestige, DeletePrestige, Prestige } from '../../interfaces/hiking-trail/Prestige';
 
 @Component({
   selector: 'app-hiking-trail-card',
@@ -28,6 +37,78 @@ export class HikingTrailCardComponent implements OnInit {
   @Input({ required: true }) hikingTrail!: HikingTrail;
   @Input() belongLoggedUser: boolean = false;
   @Input() showResume: boolean = false;
+
+  metricsValues: Record<string, any | undefined> = {};
+  userGavePrestige = signal<boolean>(false);
+  prestiges = signal<Prestige[]>([]);
+
+  constructor(
+    private authService: AuthService,
+    private hikingService: HikingTrailService
+  ) { }
+
+  ngOnInit(): void {
+    this.metricsValues = {
+      distance: this.distance,
+      calories: this.calories,
+      duration: this.duration,
+      steps: this.steps,
+      averagePace: this.averagePace,
+      maxPace: this.maxPace,
+      elevationGain: this.elevationGain,
+      elevationLoss: this.elevationLoss,
+      averageSpeed: this.averageSpeed,
+      maxSpeed: this.maxSpeed,
+      averageHeartRate: this.averageHeartRate,
+      maxHeartRate: this.maxHeartRate,
+      minHeartRate: this.minHeartRate,
+      averageCadence: this.averageCadence,
+      maxCadence: this.maxCadence,
+      maxAltitude: this.maxAltitude,
+      minAltitude: this.minAltitude,
+    };
+
+    this.checkPrestige();
+    this.prestiges.set(this.hikingTrail.prestiges || []);
+  }
+
+  togglePrestige(): void {
+    this.userGavePrestige.update(value => !value);
+
+    const body: CreatePrestige | DeletePrestige = {
+      hikingTrailCode: this.hikingTrail.code,
+      receiverAccountCode: this.hikingTrail.accountCode,
+      giverAccountCode: this.authService.getUserCode() || ''
+    };
+
+    if (this.userGavePrestige()) {
+      this.hikingService
+        .addPrestige(this.hikingTrail.code, body)
+        .subscribe({
+          next: (prestige: Prestige) => this.prestiges.update(prestiges => [...prestiges, prestige]),
+          error: () => this.userGavePrestige.set(false)
+        });
+    } else {
+      this.hikingService
+        .removePrestige(this.hikingTrail.code, body)
+        .subscribe({
+          next: (code: string) => this.prestiges.update(prestiges => prestiges.filter(p => p.code !== code)),
+          error: () => this.userGavePrestige.set(true)
+        });
+    }
+  }
+
+  checkPrestige(): void {
+    const userCode = this.authService.getUserCode();
+    const prestiges = this.hikingTrail?.prestiges || [];
+
+    if (!userCode) {
+      this.userGavePrestige.set(false);
+      return;
+    }
+
+    this.userGavePrestige.set(prestiges.some(p => p?.giverAccountCode === userCode));
+  }
 
   get metricsDisplay(): Metric[] {
     const isHidden: boolean = !this.showResume;
@@ -50,30 +131,6 @@ export class HikingTrailCardComponent implements OnInit {
       { key: 'maxAltitude', icon: 'mdi-arrow-top-right', label: 'metrics.maxAltitude', unit: 'm', display: isHidden },
       { key: 'minAltitude', icon: 'mdi-arrow-bottom-right', label: 'metrics.minAltitude', unit: 'm', display: isHidden },
     ];
-  }
-
-  metricsValues: Record<string, any | undefined> = {};
-
-  ngOnInit(): void {
-    this.metricsValues = {
-      distance: this.distance,
-      calories: this.calories,
-      duration: this.duration,
-      steps: this.steps,
-      averagePace: this.averagePace,
-      maxPace: this.maxPace,
-      elevationGain: this.elevationGain,
-      elevationLoss: this.elevationLoss,
-      averageSpeed: this.averageSpeed,
-      maxSpeed: this.maxSpeed,
-      averageHeartRate: this.averageHeartRate,
-      maxHeartRate: this.maxHeartRate,
-      minHeartRate: this.minHeartRate,
-      averageCadence: this.averageCadence,
-      maxCadence: this.maxCadence,
-      maxAltitude: this.maxAltitude,
-      minAltitude: this.minAltitude,
-    };
   }
 
   get metrics(): Metrics | undefined {

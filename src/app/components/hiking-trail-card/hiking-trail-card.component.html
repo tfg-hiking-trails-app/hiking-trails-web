@@ -108,32 +108,48 @@
 
   <!-- Actions -->
   <mat-card-actions class="dark:bg-neutral-900">
-    <div class="flex justify-around items-center w-full">
-      <button class="cursor-pointer hover:bg-gray-300 dark:hover:bg-neutral-600 rounded-full p-2">
-        <span class="material-icons dark:text-white">thumb_up_off_alt</span>
-      </button>
-      <button class="cursor-pointer hover:bg-gray-300 dark:hover:bg-neutral-600 rounded-full p-2">
-        <span class="material-icons dark:text-white">comment</span>
-      </button>
-      @if (belongLoggedUser) {
+    <div class="w-full">
+      <span class="text-black dark:text-white text-lg ml-3 sm:ml-10">
+        @if(prestiges().length === 1) {
+          {{ prestiges().length }} {{ 'hiking-trail-card.single-prestige' | translate }}
+        } @else {
+          {{ prestiges().length }} {{ 'hiking-trail-card.multiple-prestiges' | translate }}
+        }
+      </span>
+      <div class="flex justify-around items-center">
         <button
-          matIconButton
-          [matMenuTriggerFor]="menu"
           class="cursor-pointer hover:bg-gray-300 dark:hover:bg-neutral-600 rounded-full p-2"
+          (click)="togglePrestige()"
         >
-          <span class="material-icons dark:text-white">more_vert</span>
+          @if (userGavePrestige()) {
+            <span class="mdi mdi-octagram text-3xl text-orange-500 dark:text-yellow-400"></span>
+          } @else {
+            <span class="mdi mdi-octagram-outline text-3xl"></span>
+          }
         </button>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item>
-            <mat-icon>edit</mat-icon>
-            <span>{{ 'edit' | translate }}</span>
+        <button class="cursor-pointer hover:bg-gray-300 dark:hover:bg-neutral-600 rounded-full p-2">
+          <span class="material-icons dark:text-white">comment</span>
+        </button>
+        @if (belongLoggedUser) {
+          <button
+            matIconButton
+            [matMenuTriggerFor]="menu"
+            class="cursor-pointer hover:bg-gray-300 dark:hover:bg-neutral-600 rounded-full p-2"
+          >
+            <span class="material-icons dark:text-white">more_vert</span>
           </button>
-          <button mat-menu-item>
-            <mat-icon>delete</mat-icon>
-            <span>{{ 'delete' | translate }}</span>
-          </button>
-        </mat-menu>
-      }
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item>
+              <mat-icon>edit</mat-icon>
+              <span>{{ 'edit' | translate }}</span>
+            </button>
+            <button mat-menu-item>
+              <mat-icon>delete</mat-icon>
+              <span>{{ 'delete' | translate }}</span>
+            </button>
+          </mat-menu>
+        }
+      </div>
     </div>
   </mat-card-actions>
 </mat-card>

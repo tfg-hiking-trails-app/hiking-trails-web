@@ -7,6 +7,7 @@ import { Pagination } from "../interfaces/common/Pagination";
 import { HikingTrail } from "../interfaces/hiking-trail/HikingTrail";
 import { HikingTrailFilter } from "../interfaces/hiking-trail/HikingTrailFilter";
 import { ApiService } from "./api.service";
+import { CreatePrestige, DeletePrestige, Prestige } from "../interfaces/hiking-trail/Prestige";
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,9 @@ export class HikingTrailService {
     getByCode: (code: string) => `${ environment.apiGatewayUrl }/hiking-trail/${ code }`,
     getByAccountCodesPaged: `${ environment.apiGatewayUrl }/hiking-trail/account-codes`,
     search: (query: string, numberResults: number) =>
-      `${ environment.apiGatewayUrl }/hiking-trail/searcher?search=${ encodeURIComponent(query) }&numberResults=${ numberResults }`
+      `${ environment.apiGatewayUrl }/hiking-trail/searcher?search=${ encodeURIComponent(query) }&numberResults=${ numberResults }`,
+    addPrestige: `${ environment.apiGatewayUrl }/prestige`,
+    removePrestige: `${ environment.apiGatewayUrl }/prestige`,
   };
 
   getByCode(code: string): Observable<HikingTrail> {
@@ -39,6 +42,16 @@ export class HikingTrailService {
   search(query: string, numberResults: number = 5): Observable<HikingTrail[]> {
     const url: string = this.routes.search(query, numberResults);
     return this.apiService.get<HikingTrail[]>(url);
+  }
+
+  addPrestige(hikingTrailCode: string, prestige: CreatePrestige): Observable<Prestige> {
+    const url: string = this.routes.addPrestige;
+    return this.apiService.post<Prestige>(url, {}, prestige);
+  }
+
+  removePrestige(hikingTrailCode: string, deletePrestige: DeletePrestige): Observable<string> {
+    const url: string = this.routes.removePrestige;
+    return this.apiService.deleteWithBody<string>(url, deletePrestige);
   }
 
 }
