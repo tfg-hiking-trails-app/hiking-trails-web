@@ -7,13 +7,19 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./pages/private/layout/layout.component').then(m => m.LayoutComponent),
+      import('./pages/shared/layout/layout.component').then(m => m.LayoutComponent),
     children: [
       // public routes
       {
         path: 'profile/:code',
         loadComponent: () =>
           import('./pages/public/profile/profile.component').then(m => m.ProfileComponent)
+      },
+      {
+        path: 'explore',
+        pathMatch: 'full',
+        loadComponent: () =>
+          import('./pages/public/explore/explore.component').then(m => m.ExploreComponent)
       },
       // private routes
       {
@@ -25,11 +31,6 @@ export const routes: Routes = [
             loadComponent: () =>
               import('./pages/private/feed/feed.component').then(m => m.FeedComponent)
           },
-          /*{
-            path: 'profile',
-            loadComponent: () =>
-              import('./pages/private/profile/profile.component').then(m => m.ProfileComponent)
-          },*/
           {
             path: 'settings',
             loadComponent: () =>
@@ -63,7 +64,7 @@ export const routes: Routes = [
             loadComponent: () =>
               import('./pages/private/recommender/recommender.component').then(m => m.RecommenderComponent)
           },
-          { path: '', redirectTo: '/feed', pathMatch: 'full' },
+          { path: '', redirectTo: 'feed', pathMatch: 'full' },
         ]
       }
     ],
@@ -74,10 +75,5 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/auth/auth.component').then(m => m.AuthComponent)
   },
-  {
-    path: 'explore',
-    loadComponent: () =>
-      import('./pages/public/explore/explore.component').then(m => m.ExploreComponent)
-  },
-  { path: '**', redirectTo: '/auth', pathMatch: 'full' }
+  { path: '**', redirectTo: 'auth', pathMatch: 'full' }
 ];

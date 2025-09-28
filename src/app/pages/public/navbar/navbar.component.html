@@ -39,14 +39,7 @@
         >
           <span class="text-lg">{{ 'navbar.explore' | translate }}</span>
         </a>
-        <a
-          routerLink="/recommender"
-          routerLinkActive="text-white"
-          [routerLinkActiveOptions]="{ exact: true }"
-          class="hidden ml-6 lg:flex items-center shrink-0 text-gray-300 hover:text-white"
-        >
-          <span class="text-lg">{{ 'navbar.recommender' | translate }}</span>
-        </a>
+
         <!-- Search bar only visible on desktop -->
         <div class="hidden w-full lg:ml-5 lg:block">
           <app-search-bar />
@@ -55,9 +48,7 @@
 
       <!-- Right section -->
       <div class="hidden lg:flex absolute inset-y-0 right-0 items-center gap-4 pr-2 lg:static lg:inset-auto lg:ml-6 lg:pr-0">
-        <app-account-icon />
         <app-theme-toggle />
-        <app-add-activity-menu />
       </div>
     </div>
   </div>
@@ -65,12 +56,15 @@
   <!-- Mobile menu -->
   <el-disclosure id="mobile-menu" hidden class="block lg:hidden">
     <div class="space-y-1 px-2 pt-2 pb-3">
-      <div class="flex items-center justify-between gap-4 px-2 mt-3 mb-4">
-        <app-account-icon [mobileView]="true" />
-        <app-add-activity-menu />
-      </div>
       <app-search-bar />
-      <app-profile-options-menu [mobileView]="true" />
+      <a
+        routerLink="/explore"
+        routerLinkActive="text-white"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="block px-4 py-2 text-lg text-gray-300 hover:bg-light-mode dark:hover:bg-dark-mode"
+      >
+        <span class="text-lg">{{ 'navbar.explore' | translate }}</span>
+      </a>
     </div>
   </el-disclosure>
 </nav>

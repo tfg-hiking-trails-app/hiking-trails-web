@@ -3,19 +3,13 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MaterialModules } from '@material/material.modules';
 import { TranslatePipe } from '@ngx-translate/core';
 
-import { AddActivityMenuComponent } from '../../../components/add-activity-menu/add-activity-menu.component';
-import { AccountIconComponent } from '../../shared/account-icon/account-icon.component';
-import { OptionsMenuComponent } from '../../shared/account-icon/options-menu/options-menu.component';
 import { SearchBarComponent } from '../../shared/search-bar/search-bar.component';
 import { ThemeToggleComponent } from '../../shared/theme-toggle/theme-toggle.component';
 
 @Component({
-  selector: 'app-private-navbar',
+  selector: 'app-public-navbar',
   imports: [
-    AccountIconComponent,
-    AddActivityMenuComponent,
     MaterialModules,
-    OptionsMenuComponent,
     RouterLink,
     RouterLinkActive,
     SearchBarComponent,
@@ -27,4 +21,4 @@ import { ThemeToggleComponent } from '../../shared/theme-toggle/theme-toggle.com
   changeDetection: ChangeDetectionStrategy.OnPush,
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class NavbarPrivateComponent { }
+export class NavbarPublicComponent { }

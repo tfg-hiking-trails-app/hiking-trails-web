@@ -17,7 +17,8 @@ import { AuthService } from '../../../../services/auth.service';
 })
 export class OptionsMenuComponent {
 
-  @Input() logged: boolean = false;
+  @Input() mobileView = false;
+  logged = signal<boolean>(false);
   userLoggedCode = signal<string | null>(null);
 
   constructor(
@@ -32,6 +33,7 @@ export class OptionsMenuComponent {
     }
 
     this.userLoggedCode.set(code);
+    this.logged.set(authService.isAuthenticated());
   }
 
   logout() {

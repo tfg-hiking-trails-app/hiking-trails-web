@@ -15,7 +15,7 @@ import { RegisterComponent } from './register/register.component';
     LoginComponent,
     MaterialModules,
     RegisterComponent,
-    TranslatePipe
+    TranslatePipe,
   ],
   templateUrl: './auth.component.html',
   styles: ``,
