@@ -109,13 +109,27 @@
   <!-- Actions -->
   <mat-card-actions class="dark:bg-neutral-900">
     <div class="w-full">
-      <span class="text-black dark:text-white text-lg ml-3 sm:ml-10">
+      <div [class]="'flex ' + (prestiges().length && hikingTrail.comments.length ? 'justify-around' : 'pl-5')">
         @if(prestiges().length === 1) {
-          {{ prestiges().length }} {{ 'hiking-trail-card.single-prestige' | translate }}
-        } @else {
-          {{ prestiges().length }} {{ 'hiking-trail-card.multiple-prestiges' | translate }}
+          <span class="text-black dark:text-white text-lg">
+            {{ prestiges().length }} {{ 'hiking-trail-card.single-prestige' | translate }}
+          </span>
+        } @else if (prestiges().length > 1) {
+          <span class="text-black dark:text-white text-lg">
+            {{ prestiges().length }} {{ 'hiking-trail-card.multiple-prestiges' | translate }}
+          </span>
         }
-      </span>
+
+        @if(hikingTrail.comments.length === 1) {
+          <span class="text-black dark:text-white text-lg">
+            {{ hikingTrail.comments.length }} {{ 'hiking-trail-card.single-comment' | translate }}
+          </span>
+        } @else if (hikingTrail.comments.length > 1) {
+          <span class="text-black dark:text-white text-lg">
+            {{ hikingTrail.comments.length }} {{ 'hiking-trail-card.multiple-comments' | translate }}
+          </span>
+        }
+      </div>
       <div class="flex justify-around items-center">
         <button
           class="cursor-pointer hover:bg-gray-300 dark:hover:bg-neutral-600 rounded-full p-2"

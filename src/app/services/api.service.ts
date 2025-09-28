@@ -39,8 +39,8 @@ export class ApiService {
 
   post<TResponse>(
     url: string,
-    options: HttpOptions = {},
-    body?: any
+    body?: any,
+    options: HttpOptions = {}
   ): Observable<TResponse> {
     return this.http.post<TResponse>(url, body, options);
   }

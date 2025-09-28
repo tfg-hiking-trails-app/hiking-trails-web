@@ -21,6 +21,7 @@ import { HikingTrailService } from '../../services/hiking-trail.service';
 import { Metric } from '../../interfaces/display/Metric';
 import { Metrics } from '../../interfaces/hiking-trail/Metrics';
 import { ProfilePictureComponent } from '../../pages/shared/profile-picture/profile-picture.component';
+import { getWindowWidth } from '../../Utils/Utils';
 
 @Component({
   selector: 'app-hiking-trail-card',
@@ -30,7 +31,7 @@ import { ProfilePictureComponent } from '../../pages/shared/profile-picture/prof
     ProfilePictureComponent,
     RouterModule,
     TranslatePipe,
-    FriendlyDatePipe
+    FriendlyDatePipe,
 ],
   templateUrl: './hiking-trail-card.component.html',
   styles: ``,
@@ -117,7 +118,8 @@ export class HikingTrailCardComponent implements OnInit {
 
   public openCommentsDialog(): void {
     const dialogRef = this.dialog.open(CommentsCardComponent, {
-      data: this.hikingTrail
+      data: this.hikingTrail,
+      width: getWindowWidth()
     });
 
     dialogRef.afterClosed().subscribe((updated: HikingTrail) => {
@@ -131,27 +133,27 @@ export class HikingTrailCardComponent implements OnInit {
   get metricsDisplay(): Metric[] {
     const isHidden: boolean = !this.showResume;
     return [
-      { key: 'distance', icon: 'mdi-map-marker-radius', label: 'metrics.distance', unit: 'km', display: true },
-      { key: 'calories', icon: 'mdi-fire', label: 'metrics.calories', unit: 'Kcal', display: true },
-      { key: 'duration', icon: 'timer', label: 'metrics.duration', unit: '', display: true },
-      { key: 'steps', icon: 'mdi-shoe-print', label: 'metrics.steps', unit: '', display: isHidden },
-      { key: 'averagePace', icon: 'mdi-timer-outline', label: 'metrics.averagePace', unit: 'min/km', display: isHidden },
-      { key: 'maxPace', icon: 'mdi-timer', label: 'metrics.maxPace', unit: 'min/km', display: isHidden },
-      { key: 'elevationGain', icon: 'mdi-elevation-rise', label: 'metrics.elevationGain', unit: 'm', display: isHidden },
-      { key: 'elevationLoss', icon: 'mdi-elevation-decline', label: 'metrics.elevationLoss', unit: 'm', display: isHidden },
-      { key: 'averageSpeed', icon: 'mdi-speedometer-medium', label: 'metrics.averageSpeed', unit: 'km/h', display: isHidden },
-      { key: 'maxSpeed', icon: 'mdi-speedometer', label: 'metrics.maxSpeed', unit: 'km/h', display: isHidden },
-      { key: 'averageHeartRate', icon: 'mdi-heart-multiple-outline', label: 'metrics.averageHeartRate', unit: 'bpm', display: isHidden },
-      { key: 'maxHeartRate', icon: 'mdi-heart-plus', label: 'metrics.maxHeartRate', unit: 'bpm', display: isHidden },
-      { key: 'minHeartRate', icon: 'mdi-heart-minus', label: 'metrics.minHeartRate', unit: 'bpm', display: isHidden },
-      { key: 'averageCadence', icon: 'mdi-walk', label: 'metrics.averageCadence', unit: 'spm', display: isHidden },
-      { key: 'maxCadence', icon: 'mdi-walk', label: 'metrics.maxCadence', unit: 'spm', display: isHidden },
-      { key: 'maxAltitude', icon: 'mdi-arrow-top-right', label: 'metrics.maxAltitude', unit: 'm', display: isHidden },
-      { key: 'minAltitude', icon: 'mdi-arrow-bottom-right', label: 'metrics.minAltitude', unit: 'm', display: isHidden },
+      { key: 'distance',          icon: 'mdi-map-marker-radius',      label: 'metrics.distance',          unit: 'km',       display: true },
+      { key: 'calories',          icon: 'mdi-fire',                   label: 'metrics.calories',          unit: 'Kcal',     display: true },
+      { key: 'duration',          icon: 'timer',                      label: 'metrics.duration',          unit: '',         display: true },
+      { key: 'steps',             icon: 'mdi-shoe-print',             label: 'metrics.steps',             unit: '',         display: isHidden },
+      { key: 'averagePace',       icon: 'mdi-timer-outline',          label: 'metrics.averagePace',       unit: 'min/km',   display: isHidden },
+      { key: 'maxPace',           icon: 'mdi-timer',                  label: 'metrics.maxPace',           unit: 'min/km',   display: isHidden },
+      { key: 'elevationGain',     icon: 'mdi-elevation-rise',         label: 'metrics.elevationGain',     unit: 'm',        display: isHidden },
+      { key: 'elevationLoss',     icon: 'mdi-elevation-decline',      label: 'metrics.elevationLoss',     unit: 'm',        display: isHidden },
+      { key: 'averageSpeed',      icon: 'mdi-speedometer-medium',     label: 'metrics.averageSpeed',      unit: 'km/h',     display: isHidden },
+      { key: 'maxSpeed',          icon: 'mdi-speedometer',            label: 'metrics.maxSpeed',          unit: 'km/h',     display: isHidden },
+      { key: 'averageHeartRate',  icon: 'mdi-heart-multiple-outline', label: 'metrics.averageHeartRate',  unit: 'bpm',      display: isHidden },
+      { key: 'maxHeartRate',      icon: 'mdi-heart-plus',             label: 'metrics.maxHeartRate',      unit: 'bpm',      display: isHidden },
+      { key: 'minHeartRate',      icon: 'mdi-heart-minus',            label: 'metrics.minHeartRate',      unit: 'bpm',      display: isHidden },
+      { key: 'averageCadence',    icon: 'mdi-walk',                   label: 'metrics.averageCadence',    unit: 'spm',      display: isHidden },
+      { key: 'maxCadence',        icon: 'mdi-walk',                   label: 'metrics.maxCadence',        unit: 'spm',      display: isHidden },
+      { key: 'maxAltitude',       icon: 'mdi-arrow-top-right',        label: 'metrics.maxAltitude',       unit: 'm',        display: isHidden },
+      { key: 'minAltitude',       icon: 'mdi-arrow-bottom-right',     label: 'metrics.minAltitude',       unit: 'm',        display: isHidden },
     ];
   }
 
-  get metrics(): Metrics | undefined {
+  get metric(): Metrics | undefined {
     if (this.hikingTrail.metrics.length === 0 || !this.hikingTrail.metrics[0]) {
       return undefined;
     }
@@ -160,29 +162,29 @@ export class HikingTrailCardComponent implements OnInit {
   }
 
   get distance(): number | undefined {
-    if (!this.metrics?.distance) {
+    if (!this.metric?.distance) {
       return undefined;
     }
 
-    const kms = this.metrics.distance / 1000;
+    const kms = this.metric.distance / 1000;
 
     return Math.round(kms * 100) / 100;
   }
 
   get calories(): number | undefined {
-    if (!this.metrics?.calories) {
+    if (!this.metric?.calories) {
       return undefined;
     }
 
-    return this.metrics.calories;
+    return this.metric.calories;
   }
 
   get steps(): number | undefined {
-    if (!this.metrics?.steps) {
+    if (!this.metric?.steps) {
       return undefined;
     }
 
-    return this.metrics.steps;
+    return this.metric.steps;
   }
 
   get duration(): string {
@@ -199,107 +201,107 @@ export class HikingTrailCardComponent implements OnInit {
   }
 
   get averagePace(): number | undefined {
-    if (!this.metrics?.averagePace) {
+    if (!this.metric?.averagePace) {
       return undefined;
     }
 
-    return Math.round(this.metrics.averagePace * 100 / 60) / 100;
+    return Math.round(this.metric.averagePace * 100 / 60) / 100;
   }
 
   get maxPace(): number | undefined {
-    if (!this.metrics?.maxPace) {
+    if (!this.metric?.maxPace) {
       return undefined;
     }
 
-    return Math.round(this.metrics.maxPace * 100 / 60) / 100;
+    return Math.round(this.metric.maxPace * 100 / 60) / 100;
   }
 
   get elevationGain(): number | undefined {
-    if (!this.metrics?.elevationGain) {
+    if (!this.metric?.elevationGain) {
       return undefined;
     }
 
-    return Math.round(this.metrics.elevationGain * 100) / 100;
+    return Math.round(this.metric.elevationGain * 100) / 100;
   }
 
   get elevationLoss(): number | undefined {
-    if (!this.metrics?.elevationLoss) {
+    if (!this.metric?.elevationLoss) {
       return undefined;
     }
 
-    return Math.round(this.metrics.elevationLoss * 100) / 100;
+    return Math.round(this.metric.elevationLoss * 100) / 100;
   }
 
   get averageSpeed(): number | undefined {
-    if (!this.metrics?.averageSpeed) {
+    if (!this.metric?.averageSpeed) {
       return undefined;
     }
 
-    return Math.round(this.metrics.averageSpeed * 3.6 * 100) / 100;
+    return Math.round(this.metric.averageSpeed * 3.6 * 100) / 100;
   }
 
   get maxSpeed(): number | undefined {
-    if (!this.metrics?.maxSpeed) {
+    if (!this.metric?.maxSpeed) {
       return undefined;
     }
 
-    return Math.round(this.metrics.maxSpeed * 3.6 * 100) / 100;
+    return Math.round(this.metric.maxSpeed * 3.6 * 100) / 100;
   }
 
   get averageHeartRate(): number | undefined {
-    if (!this.metrics?.averageHeartRate) {
+    if (!this.metric?.averageHeartRate) {
       return undefined;
     }
 
-    return this.metrics.averageHeartRate;
+    return this.metric.averageHeartRate;
   }
 
   get maxHeartRate(): number | undefined {
-    if (!this.metrics?.maxHeartRate) {
+    if (!this.metric?.maxHeartRate) {
       return undefined;
     }
 
-    return this.metrics.maxHeartRate;
+    return this.metric.maxHeartRate;
   }
 
   get minHeartRate(): number | undefined {
-    if (!this.metrics?.minHeartRate) {
+    if (!this.metric?.minHeartRate) {
       return undefined;
     }
 
-    return this.metrics.minHeartRate;
+    return this.metric.minHeartRate;
   }
 
   get averageCadence(): number | undefined {
-    if (!this.metrics?.averageCadence) {
+    if (!this.metric?.averageCadence) {
       return undefined;
     }
 
-    return Math.round(this.metrics.averageCadence * 100) / 100;
+    return Math.round(this.metric.averageCadence * 100) / 100;
   }
 
   get maxCadence(): number | undefined {
-    if (!this.metrics?.maxCadence) {
+    if (!this.metric?.maxCadence) {
       return undefined;
     }
 
-    return Math.round(this.metrics.maxCadence * 100) / 100;
+    return Math.round(this.metric.maxCadence * 100) / 100;
   }
 
   get maxAltitude(): number | undefined {
-    if (!this.metrics?.maxAltitude) {
+    if (!this.metric?.maxAltitude) {
       return undefined;
     }
 
-    return Math.round(this.metrics.maxAltitude * 100) / 100;
+    return Math.round(this.metric.maxAltitude * 100) / 100;
   }
 
   get minAltitude(): number | undefined {
-    if (!this.metrics?.minAltitude) {
+    if (!this.metric?.minAltitude) {
       return undefined;
     }
 
-    return Math.round(this.metrics.minAltitude * 100) / 100;
+    return Math.round(this.metric.minAltitude * 100) / 100;
   }
 
 }

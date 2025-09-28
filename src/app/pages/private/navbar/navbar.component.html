@@ -41,6 +41,7 @@
       <div class="hidden sm:flex absolute inset-y-0 right-0 items-center gap-4 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
         <app-account-icon />
         <app-theme-toggle />
+        <app-add-activity-menu />
       </div>
     </div>
   </div>
@@ -48,9 +49,9 @@
   <!-- Mobile menu -->
   <el-disclosure id="mobile-menu" hidden class="block sm:hidden">
     <div class="space-y-1 px-2 pt-2 pb-3">
-      <div class="flex items-center justify-between gap-4 px-2 mt-3 mb-2">
+      <div class="flex items-center justify-between gap-4 px-2 mt-3 mb-4">
         <app-account-icon [mobileView]="true" />
-        <app-theme-toggle />
+        <app-add-activity-menu />
       </div>
       <app-search-bar />
       <app-profile-options-menu />

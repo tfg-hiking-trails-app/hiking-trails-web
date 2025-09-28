@@ -9,3 +9,23 @@ export function getDefaultProfileImageUrl(gender?: string): string {
     ? defaultProfilePicture.replace("male", `${gender}`)
     : defaultProfilePicture;
 }
+
+export function getWindowWidth(): string
+{
+  let width: string = '60%';
+
+  if (window.innerWidth < 600)
+      width = '95%';
+
+  return width;
+}
+
+export function isDarkMode(): boolean {
+  return document.documentElement.classList.contains('dark');
+}
+
+export function removeEmptyFields<T extends object>(obj: T): Partial<T> {
+  return Object.entries(obj)
+    .filter(([_, v]) => v !== null && v !== undefined && v !== '')
+    .reduce((acc, [k, v]) => ({ ...acc, [k]: v }), {});
+}

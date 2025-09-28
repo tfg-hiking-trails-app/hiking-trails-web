@@ -2,11 +2,8 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
-  HostListener,
   Inject,
-  signal,
-  ViewChild
+  signal
 } from '@angular/core';
 import {
   FormBuilder,
@@ -20,14 +17,14 @@ import { MaterialModules } from '@material/material.modules';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { filter, finalize, tap } from 'rxjs';
 
+import { getDefaultProfileImageUrl } from '../../Utils/Utils';
 import { Account } from '../../interfaces/account/Account';
+import { Comment, CreateComment } from '../../interfaces/hiking-trail/Comment';
+import { HikingTrail } from '../../interfaces/hiking-trail/HikingTrail';
 import { AccountService } from '../../services/account.service';
 import { AuthService } from '../../services/auth.service';
-import { Comment, CreateComment } from '../../interfaces/hiking-trail/Comment';
-import { DialogConfirmComponent } from '../dialog-confirm/dialog-confirm.component';
-import { getDefaultProfileImageUrl } from '../../Utils/Utils';
-import { HikingTrail } from '../../interfaces/hiking-trail/HikingTrail';
 import { HikingTrailService } from '../../services/hiking-trail.service';
+import { DialogConfirmComponent } from '../dialog-confirm/dialog-confirm.component';
 
 @Component({
   selector: 'app-comments-card',
@@ -43,7 +40,6 @@ import { HikingTrailService } from '../../services/hiking-trail.service';
 })
 export class CommentsCardComponent {
 
-  @ViewChild('dialogComment', { static: true }) dialogComponentRef!: ElementRef;
   accounts = new Map<string, Account | null>();
   commentForm: FormGroup;
   hikingTrail = signal<HikingTrail | null>(null);

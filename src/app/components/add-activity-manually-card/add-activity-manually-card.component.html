@@ -1,0 +1,407 @@
+<div class="sm:min-w-[400px] flex justify-between items-center">
+  <h2 mat-dialog-title>{{ 'card.hiking-trail-form.title' | translate }}</h2>
+  <button
+    class="mr-3"
+    mat-icon-button
+    (click)="close()"
+    aria-label="Cerrar"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content>
+  @if (isLoading()) {
+    <div class="flex justify-center items-center h-64">
+      <app-loading-spinner />
+    </div>
+  } @else {
+    <!-- Comment box -->
+    <div class="max-h-[500px] overflow-y-auto pr-2">
+      <form [formGroup]="addHikingTrailForm">
+        <div class="grid md:grid-cols-2 w-full gap-4 items-start mb-5">
+          <!-- Name -->
+          <mat-form-field class="w-full" subscriptSizing="dynamic">
+            <mat-label for="name">{{ 'card.hiking-trail-form.name' | translate}}</mat-label>
+            <input
+              matInput
+              formControlName="name"
+              autocomplete="off"
+              required
+            />
+            @if (submitted && addHikingTrailControls['name'].hasError('required')) {
+              <mat-error>{{ 'card.hiking-trail-form.name-required' | translate }}</mat-error>
+            }
+          </mat-form-field>
+
+          <!-- Distance -->
+          <mat-form-field class="w-full" subscriptSizing="dynamic">
+            <mat-label for="distance">{{ 'card.hiking-trail-form.distance' | translate}}</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="distance"
+              autocomplete="off"
+              required
+              min="0"
+              step="0.01"
+            />
+            @if (submitted && addHikingTrailControls['distance'].hasError('required')) {
+              <mat-error>{{ 'card.hiking-trail-form.distance-required' | translate }}</mat-error>
+            }
+            @if (submitted && addHikingTrailControls['distance'].hasError('min')) {
+              <mat-error>{{ 'card.hiking-trail-form.distance-min' | translate }}</mat-error>
+            }
+          </mat-form-field>
+
+          <!-- Description -->
+          <mat-form-field class="w-full md:col-span-2" subscriptSizing="dynamic">
+            <mat-label for="description">{{ 'card.hiking-trail-form.description' | translate}}</mat-label>
+            <textarea
+              matInput
+              formControlName="description"
+              autocomplete="off"
+              cdkTextareaAutosize
+              cdkAutosizeMinRows="3"
+              cdkAutosizeMaxRows="5"
+            ></textarea>
+          </mat-form-field>
+
+          <!-- Images -->
+          <mat-form-field class="w-full md:col-span-2" subscriptSizing="dynamic">
+            <mat-label for="images">{{ 'card.hiking-trail-form.images' | translate}}</mat-label>
+            <input
+              matInput
+              formControlName="images"
+              autocomplete="off"
+            />
+          </mat-form-field>
+
+          <!-- Trail Type -->
+          <mat-form-field class="w-full" subscriptSizing="dynamic">
+            <mat-label for="trailType">{{ 'card.hiking-trail-form.trail-type' | translate}}</mat-label>
+            <mat-select formControlName="trailType">
+              @for (type of trailTypes; track $index) {
+                <mat-option [value]="type.code">
+                  {{ `trail-type.${ type.trail }` | translate }}
+                </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+          <!-- Difficulty Level -->
+          <mat-form-field class="w-full" subscriptSizing="dynamic">
+            <mat-label for="difficultyLevel">{{ 'card.hiking-trail-form.difficulty-level' | translate}}</mat-label>
+            <mat-select formControlName="difficultyLevel">
+              @for (level of difficultyLevels; track $index) {
+                <mat-option [value]="level.code">
+                  {{ `difficulty-level.${ level.difficultyLevelValue }` | translate }}
+                </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+          <!-- Terrain Type -->
+          <mat-form-field class="w-full" subscriptSizing="dynamic">
+            <mat-label for="terrainType">{{ 'card.hiking-trail-form.terrain-type' | translate}}</mat-label>
+            <mat-select formControlName="terrainType">
+              @for (terrain of terrainTypes; track $index) {
+                <mat-option [value]="terrain.code">
+                  {{ `terrain-type.${ terrain.terrain }` | translate }}
+                </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+          <!-- Pet Friendly -->
+          <mat-form-field class="w-full" subscriptSizing="dynamic">
+            <mat-label for="petFriendly">{{ 'card.hiking-trail-form.pet-friendly' | translate}}</mat-label>
+            <mat-select formControlName="petFriendly">
+              <mat-option [value]="false">{{ 'dialog.no' | translate }}</mat-option>
+              <mat-option [value]="true">{{ 'dialog.yes' | translate }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- Start Date -->
+          <mat-form-field class="w-full" subscriptSizing="dynamic">
+            <mat-label for="startDate">{{ 'card.hiking-trail-form.start-date' | translate}}</mat-label>
+            <input
+              matInput
+              [matDatepicker]="startPicker"
+              formControlName="startDate"
+              autocomplete="off"
+              required
+            />
+            @if (submitted && addHikingTrailControls['startDate'].hasError('required')) {
+              <mat-error>{{ 'card.hiking-trail-form.start-date-required' | translate }}</mat-error>
+            }
+            <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+            <mat-datepicker #startPicker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field class="w-full" subscriptSizing="dynamic">
+            <mat-label>{{ 'card.hiking-trail-form.start-time' | translate }}</mat-label>
+            <input
+              matInput
+              [matTimepicker]="startTimepicker"
+              formControlName="startTime"
+              placeholder="HH:mm"
+              required
+            >
+            <mat-timepicker #startTimepicker interval="5m"></mat-timepicker>
+            <mat-timepicker-toggle [for]="startTimepicker" matSuffix />
+          </mat-form-field>
+
+          <!-- End Time -->
+          <mat-form-field class="w-full" subscriptSizing="dynamic">
+            <mat-label for="endDate">{{ 'card.hiking-trail-form.end-date' | translate}}</mat-label>
+            <input
+              matInput
+              [matDatepicker]="endPicker"
+              formControlName="endDate"
+              autocomplete="off"
+              required
+            />
+            @if (submitted && addHikingTrailControls['endDate'].hasError('required')) {
+              <mat-error>{{ 'card.hiking-trail-form.end-date-required' | translate }}</mat-error>
+            }
+            <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+            <mat-datepicker #endPicker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field class="w-full" subscriptSizing="dynamic">
+            <mat-label>{{ 'card.hiking-trail-form.end-time' | translate }}</mat-label>
+            <input
+              matInput
+              [matTimepicker]="endTimepicker"
+              formControlName="endTime"
+              placeholder="HH:mm"
+              required
+            >
+            <mat-timepicker #endTimepicker interval="5m"></mat-timepicker>
+            <mat-timepicker-toggle [for]="endTimepicker" matSuffix />
+          </mat-form-field>
+
+          <!-- Location -->
+          <div
+            #mapContainer
+            id="map"
+            class="rounded-2xl z-0 w-full h-64 col-span-2">
+          </div>
+        </div>
+
+        <!-- Metrics -->
+        <mat-accordion class="w-full col-span-2 my-5!">
+          <mat-expansion-panel class="border rounded-lg" expanded="true">
+            <mat-expansion-panel-header>
+              <mat-panel-title>{{ 'card.hiking-trail-form.metrics' | translate }}</mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="grid md:grid-cols-2 w-full gap-4 items-start">
+              <!-- Steps -->
+              <mat-form-field class="w-full" subscriptSizing="dynamic">
+                <mat-label for="steps">{{ 'card.hiking-trail-form.steps' | translate}}</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  formControlName="steps"
+                  autocomplete="off"
+                  min="0"
+                  step="1"
+                />
+              </mat-form-field>
+
+              <!-- Calories -->
+              <mat-form-field class="w-full" subscriptSizing="dynamic">
+                <mat-label for="calories">{{ 'card.hiking-trail-form.calories' | translate}}</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  formControlName="calories"
+                  autocomplete="off"
+                  min="0"
+                  step="1"
+                />
+              </mat-form-field>
+
+              <!-- Average Pace -->
+              <mat-form-field class="w-full" subscriptSizing="dynamic">
+                <mat-label for="averagePace">{{ 'card.hiking-trail-form.average-pace' | translate}}</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  formControlName="averagePace"
+                  autocomplete="off"
+                  min="0"
+                  step="0.01"
+                />
+              </mat-form-field>
+
+              <!-- Max Pace -->
+              <mat-form-field class="w-full" subscriptSizing="dynamic">
+                <mat-label for="maxPace">{{ 'card.hiking-trail-form.max-pace' | translate}}</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  formControlName="maxPace"
+                  autocomplete="off"
+                  min="0"
+                  step="0.01"
+                />
+              </mat-form-field>
+
+              <!-- Elevation Gain -->
+              <mat-form-field class="w-full" subscriptSizing="dynamic">
+                <mat-label for="elevationGain">{{ 'card.hiking-trail-form.elevation-gain' | translate}}</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  formControlName="elevationGain"
+                  autocomplete="off"
+                  min="0"
+                  step="1"
+                />
+              </mat-form-field>
+
+              <!-- Elevation Gain -->
+              <mat-form-field class="w-full" subscriptSizing="dynamic">
+                <mat-label for="elevationLoss">{{ 'card.hiking-trail-form.elevation-loss' | translate}}</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  formControlName="elevationLoss"
+                  autocomplete="off"
+                  min="0"
+                  step="1"
+                />
+              </mat-form-field>
+
+              <!-- Average Speed -->
+              <mat-form-field class="w-full" subscriptSizing="dynamic">
+                <mat-label for="averageSpeed">{{ 'card.hiking-trail-form.average-speed' | translate}}</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  formControlName="averageSpeed"
+                  autocomplete="off"
+                  min="0"
+                  step="0.01"
+                />
+              </mat-form-field>
+
+              <!-- Max Speed -->
+              <mat-form-field class="w-full" subscriptSizing="dynamic">
+                <mat-label for="maxSpeed">{{ 'card.hiking-trail-form.max-speed' | translate}}</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  formControlName="maxSpeed"
+                  autocomplete="off"
+                  min="0"
+                  step="0.01"
+                />
+              </mat-form-field>
+
+              <!-- Average Heart Rate -->
+              <mat-form-field class="w-full" subscriptSizing="dynamic">
+                <mat-label for="averageHeartRate">{{ 'card.hiking-trail-form.average-heart-rate' | translate}}</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  formControlName="averageHeartRate"
+                  autocomplete="off"
+                  min="0"
+                  step="1"
+                />
+              </mat-form-field>
+
+              <!-- Max Heart Rate -->
+              <mat-form-field class="w-full" subscriptSizing="dynamic">
+                <mat-label for="maxHeartRate">{{ 'card.hiking-trail-form.max-heart-rate' | translate}}</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  formControlName="maxHeartRate"
+                  autocomplete="off"
+                  min="0"
+                  step="1"
+                />
+              </mat-form-field>
+
+              <!-- Min Heart Rate -->
+              <mat-form-field class="w-full" subscriptSizing="dynamic">
+                <mat-label for="minHeartRate">{{ 'card.hiking-trail-form.min-heart-rate' | translate}}</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  formControlName="minHeartRate"
+                  autocomplete="off"
+                  min="0"
+                  step="1"
+                />
+              </mat-form-field>
+
+              <!-- Average Cadence -->
+              <mat-form-field class="w-full" subscriptSizing="dynamic">
+                <mat-label for="averageCadence">{{ 'card.hiking-trail-form.average-cadence' | translate}}</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  formControlName="averageCadence"
+                  autocomplete="off"
+                  min="0"
+                  step="1"
+                />
+              </mat-form-field>
+
+              <!-- Max Cadence -->
+              <mat-form-field class="w-full" subscriptSizing="dynamic">
+                <mat-label for="maxCadence">{{ 'card.hiking-trail-form.max-cadence' | translate}}</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  formControlName="maxCadence"
+                  autocomplete="off"
+                  min="0"
+                  step="1"
+                />
+              </mat-form-field>
+
+              <!-- Max altitude -->
+              <mat-form-field class="w-full" subscriptSizing="dynamic">
+                <mat-label for="maxAltitude">{{ 'card.hiking-trail-form.max-altitude' | translate}}</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  formControlName="maxAltitude"
+                  autocomplete="off"
+                  min="0"
+                  step="1"
+                />
+              </mat-form-field>
+
+              <!-- Min altitude -->
+              <mat-form-field class="w-full" subscriptSizing="dynamic">
+                <mat-label for="minAltitude">{{ 'card.hiking-trail-form.min-altitude' | translate}}</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  formControlName="minAltitude"
+                  autocomplete="off"
+                  min="0"
+                  step="1"
+                />
+              </mat-form-field>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </form>
+    </div>
+  }
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button matButton="tonal" (click)="close()">{{ 'close' | translate }}</button>
+    <button matButton="filled" (click)="addHikingTrail()">
+      {{ 'add' | translate }}
+    </button>
+</mat-dialog-actions>

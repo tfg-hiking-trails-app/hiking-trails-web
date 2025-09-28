@@ -4,6 +4,7 @@ import { MaterialModules } from '@material/material.modules';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { AccountIconComponent } from '../../shared/account-icon/account-icon.component';
+import { AddActivityMenuComponent } from '../../../components/add-activity-menu/add-activity-menu.component';
 import { OptionsMenuComponent } from '../../shared/account-icon/options-menu/options-menu.component';
 import { SearchBarComponent } from '../../shared/search-bar/search-bar.component';
 import { ThemeToggleComponent } from '../../shared/theme-toggle/theme-toggle.component';
@@ -12,6 +13,7 @@ import { ThemeToggleComponent } from '../../shared/theme-toggle/theme-toggle.com
   selector: 'app-private-navbar',
   imports: [
     AccountIconComponent,
+    AddActivityMenuComponent,
     MaterialModules,
     OptionsMenuComponent,
     RouterLink,

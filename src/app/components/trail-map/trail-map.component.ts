@@ -1,8 +1,17 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  ViewChild
+} from '@angular/core';
 import * as L from 'leaflet';
 
 import { Coordinates } from '../../interfaces/fit-data/Coordinates';
 import { TranslateService } from '@ngx-translate/core';
+import { isDarkMode } from '../../Utils/Utils';
 
 @Component({
   selector: 'app-trail-map',
@@ -28,8 +37,7 @@ export class TrailMapComponent implements AfterViewInit, OnDestroy {
   private darkTileLayer!: L.TileLayer;
 
   private onThemeChange = (event: CustomEvent) => {
-    const isDarkMode = event.detail.isDarkMode ?? this.isDarkMode();
-    this.applyTheme(isDarkMode);
+    this.applyTheme(event.detail.isDarkMode ?? isDarkMode());
   };
 
   constructor(
@@ -54,7 +62,7 @@ export class TrailMapComponent implements AfterViewInit, OnDestroy {
         className: 'map-tiles'
     });
 
-    this.isDarkMode()
+    isDarkMode()
       ? this.darkTileLayer.addTo(this.map)
       : this.lightTileLayer.addTo(this.map);
 
@@ -69,10 +77,6 @@ export class TrailMapComponent implements AfterViewInit, OnDestroy {
     this.resizeObserver.observe(this.mapContainer.nativeElement);
 
     window.addEventListener('theme-changed', this.onThemeChange as EventListener);
-  }
-
-  private isDarkMode(): boolean {
-    return document.documentElement.classList.contains('dark');
   }
 
   private applyTheme(isDarkMode: boolean): void {

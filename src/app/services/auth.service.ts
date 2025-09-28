@@ -30,14 +30,15 @@ export class AuthService {
   login(request: LoginRequest): Observable<LoginResponse> {
     return this.apiService.post<LoginResponse>(
       this.routes.loginPath,
-      { withCredentials: true },
-      request
+      request,
+      { withCredentials: true }
     );
   }
 
   refresh(): Observable<LoginResponse> {
     return this.apiService.post<LoginResponse>(
       this.routes.refreshPath,
+      {},
       { withCredentials: true }
     );
   }
@@ -45,6 +46,7 @@ export class AuthService {
   logout(): void {
     this.apiService.post<void>(
       this.routes.logoutPath,
+      {},
       { withCredentials: true }
     ).subscribe({
       next: () => {

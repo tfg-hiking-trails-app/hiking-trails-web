@@ -1,5 +1,5 @@
 <div class="sm:min-w-[400px] flex justify-between items-center">
-  <h2 mat-dialog-title>{{ 'comments.title' | translate }}</h2>
+  <h2 mat-dialog-title>{{ 'card.comments.title' | translate }}</h2>
   <button
     class="mr-3"
     mat-icon-button
@@ -14,6 +14,11 @@
   <!-- Comment box -->
   <div class="max-h-[500px] overflow-y-auto">
     @if (hikingTrail()) {
+      @if (hikingTrail()!.comments.length === 0) {
+        <span class="dark:text-white text-lg sm:text-xl md:px-10">
+          {{ 'card.comments.no-comments' | translate }}
+        </span>
+      }
       @for (comment of hikingTrail()!.comments; track $index) {
         @let account = accounts.get(comment.code);
 
@@ -54,16 +59,16 @@
   <!-- Form to add a comment -->
   <form [formGroup]="commentForm" class="flex items-center w-full gap-2">
     <mat-form-field class="w-full" subscriptSizing="dynamic">
-      <mat-label for="comment">{{ 'comments.comment' | translate}}</mat-label>
+      <mat-label for="comment">{{ 'card.comments.comment' | translate}}</mat-label>
       <input
         matInput
-        [placeholder]="'comments.placeholder' | translate"
+        [placeholder]="'card.comments.placeholder' | translate"
         formControlName="comment"
         autocomplete="off"
         required
       />
       @if (submitted && commentControls['comment'].hasError('required')) {
-        <mat-error>{{ 'comments.required' | translate }}</mat-error>
+        <mat-error>{{ 'card.comments.required' | translate }}</mat-error>
       }
     </mat-form-field>
     <button

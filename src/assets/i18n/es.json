@@ -1,21 +1,68 @@
 {
+  "add": "Añadir",
   "auth": {
     "english": "Inglés",
     "login": "Iniciar sesión",
     "register": "Registrarse",
     "spanish": "Español"
   },
+  "card": {
+    "comments": {
+      "comment": "Comentario",
+      "title": "Comentarios",
+      "required": "El comentario no puede estar vacío",
+      "placeholder": "Escribe tu comentario...",
+      "delete-comment-title": "Eliminar comentario",
+      "delete-comment-message": "¿Estás seguro de que quieres eliminar este comentario?",
+      "no-comments": "No hay comentarios aún. ¡Sé el primero en comentar!"
+    },
+    "hiking-trail-form": {
+      "added-success": "Ruta de senderismo añadida con éxito",
+      "average-cadence": "Cadencia media (pasos/min)",
+      "average-heart-rate": "Frecuencia cardíaca media (bpm)",
+      "average-pace": "Ritmo medio (min/km)",
+      "average-speed": "Velocidad media (km/h)",
+      "calories": "Calorías",
+      "description": "Descripción",
+      "description-required": "La descripción es obligatoria",
+      "difficulty-level": "Nivel de dificultad",
+      "distance-required": "La distancia es obligatoria",
+      "distance-min": "La distancia debe ser un valor positivo en kilómetros",
+      "distance": "Distancia (km)",
+      "duration": "Duración",
+      "elevation-gain": "Desnivel positivo (m)",
+      "elevation-loss": "Desnivel negativo (m)",
+      "end-date-required": "La fecha de fin es obligatoria",
+      "end-date": "Fecha de fin",
+      "end-time-required": "La hora de fin es obligatoria",
+      "end-time": "Hora de fin",
+      "images": "Imágenes",
+      "invalid-dates": "La fecha y hora de fin deben ser posteriores a las de inicio",
+      "location": "Ubicación",
+      "max-altitude": "Altitud máxima (m)",
+      "max-cadence": "Cadencia máxima (pasos/min)",
+      "max-heart-rate": "Frecuencia cardíaca máxima (bpm)",
+      "max-pace": "Ritmo máximo (min/km)",
+      "max-speed": "Velocidad máxima (km/h)",
+      "metrics": "Métricas",
+      "min-altitude": "Altitud mínima (m)",
+      "min-heart-rate": "Frecuencia cardíaca mínima (bpm)",
+      "name-required": "El nombre es obligatorio",
+      "name": "Nombre",
+      "pet-friendly": "Apto para mascotas",
+      "start-date-required": "La fecha de inicio es obligatoria",
+      "start-date": "Fecha de inicio",
+      "start-time-required": "La hora de inicio es obligatoria",
+      "start-time": "Hora de inicio",
+      "steps": "Pasos",
+      "terrain-type": "Tipo de terreno",
+      "title": "Añadir ruta de senderismo",
+      "trail-type": "Tipo de ruta"
+    }
+  },
   "clear-data": "Limpiar datos",
   "close": "Cerrar",
   "collapse-all": "Colapsar todo",
-  "comments": {
-    "comment": "Comentario",
-    "title": "Comentarios",
-    "required": "El comentario no puede estar vacío",
-    "placeholder": "Escribe tu comentario...",
-    "delete-comment-title": "Eliminar comentario",
-    "delete-comment-message": "¿Estás seguro de que quieres eliminar este comentario?"
-  },
   "date": {
     "on_date_at": "{{ date }} a las {{ time }}",
     "today_at": "Hoy a las {{ time }}",
@@ -75,7 +122,9 @@
     "terrain-type": "Tipo de terreno",
     "trail-type": "Tipo de ruta",
     "single-prestige": "prestigio",
-    "multiple-prestiges": "prestigios"
+    "multiple-prestiges": "prestigios",
+    "single-comment": "comentario",
+    "multiple-comments": "comentarios"
   },
   "laps": {
     "kilometer": "Kilómetro",
@@ -129,6 +178,13 @@
       "no-accounts-found": "No se han encontrado cuentas",
       "hiking-trails": "Rutas de senderismo",
       "no-hiking-trails-found": "No se han encontrado rutas de senderismo"
+    },
+    "add-activity-menu": {
+      "add-activity": "Añadir actividad",
+      "add-manually": "Añadir manualmente",
+      "upload-fit-file": "Subir archivo FIT",
+      "confirm-upload-fit-file": "¿Estás seguro de que quieres subir este archivo FIT?",
+      "hiking-trail-climbed-correctly": "Ruta de senderismo subida correctamente"
     }
   },
   "open": "Abrir",
