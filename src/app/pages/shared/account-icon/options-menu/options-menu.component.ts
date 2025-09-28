@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -17,6 +17,7 @@ import { AuthService } from '../../../../services/auth.service';
 })
 export class OptionsMenuComponent {
 
+  @Input() logged: boolean = false;
   userLoggedCode = signal<string | null>(null);
 
   constructor(
