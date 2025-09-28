@@ -2,11 +2,11 @@
   dark:bg-gradient-to-b dark:from-[#0C0C0D] dark:to-dark-mode
   after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-white/10">
 
-  <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-2">
     <div class="relative flex h-16 items-center justify-between">
 
       <!-- Mobile menu button -->
-      <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+      <div class="absolute inset-y-0 left-0 flex items-center lg:hidden">
         <button type="button" command="--toggle" commandfor="mobile-menu"
           class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-300 hover:bg-white/5 hover:text-white focus:outline-2 focus:-outline-offset-1 focus:outline-indigo-500">
           <span class="absolute -inset-0.5"></span>
@@ -27,18 +27,34 @@
       </div>
 
       <!-- Left section -->
-      <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+      <div class="flex flex-1 items-center justify-center lg:items-stretch lg:justify-start">
         <a routerLink="/feed" class="flex items-center gap-2 shrink-0">
           <span class="text-white text-2xl font-medium">HikingTrailApp</span>
         </a>
+        <a
+          routerLink="/explore"
+          routerLinkActive="text-white"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="hidden ml-6 lg:flex items-center shrink-0 text-gray-300 hover:text-white"
+        >
+          <span class="text-lg">{{ 'navbar.explore' | translate }}</span>
+        </a>
+        <a
+          routerLink="/recommender"
+          routerLinkActive="text-white"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="hidden ml-6 lg:flex items-center shrink-0 text-gray-300 hover:text-white"
+        >
+          <span class="text-lg">{{ 'navbar.recommender' | translate }}</span>
+        </a>
         <!-- Search bar only visible on desktop -->
-        <div class="hidden w-full sm:ml-6 sm:block md:px-5">
+        <div class="hidden w-full lg:ml-5 lg:block">
           <app-search-bar />
         </div>
       </div>
 
       <!-- Right section -->
-      <div class="hidden sm:flex absolute inset-y-0 right-0 items-center gap-4 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+      <div class="hidden lg:flex absolute inset-y-0 right-0 items-center gap-4 pr-2 lg:static lg:inset-auto lg:ml-6 lg:pr-0">
         <app-account-icon />
         <app-theme-toggle />
         <app-add-activity-menu />
@@ -47,7 +63,7 @@
   </div>
 
   <!-- Mobile menu -->
-  <el-disclosure id="mobile-menu" hidden class="block sm:hidden">
+  <el-disclosure id="mobile-menu" hidden class="block lg:hidden">
     <div class="space-y-1 px-2 pt-2 pb-3">
       <div class="flex items-center justify-between gap-4 px-2 mt-3 mb-4">
         <app-account-icon [mobileView]="true" />
@@ -58,4 +74,3 @@
     </div>
   </el-disclosure>
 </nav>
-

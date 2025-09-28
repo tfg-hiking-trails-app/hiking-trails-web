@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MaterialModules } from '@material/material.modules';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -17,6 +17,7 @@ import { ThemeToggleComponent } from '../../shared/theme-toggle/theme-toggle.com
     MaterialModules,
     OptionsMenuComponent,
     RouterLink,
+    RouterLinkActive,
     SearchBarComponent,
     ThemeToggleComponent,
     TranslatePipe,

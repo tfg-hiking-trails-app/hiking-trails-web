@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { AuthService } from '../../../../services/auth.service';
@@ -8,6 +8,7 @@ import { AuthService } from '../../../../services/auth.service';
   selector: 'app-profile-options-menu',
   imports: [
     RouterLink,
+    RouterLinkActive,
     TranslatePipe
   ],
   templateUrl: './options-menu.component.html',

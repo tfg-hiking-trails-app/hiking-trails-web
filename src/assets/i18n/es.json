@@ -165,26 +165,28 @@
     "totalDescent": "Descenso total"
   },
   "navbar": {
-    "close-icon": "Cerrar menú",
-    "open-icon": "Abrir menú",
-    "profile": {
-      "logout": "Cerrar sesión",
-      "open": "Mi perfil",
-      "settings": "Ajustes"
-    },
-    "search-bar": {
-      "placeholder": "Busca Ubicaciones, Usuarios...",
-      "accounts": "Cuentas",
-      "no-accounts-found": "No se han encontrado cuentas",
-      "hiking-trails": "Rutas de senderismo",
-      "no-hiking-trails-found": "No se han encontrado rutas de senderismo"
-    },
     "add-activity-menu": {
       "add-activity": "Añadir actividad",
       "add-manually": "Añadir manualmente",
       "upload-fit-file": "Subir archivo FIT",
       "confirm-upload-fit-file": "¿Estás seguro de que quieres subir este archivo FIT?",
       "hiking-trail-climbed-correctly": "Ruta de senderismo subida correctamente"
+    },
+    "close-icon": "Cerrar menú",
+    "explore": "Explorar",
+    "open-icon": "Abrir menú",
+    "profile": {
+      "logout": "Cerrar sesión",
+      "open": "Mi perfil",
+      "settings": "Ajustes"
+    },
+    "recommender": "Recomendador",
+    "search-bar": {
+      "placeholder": "Busca Ubicaciones, Usuarios...",
+      "accounts": "Cuentas",
+      "no-accounts-found": "No se han encontrado cuentas",
+      "hiking-trails": "Rutas de senderismo",
+      "no-hiking-trails-found": "No se han encontrado rutas de senderismo"
     }
   },
   "open": "Abrir",

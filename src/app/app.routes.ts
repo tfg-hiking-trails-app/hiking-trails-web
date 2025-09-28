@@ -58,6 +58,11 @@ export const routes: Routes = [
             loadComponent: () =>
               import('./pages/private/hiking-trail-detail/hiking-trail-detail.component').then(m => m.HikingTrailDetailComponent)
           },
+          {
+            path: 'recommender',
+            loadComponent: () =>
+              import('./pages/private/recommender/recommender.component').then(m => m.RecommenderComponent)
+          },
           { path: '', redirectTo: '/feed', pathMatch: 'full' },
         ]
       }
