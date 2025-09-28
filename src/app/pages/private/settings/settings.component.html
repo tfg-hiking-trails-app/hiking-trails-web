@@ -1,0 +1,60 @@
+@if (isMobile()) {
+  <!-- Mobile -->
+  <mat-drawer-container
+    [class]="
+        (drawer.opened) ? 'min-h-[calc(100vh-4rem)] !bg-transparent ' : '' +
+        '!bg-transparent dark:text-white'
+      "
+    autosize
+    [hasBackdrop]="true"
+    (backdropClick)="drawer.close()"
+  >
+    <mat-drawer
+      #drawer
+      class="[&_.mat-drawer-inner-side]:!shadow-none [&.mat-drawer-side]:!border-0 [&.mat-drawer-side]:!rounded-none
+          [&_.mat-drawer-inner-container]:bg-light-mode dark:[&_.mat-drawer-inner-container]:!bg-dark-mode
+          [&_.mat-drawer-inner-container]:text-white h-full"
+      mode="over"
+    >
+      <div class="flex flex-col">
+        <div class="w-full flex justify-end">
+          <button
+            class="m-1 cursor-pointer"
+            (click)="drawer.close()"
+            [matTooltip]="'settings.options.close-options' | translate"
+          >
+            <span class="material-icons p-2 text-white rounded-full hover:bg-light-mode-primary dark:hover:bg-neutral-700">dehaze</span>
+          </button>
+        </div>
+
+        <app-settings-options />
+      </div>
+    </mat-drawer>
+
+    <div class="bg-light-mode dark:bg-dark-mode">
+      <button
+        class="m-1 cursor-pointer"
+        (click)="drawer.open()"
+        [matTooltip]="'settings.options.open-options' | translate"
+      >
+        <span class="material-icons p-2 text-white rounded-full hover:bg-light-mode-primary dark:hover:bg-neutral-700">dehaze</span>
+      </button>
+    </div>
+  </mat-drawer-container>
+
+  <div class="px-3">
+    <router-outlet />
+  </div>
+} @else {
+  <!-- Desktop -->
+  <div class="sm:flex sm:justify-center min-h-[calc(100vh-4rem)]">
+    <div class="w-full lg:w-4/5 xl:w-3/5 px-2 lg:px-0 flex mt-5">
+      <div class="w-2/6 lg:w-1/4 pr-5 lg:pr-0">
+        <app-settings-options />
+      </div>
+      <div class="w-4/6 md:w-3/4 lg:px-10">
+        <router-outlet />
+      </div>
+    </div>
+  </div>
+}

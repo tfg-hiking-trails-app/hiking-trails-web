@@ -1,0 +1,172 @@
+<mat-card class="w-screen sm:w-xl md:w-2xl xl:w-3xl" appearance="raised">
+  <mat-card-header [routerLink]="['/hiking-trail', hikingTrail.code]" class="relative flex flex-2/3 items-start dark:bg-neutral-900 cursor-pointer">
+    <!-- Avatar -->
+    <div mat-card-avatar>
+      <app-profile-picture [account]="hikingTrail.account" />
+    </div>
+
+    <!-- User -->
+    @if (hikingTrail.account?.firstName) {
+      <mat-card-title class="w-full">
+        <span class="font-medium dark:text-white">
+          {{ hikingTrail.account?.firstName }} {{ hikingTrail.account?.lastName }}
+        </span>
+      </mat-card-title>
+    } @else {
+      <mat-card-title class="w-full">
+        <span class="text-gray-600 dark:text-gray-300">
+          @{{ hikingTrail.account?.username }}
+        </span>
+      </mat-card-title>
+    }
+    <mat-card-subtitle class="-mt-1">
+      <span class="text-gray-600 dark:text-gray-300">
+        {{ hikingTrail.startTime | friendlyDate }}
+      </span>
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <app-carousel-images [images]="hikingTrail.images" />
+
+  <mat-card-content [routerLink]="['/hiking-trail', hikingTrail.code]" class="dark:bg-neutral-900 cursor-pointer">
+    <div class="flex justify-between items-center gap-4 mt-2 mb-4">
+      <!-- Hiking Trail Name -->
+      <div class="flex-1/3">
+        <h3 class="mt-2 text-2xl font-medium dark:text-white">{{ hikingTrail.name }}</h3>
+      </div>
+
+      <!-- Labels -->
+      <div class="flex flex-2/3 flex-wrap justify-center gap-2 mt-2">
+        @if (hikingTrail.difficultyLevel.difficultyLevelValue) {
+          <span class="px-1 md:px-3 py-1 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full">
+            {{ ("difficulty-level." + hikingTrail.difficultyLevel.difficultyLevelValue | translate)}}
+          </span>
+        }
+        @if (hikingTrail.terrainType.terrain) {
+          <span class="px-1 md:px-3 py-1 bg-blue-100 text-green-700 text-sm font-semibold rounded-full">
+            {{ ("terrain-type." + hikingTrail.terrainType.terrain | translate) }}
+          </span>
+        }
+        @if (hikingTrail.trailType.trail) {
+          <span class="px-1 md:px-3 py-1 bg-blue-100 text-purple-700 text-sm font-semibold rounded-full">
+            {{ ("trail-type." + hikingTrail.trailType.trail | translate) }}
+          </span>
+        }
+        <span class="px-1 md:px-3 py-1 bg-blue-100 text-yellow-700 text-sm font-semibold rounded-full">
+          {{ ("pet-friendly." + hikingTrail.petFriendly | translate) }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="xl:px-8">
+      @if (showResume && hikingTrail.description) {
+        <p class="truncate break-words my-3 dark:text-white">
+          {{ hikingTrail.description.trim() }}
+        </p>
+      } @else if (hikingTrail.description) {
+        <mat-divider class="my-4"></mat-divider>
+        <p class="my-3 dark:text-white whitespace-pre-line">
+          {{ hikingTrail.description.trim() }}
+        </p>
+        <mat-divider class="my-4"></mat-divider>
+      }
+    </div>
+  </mat-card-content>
+
+  <!-- Metrics -->
+  <mat-card-footer [routerLink]="['/hiking-trail', hikingTrail.code]" class="dark:bg-neutral-900 p-4 cursor-pointer">
+    <div class="w-full flex justify-center items-center">
+      <div class="w-4/5">
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 gap-x-16 justify-items-start items-center">
+          @for (metric of metricsDisplay; track $index) {
+            @if (metric.display && metricsValues[metric.key]) {
+              <div>
+                <span class="text-gray-500 dark:text-gray-300 text-sm">{{ metric.label | translate }}</span>
+                <div class="flex items-center" [matTooltip]="(metric.label | translate)">
+                  <span [class]="'mdi ' + metric.icon + ' dark:text-white text-2xl font-medium'">
+                    <span class="dark:text-white text-xl font-medium">
+                      {{ metricsValues[metric.key] }} <span class="text-lg">{{ metric.unit }}</span>
+                    </span>
+                  </span>
+                </div>
+              </div>
+            }
+          }
+        </div>
+      </div>
+    </div>
+    @if (!showResume && hikingTrail.productName) {
+      <div class="flex items-center mt-10">
+        <span class="material-icons dark:text-white mr-2">watch</span>
+        <span class="dark:text-white text-xl font-medium">
+          {{ hikingTrail.productName }}
+        </span>
+      </div>
+    }
+  </mat-card-footer>
+
+  <!-- Actions -->
+  <mat-card-actions class="dark:bg-neutral-900">
+    <div class="w-full">
+      <div [class]="'flex ' + (prestiges().length && hikingTrail.comments.length ? 'justify-around' : 'pl-5')">
+        @if(prestiges().length === 1) {
+          <span class="text-black dark:text-white text-lg">
+            {{ prestiges().length }} {{ 'hiking-trail-card.single-prestige' | translate }}
+          </span>
+        } @else if (prestiges().length > 1) {
+          <span class="text-black dark:text-white text-lg">
+            {{ prestiges().length }} {{ 'hiking-trail-card.multiple-prestiges' | translate }}
+          </span>
+        }
+
+        @if(hikingTrail.comments.length === 1) {
+          <span class="text-black dark:text-white text-lg">
+            {{ hikingTrail.comments.length }} {{ 'hiking-trail-card.single-comment' | translate }}
+          </span>
+        } @else if (hikingTrail.comments.length > 1) {
+          <span class="text-black dark:text-white text-lg">
+            {{ hikingTrail.comments.length }} {{ 'hiking-trail-card.multiple-comments' | translate }}
+          </span>
+        }
+      </div>
+      <div class="flex justify-around items-center">
+        <button
+          class="cursor-pointer hover:bg-gray-300 dark:hover:bg-neutral-600 rounded-full p-2"
+          (click)="togglePrestige()"
+        >
+          @if (userGavePrestige()) {
+            <span class="mdi mdi-octagram text-3xl text-orange-500 dark:text-yellow-400"></span>
+          } @else {
+            <span class="mdi mdi-octagram-outline text-3xl"></span>
+          }
+        </button>
+        <button
+          class="cursor-pointer hover:bg-gray-300 dark:hover:bg-neutral-600 rounded-full p-2"
+          (click)="openCommentsDialog()"
+        >
+          <span class="material-icons dark:text-white">comment</span>
+        </button>
+        @if (belongLoggedUser) {
+          <button
+            matIconButton
+            [matMenuTriggerFor]="menu"
+            class="cursor-pointer hover:bg-gray-300 dark:hover:bg-neutral-600 rounded-full p-2"
+          >
+            <span class="material-icons dark:text-white">more_vert</span>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item>
+              <mat-icon>edit</mat-icon>
+              <span>{{ 'edit' | translate }}</span>
+            </button>
+            <button mat-menu-item>
+              <mat-icon>delete</mat-icon>
+              <span>{{ 'delete' | translate }}</span>
+            </button>
+          </mat-menu>
+        }
+      </div>
+    </div>
+  </mat-card-actions>
+</mat-card>

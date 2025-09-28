@@ -1,0 +1,82 @@
+<div class="relative" #wrapper>
+  <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+    </svg>
+  </div>
+  <input
+    #searchInput
+    type="search"
+    id="default-search"
+    class="block w-full p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50
+        focus:ring-blue-500 focus:border-blue-500 dark:bg-dark-mode dark:border-gray-600
+        dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+    [placeholder]="'navbar.search-bar.placeholder' | translate"
+    (input)="search(searchInput.value)"
+    autocomplete="off"
+  />
+
+  @let accounts = accountsFound();
+  @let hikingTrails = hikingTrailsFound();
+
+  @if (showResults() && (accounts.length || hikingTrails.length || searchInput.value)) {
+    <div
+      class="absolute z-10 w-full rounded-lg shadow-lg max-h-60 overflow-y-auto
+            bg-white dark:bg-dark-mode border border-gray-200 dark:border-gray-700"
+      role="listbox"
+    >
+      @if (accounts.length) {
+        <h3 class="px-4 py-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+          {{ 'navbar.search-bar.accounts' | translate }}
+        </h3>
+        <ul class="divide-y divide-gray-200 dark:divide-gray-700">
+          @for (account of accounts; track account.code) {
+            <li class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" role="option">
+              <a
+                [routerLink]="['/profile', account.code]"
+                (click)="closeResults()"
+                class="flex items-center gap-3"
+              >
+                <img
+                  [src]="account.profilePicture || getDefaultProfileImageUrl(account.gender?.genderValue)"
+                  alt="Foto de perfil"
+                  class="w-8 h-8 rounded-full"
+                />
+                <span class="text-gray-900 dark:text-gray-100">{{ account.username }}</span>
+              </a>
+            </li>
+          }
+        </ul>
+      } @else {
+        <div class="px-4 py-2 text-sm text-gray-500 dark:text-gray-400">
+          {{ 'navbar.search-bar.no-accounts-found' | translate }}
+        </div>
+      }
+
+      @if (accounts.length && hikingTrails.length) {
+        <div class="h-px bg-gray-200 dark:bg-gray-700 mx-2"></div>
+      }
+
+      @if (hikingTrails.length) {
+        <h3 class="px-4 py-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+          {{ 'navbar.search-bar.hiking-trails' | translate }}
+        </h3>
+        <ul class="divide-y divide-gray-200 dark:divide-gray-700">
+          @for (trail of hikingTrails; track trail.code) {
+            <li class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer" role="option">
+              <a [routerLink]="['/hiking-trail', trail.code]" (click)="closeResults()"
+                class="flex items-center">
+                <span class="text-gray-900 dark:text-gray-100">{{ trail.name }}</span>
+              </a>
+            </li>
+          }
+        </ul>
+      } @else {
+        <div class="px-4 py-2 text-sm text-gray-500 dark:text-gray-400">
+          {{ 'navbar.search-bar.no-hiking-trails-found' | translate }}
+        </div>
+      }
+    </div>
+  }
+
+</div>

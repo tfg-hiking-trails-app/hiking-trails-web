@@ -1,0 +1,44 @@
+@if (loadingView()) {
+  <app-loading-spinner />
+} @else {
+  @if (hikingTrail()) {
+    <div class="w-full flex justify-center">
+      <div [class]="'grid grid-cols-1 ' + (coordinates().length ? 'xl:grid-cols-2' : '') + ' gap-y-6 justify-items-center items-start mt-5 pb-10 px-3 md:px-0'">
+        <!-- Card -->
+        <app-hiking-trail-card
+          [hikingTrail]="hikingTrail()!"
+          [belongLoggedUser]="accountLoggedCode === hikingTrail()!.account?.code"
+        />
+
+        <!-- Mapa -->
+        @if (coordinates().length) {
+          <div class="flex justify-center items-center m-auto">
+            <app-trail-map [coordinates]="coordinates()" [center]="getCenterPosition()" />
+          </div>
+        }
+
+        <!-- Laps -->
+        <div class="w-full">
+          @if (loadingLaps()) {
+            <app-loading-spinner />
+          } @else if (laps().length) {
+            <app-laps [laps]="laps()" />
+          }
+        </div>
+
+        <!-- Gráficas -->
+        <div class="w-full">
+          @if (loadingGraphicsData()) {
+            <app-loading-spinner />
+          } @else if (graphicsData().length) {
+            <app-graphics [graphicsData]="graphicsData()" />
+          }
+        </div>
+      </div>
+
+      <app-up-button />
+    </div>
+  } @else {
+    <app-404 [message]="'hiking-trail.not-found' | translate" />
+  }
+}

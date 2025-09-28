@@ -7,6 +7,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
@@ -17,8 +18,10 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatTimepickerModule } from '@angular/material/timepicker';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
@@ -33,6 +36,7 @@ export const MaterialModules = [
   MatDatepickerModule,
   MatDatepickerModule,
   MatDialogModule,
+  MatExpansionModule,
   MatFormFieldModule,
   MatGridListModule,
   MatIconModule,
@@ -44,10 +48,12 @@ export const MaterialModules = [
   MatProgressSpinnerModule,
   MatSelectModule,
   MatSidenavModule,
+  MatSlideToggleModule,
   MatSnackBarModule,
   MatTabsModule,
+  MatTimepickerModule,
   MatToolbarModule,
-  MatTooltipModule
+  MatTooltipModule,
 ];
 
 export const appDateFormat = {

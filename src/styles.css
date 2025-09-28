@@ -1,5 +1,33 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-light-mode: #3C8D96;
+  --color-dark-mode: #28282B;
+  --color-light-mode-primary: #295e64;
+  --color-light-mode-secondary: #224E53;
+}
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.scale-500 {
+    --tw-scale-x: 500%;
+    --tw-scale-y: 500%;
+    --tw-scale-z: 500%;
+    scale: var(--tw-scale-x) var(--tw-scale-y);
+}
+
+/* Dark Mode Trail Map */
+:root {
+    --map-tiles-filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3) brightness(0.7);
+}
+
+@media (prefers-color-scheme: dark) {
+    .map-tiles {
+        filter:var(--map-tiles-filter, none);
+	}
+}

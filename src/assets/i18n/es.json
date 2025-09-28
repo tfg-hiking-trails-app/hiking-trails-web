@@ -1,36 +1,314 @@
 {
+  "add": "Añadir",
   "auth": {
+    "english": "Inglés",
     "login": "Iniciar sesión",
     "register": "Registrarse",
-    "spanish": "Español",
-    "english": "Inglés"
+    "spanish": "Español"
+  },
+  "card": {
+    "comments": {
+      "comment": "Comentario",
+      "title": "Comentarios",
+      "required": "El comentario no puede estar vacío",
+      "placeholder": "Escribe tu comentario...",
+      "delete-comment-title": "Eliminar comentario",
+      "delete-comment-message": "¿Estás seguro de que quieres eliminar este comentario?",
+      "no-comments": "No hay comentarios aún. ¡Sé el primero en comentar!"
+    },
+    "hiking-trail-form": {
+      "added-success": "Ruta de senderismo añadida con éxito",
+      "average-cadence": "Cadencia media (pasos/min)",
+      "average-heart-rate": "Frecuencia cardíaca media (bpm)",
+      "average-pace": "Ritmo medio (min/km)",
+      "average-speed": "Velocidad media (km/h)",
+      "calories": "Calorías",
+      "description": "Descripción",
+      "description-required": "La descripción es obligatoria",
+      "difficulty-level": "Nivel de dificultad",
+      "distance-required": "La distancia es obligatoria",
+      "distance-min": "La distancia debe ser un valor positivo en kilómetros",
+      "distance": "Distancia (km)",
+      "duration": "Duración",
+      "elevation-gain": "Desnivel positivo (m)",
+      "elevation-loss": "Desnivel negativo (m)",
+      "end-date-required": "La fecha de fin es obligatoria",
+      "end-date": "Fecha de fin",
+      "end-time-required": "La hora de fin es obligatoria",
+      "end-time": "Hora de fin",
+      "images": "Imágenes",
+      "invalid-dates": "La fecha y hora de fin deben ser posteriores a las de inicio",
+      "location": "Ubicación",
+      "max-altitude": "Altitud máxima (m)",
+      "max-cadence": "Cadencia máxima (pasos/min)",
+      "max-heart-rate": "Frecuencia cardíaca máxima (bpm)",
+      "max-pace": "Ritmo máximo (min/km)",
+      "max-speed": "Velocidad máxima (km/h)",
+      "metrics": "Métricas",
+      "min-altitude": "Altitud mínima (m)",
+      "min-heart-rate": "Frecuencia cardíaca mínima (bpm)",
+      "name-required": "El nombre es obligatorio",
+      "name": "Nombre",
+      "pet-friendly": "Apto para mascotas",
+      "start-date-required": "La fecha de inicio es obligatoria",
+      "start-date": "Fecha de inicio",
+      "start-time-required": "La hora de inicio es obligatoria",
+      "start-time": "Hora de inicio",
+      "steps": "Pasos",
+      "terrain-type": "Tipo de terreno",
+      "title": "Añadir ruta de senderismo",
+      "trail-type": "Tipo de ruta"
+    }
+  },
+  "clear-data": "Limpiar datos",
+  "close": "Cerrar",
+  "collapse-all": "Colapsar todo",
+  "date": {
+    "on_date_at": "{{ date }} a las {{ time }}",
+    "today_at": "Hoy a las {{ time }}",
+    "yesterday_at": "Ayer a las {{ time }}"
+  },
+  "delete": "Eliminar",
+  "dialog": {
+    "yes": "Sí",
+    "no": "No"
+  },
+  "difficulty-level": {
+    "easy": "Fácil",
+    "hard": "Difícil",
+    "medium": "Medio",
+    "very-hard": "Muy difícil"
+  },
+  "edit": "Editar",
+  "errors": {
+    "forbidden": "No tienes permisos para realizar esta acción",
+    "internal-server-error": "Error interno del servidor",
+    "not-found": "Recurso no encontrado",
+    "password-from-user-is-incorrect": "La contraseña del usuario es incorrecta",
+    "server-unreachable": "El servidor no está disponible",
+    "the-passwords-do-not-match": "Las contraseñas no coinciden",
+    "the-username-field-is-required": "El campo de nombre de usuario es obligatorio",
+    "this-is-your-username": "Este es tu nombre de usuario",
+    "unauthorized": "No estás autorizado para realizar esta acción",
+    "unknown-error": "Ha ocurrido un error",
+    "username-already-exists": "Este nombre de usuario ya existe"
+  },
+  "expand-all": "Expandir todo",
+  "feed": {
+    "error": "Ha ocurrido un error al cargar las rutas de senderismo",
+    "no-following": "¡No sigues a ningún usuario! Sigue a alguien para ver su actividad"
+  },
+  "go-home": "Ir a inicio",
+  "graphics": {
+    "altitude": "Altitud (m)",
+    "cadence": "Cadencia (pasos/min)",
+    "distance": "Distancia (m)",
+    "heart_rate": "Frecuencia cardíaca (bpm)",
+    "speed": "Velocidad (m/s)"
+  },
+  "hiking-trail": {
+    "end": "Fin",
+    "not-found": "Ruta de senderismo no encontrada",
+    "start": "Inicio"
+  },
+  "hiking-trail-card": {
+    "difficulty-level": "Nivel de dificultad",
+    "distance": "Distancia",
+    "duration": "Duración",
+    "end-time": "Hora de finalización",
+    "hours": "Horas",
+    "pet-friendly": "Apto para mascotas",
+    "start-time": "Hora de inicio",
+    "terrain-type": "Tipo de terreno",
+    "trail-type": "Tipo de ruta",
+    "single-prestige": "prestigio",
+    "multiple-prestiges": "prestigios",
+    "single-comment": "comentario",
+    "multiple-comments": "comentarios"
+  },
+  "laps": {
+    "kilometer": "Kilómetro",
+    "lap": "Parcial {{ lap }}",
+    "laps": "Parciales"
   },
   "login": {
-    "username": "Nombre de usuario",
-    "password": "Contraseña",
-    "submit": "Iniciar sesión",
     "forgotPassword": "¿Olvidaste tu contraseña?",
-    "rememberMe": "Recuérdame",
-    "usernameRequired": "El nombre de usuario es obligatorio",
-    "passwordRequired": "La contraseña es obligatoria",
+    "hidePasswordTooltip": "Ocultar contraseña",
+    "password": "Contraseña",
     "passwordMinLength": "La contraseña debe tener al menos 6 caracteres",
+    "passwordRequired": "La contraseña es obligatoria",
+    "rememberMe": "Recuérdame",
     "showPasswordTooltip": "Mostrar contraseña",
-    "hidePasswordTooltip": "Ocultar contraseña"
+    "submit": "Iniciar sesión",
+    "username": "Nombre de usuario",
+    "usernameRequired": "El nombre de usuario es obligatorio"
+  },
+  "metrics": {
+    "averageCadence": "Cadencia media",
+    "averageHeartRate": "Frecuencia cardíaca media",
+    "averagePace": "Ritmo medio",
+    "averageSpeed": "Velocidad media",
+    "calories": "Calorías",
+    "distance": "Distancia",
+    "duration": "Duración",
+    "elevationGain": "Desnivel positivo",
+    "elevationLoss": "Desnivel negativo",
+    "maxAltitude": "Altitud máxima",
+    "maxCadence": "Cadencia máxima",
+    "maxHeartRate": "Frecuencia cardíaca máxima",
+    "maxPace": "Ritmo máximo",
+    "maxSpeed": "Velocidad máxima",
+    "minAltitude": "Altitud mínima",
+    "minHeartRate": "Frecuencia cardíaca mínima",
+    "steps": "Pasos",
+    "totalAscent": "Ascenso total",
+    "totalDescent": "Descenso total"
+  },
+  "navbar": {
+    "add-activity-menu": {
+      "add-activity": "Añadir actividad",
+      "add-manually": "Añadir manualmente",
+      "upload-fit-file": "Subir archivo FIT",
+      "confirm-upload-fit-file": "¿Estás seguro de que quieres subir este archivo FIT?",
+      "hiking-trail-climbed-correctly": "Ruta de senderismo subida correctamente"
+    },
+    "close-icon": "Cerrar menú",
+    "explore": "Explorar",
+    "open-icon": "Abrir menú",
+    "profile": {
+      "logout": "Cerrar sesión",
+      "open": "Mi perfil",
+      "settings": "Ajustes"
+    },
+    "recommender": "Recomendador",
+    "search-bar": {
+      "placeholder": "Busca Ubicaciones, Usuarios...",
+      "accounts": "Cuentas",
+      "no-accounts-found": "No se han encontrado cuentas",
+      "hiking-trails": "Rutas de senderismo",
+      "no-hiking-trails-found": "No se han encontrado rutas de senderismo"
+    }
+  },
+  "open": "Abrir",
+  "pet-friendly": {
+    "false": "No apto para mascotas",
+    "true": "Apto para mascotas"
+  },
+  "profile": {
+    "follow": "Seguir",
+    "followed": "Siguiendo",
+    "followers": "Seguidores",
+    "following": "Siguiendo",
+    "private-profile": "Perfil privado",
+    "unfollow": "Dejar de seguir"
   },
   "register": {
-    "username": "Nombre de usuario",
-    "email": "Correo electrónico",
-    "password": "Contraseña",
     "confirmPassword": "Confirmar contraseña",
-    "submit": "Registrarse",
-    "usernameRequired": "El nombre de usuario es obligatorio",
-    "emailRequired": "El correo electrónico es obligatorio",
-    "emailInvalid": "El correo electrónico no es válido",
-    "passwordRequired": "La contraseña es obligatoria",
     "confirmPasswordRequired": "La confirmación de la contraseña es obligatoria",
-    "passwordMismatch": "Las contraseñas no coinciden",
+    "email": "Correo electrónico",
+    "emailInvalid": "El correo electrónico no es válido",
+    "emailRequired": "El correo electrónico es obligatorio",
+    "hidePasswordTooltip": "Ocultar contraseña",
+    "password": "Contraseña",
     "passwordMinLength": "La contraseña debe tener al menos 6 caracteres",
+    "passwordMismatch": "Las contraseñas no coinciden",
+    "passwordRequired": "La contraseña es obligatoria",
     "showPasswordTooltip": "Mostrar contraseña",
-    "hidePasswordTooltip": "Ocultar contraseña"
+    "submit": "Registrarse",
+    "username": "Nombre de usuario",
+    "usernameRequired": "El nombre de usuario es obligatorio"
+  },
+  "settings": {
+    "account": {
+      "change-password": "Cambiar contraseña",
+      "change-username": "Cambiar nombre de usuario",
+      "confirm-password-change": "¿Estás seguro de que quieres cambiar tu contraseña?",
+      "confirm-password": "Confirmar contraseña",
+      "confirm-username-change": "¿Estás seguro de que quieres cambiar tu nombre de usuario?",
+      "current-password": "Contraseña actual",
+      "new-password": "Nueva contraseña",
+      "new-username": "Nuevo nombre de usuario",
+      "password-changed-successfully": "Contraseña cambiada con éxito",
+      "save-changes": "Guardar cambios",
+      "username-changed-successfully": "Nombre de usuario cambiado con éxito",
+      "username-required": "El nombre de usuario es obligatorio",
+      "delete-account": "Eliminar cuenta",
+      "delete-account-confirmation": "¿Estás seguro de que quieres eliminar tu cuenta?",
+      "delete-account-message": "Si eliminas tu cuenta, se borrarán todos tus datos y no podrás recuperarla.",
+      "delete-account-success": "Cuenta eliminada con éxito"
+    },
+    "options": {
+      "account": "Cuenta",
+      "close-options": "Cerrar opciones",
+      "open-options": "Abrir opciones",
+      "profile": "Perfil",
+      "screen": "Pantalla"
+    },
+    "profile": {
+      "change-profile-image": "Cambiar imagen de perfil",
+      "upload-image": "Subir imagen",
+      "remove-image": "Eliminar imagen",
+      "gender": {
+        "label": "Género",
+        "male": "Masculino",
+        "female": "Femenino",
+        "non-binary": "No binario",
+        "prefer-not-to-say": "Prefiero no decirlo"
+      },
+      "private-profile": "Perfil privado",
+      "first-name": "Nombre",
+      "last-name": "Apellido",
+      "biography": "Biografía",
+      "weight": "Peso",
+      "weightMin": "El peso debe ser un valor positivo en kilogramos",
+      "weightMax": "El peso no puede superar los 500 kilogramos",
+      "height": "Altura",
+      "heightMin": "La altura debe ser un valor positivo en centímetros",
+      "heightMax": "La altura no puede superar los 300 centímetros",
+      "birthdate": "Fecha de nacimiento",
+      "country": "País",
+      "state": "Estado",
+      "city": "Ciudad",
+      "save-changes": "Guardar cambios",
+      "confirm-changes": "Confirmar cambios",
+      "profile-updated-successfully": "Perfil actualizado con éxito",
+      "none": "Ninguno"
+    },
+    "screen": {
+      "theme": "Tema de pantalla",
+      "light-mode": "Modo claro",
+      "dark-mode": "Modo oscuro",
+      "browser-default": "Predeterminado del navegador",
+      "language": "Idioma",
+      "english": "Inglés",
+      "spanish": "Español"
+    }
+  },
+  "terrain-type": {
+    "compacted-soil": "Suelo compactado",
+    "desert-trail": "Sendero desértico",
+    "flat-terrain": "Terreno plano",
+    "forest-trail": "Sendero forestal",
+    "gravel-path": "Camino de grava",
+    "loose-soil": "Suelo suelto",
+    "mountain-path": "Camino de montaña",
+    "mud": "Barro",
+    "paved-path": "Camino pavimentado",
+    "rocky-terrain": "Terreno rocoso",
+    "rough-terrain": "Terreno irregular",
+    "sand": "Arena",
+    "snow": "Nieve",
+    "steep-incline": "Pendiente pronunciada",
+    "urban-trail": "Sendero urbano",
+    "water-crossing": "Cruce de agua"
+  },
+  "theme": {
+    "darkMode": "Modo oscuro",
+    "lightMode": "Modo claro"
+  },
+  "trail-type": {
+    "loop": "Circular",
+    "point-to-point": "Punto a punto",
+    "round-trip": "Ida y vuelta"
   }
 }

@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { inject, Injectable } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
 import { Filter } from "../interfaces/common/Filter";
@@ -10,7 +10,9 @@ import { HttpOptions } from "../interfaces/common/HttpOptions";
 })
 export class ApiService {
 
-  private http = inject(HttpClient);
+  constructor(
+    private http: HttpClient
+  ) { }
 
   get<TResponse>(
     url: string,
@@ -35,17 +37,25 @@ export class ApiService {
     return this.http.get<TResponse>(url, { params, ...options });
   }
 
-  post<TResponse, TBody = undefined>(
+  post<TResponse>(
     url: string,
-    options: HttpOptions = {},
-    body?: TBody
+    body?: any,
+    options: HttpOptions = {}
   ): Observable<TResponse> {
     return this.http.post<TResponse>(url, body, options);
   }
 
-  patch<TBody, TResponse>(
+  put<TResponse>(
     url: string,
-    body: TBody,
+    body: any,
+    options: HttpOptions = {}
+  ): Observable<TResponse> {
+    return this.http.put<TResponse>(url, body, options);
+  }
+
+  patch<TResponse>(
+    url: string,
+    body: any,
     options: HttpOptions = {}
   ): Observable<TResponse> {
     return this.http.patch<TResponse>(url, body, options);
@@ -56,6 +66,14 @@ export class ApiService {
     options: HttpOptions = {}
   ): Observable<TResponse> {
     return this.http.delete<TResponse>(url, options);
+  }
+
+  deleteWithBody<TResponse>(
+    url: string,
+    body: any,
+    options: HttpOptions = {}
+  ): Observable<TResponse> {
+    return this.http.request<TResponse>('delete', url, { body, ...options });
   }
 
 }

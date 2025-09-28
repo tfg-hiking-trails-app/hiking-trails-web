@@ -1,0 +1,45 @@
+<div class="flex items-center gap-2" #profileMenu>
+  <button
+    type="button"
+    (click)="toggleProfile()"
+    [attr.aria-expanded]="profileOpen"
+    aria-haspopup="menu"
+  >
+    <span class="sr-only">Abrir menú de usuario</span>
+
+    @if (account()) {
+      <app-profile-picture [account]="account()" />
+    }
+
+  </button>
+  @if (mobileView) {
+    @if (account()?.firstName) {
+      <div class="flex flex-col">
+        <p class="text-white text-xl leading-none">{{ account()?.firstName }} {{ account()?.lastName }}</p>
+        <p class="text-gray-300 dark:text-gray-500 text-lg">@{{ account()?.username }}</p>
+      </div>
+    } @else {
+      <span class="text-white text-xl">@{{ account()?.username }}</span>
+    }
+  }
+</div>
+
+@if (profileOpen) {
+  <div
+      class="absolute right-0 mt-2 w-52 origin-top-right rounded-md bg-gradient-to-b from-[#295e64] to-light-mode
+            dark:bg-gradient-to-b dark:from-[#0C0C0D] dark:to-dark-mode backdrop-blur ring-1 ring-white/10 shadow-lg p-1
+            transition duration-100 ease-out animate-[fadeIn_100ms_ease-out] z-50"
+      role="menu"
+      tabindex="-1"
+    >
+      @if (account()?.firstName) {
+        <div class="flex flex-col p-2">
+          <p class="text-white text-xl leading-none">{{ account()?.firstName }} {{ account()?.lastName }}</p>
+          <p class="text-gray-300 dark:text-gray-500 text-lg">@{{ account()?.username }}</p>
+        </div>
+      } @else {
+        <span class="text-white text-xl">@{{ account()?.username }}</span>
+      }
+      <app-profile-options-menu />
+  </div>
+}

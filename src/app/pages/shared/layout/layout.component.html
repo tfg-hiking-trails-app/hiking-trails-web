@@ -1,0 +1,6 @@
+@if (logged()) {
+  <app-private-navbar />
+} @else {
+  <app-public-navbar />
+}
+<router-outlet />

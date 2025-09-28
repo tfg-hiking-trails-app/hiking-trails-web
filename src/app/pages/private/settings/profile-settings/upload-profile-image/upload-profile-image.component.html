@@ -1,0 +1,50 @@
+@if (isLoading()) {
+  <app-loading-spinner />
+} @else {
+  <div class="relative">
+    <div class="grid place-items-center">
+      <div
+        [matTooltip]="'settings.profile.upload-image' | translate"
+        class="relative w-32 h-32 rounded-full overflow-hidden group cursor-pointer"
+      >
+        @if (file || previewUrl()) {
+          <img
+            [src]="previewUrl()"
+            alt="profile"
+            class="object-cover w-full h-full"
+          />
+        } @else {
+          <div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500">
+            <mat-icon class="scale-150">person</mat-icon>
+          </div>
+        }
+
+        <div
+          class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
+          (click)="fileInput.click()"
+        >
+          <mat-icon class="text-white text-3xl">photo_camera</mat-icon>
+        </div>
+
+        <input
+          type="file"
+          accept="image/*"
+          hidden
+          #fileInput
+          (change)="onFileSelected($event)"
+        />
+      </div>
+    </div>
+
+    <div class="absolute top-3 right-3 z-10">
+      @if (file || previewUrl()) {
+        <button
+          class="absolute bottom-0 right-0 mb-2 mr-2"
+          [matTooltip]="'settings.profile.remove-image' | translate" matMiniFab (click)="removeFile()"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      }
+    </div>
+  </div>
+}
