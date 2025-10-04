@@ -156,7 +156,7 @@
             <span class="material-icons dark:text-white">more_vert</span>
           </button>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item>
+            <button mat-menu-item (click)="edit()">
               <mat-icon>edit</mat-icon>
               <span>{{ 'edit' | translate }}</span>
             </button>

@@ -43,3 +43,18 @@ export interface CreateHikingTrail {
   locationLongitude?: number;
   metrics: Partial<CreateMetrics>;
 }
+
+export interface UpdateHikingTrail {
+  accountCode: string;
+  difficultyLevelCode?: string;
+  terrainTypeCode?: string;
+  trailTypeCode?: string;
+  name: string;
+  description?: string;
+  petFriendly?: boolean;
+  startTime: Date;
+  endTime: Date;
+  locationLatitude?: number;
+  locationLongitude?: number;
+  metrics: Partial<CreateMetrics>;
+}

@@ -17,6 +17,8 @@ import { CarouselImagesComponent } from '../../pages/shared/carousel-images/caro
 import { CommentsCardComponent } from '../comments-card/comments-card.component';
 import { CreatePrestige, DeletePrestige, Prestige } from '../../interfaces/hiking-trail/Prestige';
 import { DialogConfirmComponent } from '../dialog-confirm/dialog-confirm.component';
+import { EditActivityManuallyCardComponent } from '../edit-activity-manually-card/edit-activity-manually-card.component';
+import { EventBusService } from '../../services/event-bus.service';
 import { FriendlyDatePipe } from '../../pipes/FriendlyDatePipe';
 import { getWindowWidth } from '../../Utils/Utils';
 import { HikingTrail } from '../../interfaces/hiking-trail/HikingTrail';
@@ -24,7 +26,6 @@ import { HikingTrailService } from '../../services/hiking-trail.service';
 import { Metric } from '../../interfaces/display/Metric';
 import { Metrics } from '../../interfaces/hiking-trail/Metrics';
 import { ProfilePictureComponent } from '../../pages/shared/profile-picture/profile-picture.component';
-import { EventBusService } from '../../services/event-bus.service';
 
 @Component({
   selector: 'app-hiking-trail-card',
@@ -61,6 +62,19 @@ export class HikingTrailCardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.eventBusService.refreshHikingTrailDetail$
+      .subscribe(() => {
+        this.hikingService.getByCode(this.hikingTrail.code)
+          .subscribe({
+            next: (hikingTrail: HikingTrail) => {
+              this.hikingTrail = hikingTrail;
+              this.checkPrestige();
+              this.prestiges.set(this.hikingTrail.prestiges || []);
+              this.cdr.markForCheck();
+            }
+          });
+      });
+
     this.metricsValues = {
       distance: this.distance,
       calories: this.calories,
@@ -123,6 +137,14 @@ export class HikingTrailCardComponent implements OnInit {
     this.userGavePrestige.set(prestiges.some(p => p?.giverAccountCode === userCode));
   }
 
+  edit(): void {
+    this.dialog.open(EditActivityManuallyCardComponent, {
+      width: getWindowWidth(),
+      maxHeight: '80vh',
+      data: this.hikingTrail
+    });
+  }
+
   delete(): void {
     const dialogRef = this.dialog.open(DialogConfirmComponent, {
       data: {
@@ -156,7 +178,7 @@ export class HikingTrailCardComponent implements OnInit {
     });
   }
 
-  public openCommentsDialog(): void {
+  openCommentsDialog(): void {
     const dialogRef = this.dialog.open(CommentsCardComponent, {
       data: this.hikingTrail,
       width: getWindowWidth()

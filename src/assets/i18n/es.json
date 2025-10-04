@@ -30,6 +30,7 @@
       "distance-min": "La distancia debe ser un valor positivo en kilómetros",
       "distance": "Distancia (km)",
       "duration": "Duración",
+      "edit-success": "Ruta de senderismo editada con éxito",
       "elevation-gain": "Desnivel positivo (m)",
       "elevation-loss": "Desnivel negativo (m)",
       "end-date-required": "La fecha de fin es obligatoria",

@@ -11,4 +11,11 @@ export class EventBusService {
     this.refreshFeedSource.next();
   }
 
+  private refreshHikingTrailDetail = new Subject<void>();
+  refreshHikingTrailDetail$ = this.refreshHikingTrailDetail.asObservable();
+
+  refreshHikingTrail() {
+    this.refreshHikingTrailDetail.next();
+  }
+
 }

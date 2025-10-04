@@ -1,12 +1,14 @@
 <div class="mt-1">
-  <a
-    routerLink="/explore"
-    routerLinkActive="text-white"
-    [routerLinkActiveOptions]="{ exact: true }"
-    class="block px-4 py-2 text-lg text-gray-300 hover:bg-light-mode dark:hover:bg-dark-mode"
-  >
-    <span class="text-lg">{{ 'navbar.explore' | translate }}</span>
-  </a>
+  @if (mobileView) {
+    <a
+      routerLink="/explore"
+      routerLinkActive="text-white"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="block px-4 py-2 text-lg text-gray-300 hover:bg-light-mode dark:hover:bg-dark-mode"
+    >
+      <span class="text-lg">{{ 'navbar.explore' | translate }}</span>
+    </a>
+  }
   @if (logged()) {
     @if (mobileView) {
       <a
@@ -17,15 +19,15 @@
       >
         <span class="text-lg">{{ 'navbar.recommender' | translate }}</span>
       </a>
-      <a
-        [routerLink]="'/profile/' + userLoggedCode()"
-        routerLinkActive="text-white"
-        [routerLinkActiveOptions]="{ exact: true }"
-        class="block px-4 py-2 text-lg text-gray-300 hover:bg-light-mode dark:hover:bg-dark-mode"
-      >
-        {{ 'navbar.profile.open' | translate }}
-      </a>
     }
+    <a
+      [routerLink]="'/profile/' + userLoggedCode()"
+      routerLinkActive="text-white"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="block px-4 py-2 text-lg text-gray-300 hover:bg-light-mode dark:hover:bg-dark-mode"
+    >
+      {{ 'navbar.profile.open' | translate }}
+    </a>
     <a
       routerLink="/settings"
       routerLinkActive="text-white"

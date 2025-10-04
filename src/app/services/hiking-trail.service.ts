@@ -7,7 +7,7 @@ import { CreatePrestige, DeletePrestige, Prestige } from "../interfaces/hiking-t
 import { DifficultyLevel } from "../interfaces/hiking-trail/DifficultyLevel";
 import { environment } from "../../environments/environment";
 import { Filter } from "../interfaces/common/Filter";
-import { CreateHikingTrail, HikingTrail } from "../interfaces/hiking-trail/HikingTrail";
+import { CreateHikingTrail, HikingTrail, UpdateHikingTrail } from "../interfaces/hiking-trail/HikingTrail";
 import { HikingTrailFilter } from "../interfaces/hiking-trail/HikingTrailFilter";
 import { Pagination } from "../interfaces/common/Pagination";
 import { TerrainType } from "../interfaces/hiking-trail/TerrainType";
@@ -26,6 +26,7 @@ export class HikingTrailService {
     add: `${ environment.apiGatewayUrl }/hiking-trail`,
     addComment: `${ environment.apiGatewayUrl }/comment`,
     addPrestige: `${ environment.apiGatewayUrl }/prestige`,
+    edit: (code: string) => `${ environment.apiGatewayUrl }/hiking-trail/${ code }`,
     delete: (code: string) => `${ environment.apiGatewayUrl }/hiking-trail/${ code }`,
     getAllDifficultyLevels: `${ environment.apiGatewayUrl }/difficulty-level/all`,
     getAllTerrainTypes: `${ environment.apiGatewayUrl }/terrain-type/all`,
@@ -41,6 +42,11 @@ export class HikingTrailService {
   add(hikingTrail: CreateHikingTrail | Partial<CreateHikingTrail>): Observable<HikingTrail> {
     const url: string = this.routes.add;
     return this.apiService.post<HikingTrail>(url, hikingTrail);
+  }
+
+  edit(code: string, hikingTrail: UpdateHikingTrail | Partial<UpdateHikingTrail>): Observable<HikingTrail> {
+    const url: string = this.routes.edit(code);
+    return this.apiService.put<HikingTrail>(url, hikingTrail);
   }
 
   delete(code: string): Observable<void> {
