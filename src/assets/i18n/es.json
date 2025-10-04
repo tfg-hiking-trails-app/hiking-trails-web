@@ -112,19 +112,22 @@
     "start": "Inicio"
   },
   "hiking-trail-card": {
+    "delete-hiking-trail-message": "¿Estás seguro de que quieres eliminar esta ruta de senderismo?",
+    "delete-hiking-trail-title": "Eliminar ruta de senderismo",
+    "delete-success": "Ruta de senderismo eliminada con éxito",
     "difficulty-level": "Nivel de dificultad",
     "distance": "Distancia",
     "duration": "Duración",
     "end-time": "Hora de finalización",
     "hours": "Horas",
+    "multiple-comments": "comentarios",
+    "multiple-prestiges": "prestigios",
     "pet-friendly": "Apto para mascotas",
+    "single-comment": "comentario",
+    "single-prestige": "prestigio",
     "start-time": "Hora de inicio",
     "terrain-type": "Tipo de terreno",
-    "trail-type": "Tipo de ruta",
-    "single-prestige": "prestigio",
-    "multiple-prestiges": "prestigios",
-    "single-comment": "comentario",
-    "multiple-comments": "comentarios"
+    "trail-type": "Tipo de ruta"
   },
   "laps": {
     "kilometer": "Kilómetro",

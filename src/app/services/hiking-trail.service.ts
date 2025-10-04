@@ -26,6 +26,7 @@ export class HikingTrailService {
     add: `${ environment.apiGatewayUrl }/hiking-trail`,
     addComment: `${ environment.apiGatewayUrl }/comment`,
     addPrestige: `${ environment.apiGatewayUrl }/prestige`,
+    delete: (code: string) => `${ environment.apiGatewayUrl }/hiking-trail/${ code }`,
     getAllDifficultyLevels: `${ environment.apiGatewayUrl }/difficulty-level/all`,
     getAllTerrainTypes: `${ environment.apiGatewayUrl }/terrain-type/all`,
     getAllTrailTypes: `${ environment.apiGatewayUrl }/trail-type/all`,
@@ -40,6 +41,11 @@ export class HikingTrailService {
   add(hikingTrail: CreateHikingTrail | Partial<CreateHikingTrail>): Observable<HikingTrail> {
     const url: string = this.routes.add;
     return this.apiService.post<HikingTrail>(url, hikingTrail);
+  }
+
+  delete(code: string): Observable<void> {
+    const url: string = this.routes.delete(code);
+    return this.apiService.delete<void>(url);
   }
 
   getByCode(code: string): Observable<HikingTrail> {
