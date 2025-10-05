@@ -41,12 +41,28 @@ export class HikingTrailService {
 
   add(hikingTrail: CreateHikingTrail | Partial<CreateHikingTrail>): Observable<HikingTrail> {
     const url: string = this.routes.add;
-    return this.apiService.post<HikingTrail>(url, hikingTrail);
+
+    const formData = new FormData();
+
+    for (const [key, value] of Object.entries(hikingTrail)) {
+      if (value !== null && value !== undefined)
+        formData.append(key, value);
+    }
+
+    return this.apiService.post<HikingTrail>(url, formData);
   }
 
   edit(code: string, hikingTrail: UpdateHikingTrail | Partial<UpdateHikingTrail>): Observable<HikingTrail> {
     const url: string = this.routes.edit(code);
-    return this.apiService.put<HikingTrail>(url, hikingTrail);
+
+    const formData = new FormData();
+
+    for (const [key, value] of Object.entries(hikingTrail)) {
+      if (value !== null && value !== undefined)
+        formData.append(key, value);
+    }
+
+    return this.apiService.put<HikingTrail>(url, formData);
   }
 
   delete(code: string): Observable<void> {

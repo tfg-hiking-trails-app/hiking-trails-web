@@ -14,9 +14,10 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { MatDialogRef } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import { MaterialModules } from '@material/material.modules';
+import { Router } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import * as L from 'leaflet';
 import {
@@ -47,15 +48,18 @@ interface Combos {
   trailTypes: TrailType[];
 }
 
+type Preview = { file: File; url: string };
+
 @Component({
   selector: 'app-add-activity-manually-card',
   imports: [
+    CommonModule,
     FormsModule,
+    LoadingSpinnerComponent,
     MaterialModules,
     ReactiveFormsModule,
     TranslatePipe,
-    LoadingSpinnerComponent,
-],
+  ],
   templateUrl: './add-activity-manually-card.component.html',
   styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -66,10 +70,17 @@ export class AddActivityManuallyCardComponent implements AfterViewInit, OnDestro
 
   addHikingTrailForm: FormGroup;
   difficultyLevels: DifficultyLevel[] = [];
+  errorUploadFile: string = '';
+  files: File[] = [];
+  isDragOver = false;
   isLoading = signal<boolean>(true);
+  previews: Preview[] = [];
   submitted: boolean = false;
   terrainTypes: TerrainType[] = [];
   trailTypes: TrailType[] = [];
+
+  readonly maxSizeMB = 10;
+  readonly allowedTypes = ['image/png', 'image/jpeg'];
 
   private map!: L.Map;
   private resizeObserver?: ResizeObserver;
@@ -105,7 +116,6 @@ export class AddActivityManuallyCardComponent implements AfterViewInit, OnDestro
       elevationLoss: ['', []],
       endDate: ['', [Validators.required]],
       endTime: ['', [Validators.required]],
-      images: [null],
       locationLatitude: ['', []],
       locationLongitude: ['', []],
       maxAltitude: ['', []],
@@ -298,17 +308,18 @@ export class AddActivityManuallyCardComponent implements AfterViewInit, OnDestro
 
     const createHikingTrail = removeEmptyFields<CreateHikingTrail>({
       accountCode: this.authService.getUserCode() || '',
-      difficultyLevelCode: this.addHikingTrailForm.value.difficultyLevel,
-      terrainTypeCode: this.addHikingTrailForm.value.terrainType,
-      trailTypeCode: this.addHikingTrailForm.value.trailType,
-      name: this.addHikingTrailForm.value.name,
       description: this.addHikingTrailForm.value.description,
-      petFriendly: this.addHikingTrailForm.value.petFriendly,
-      startTime: startDate,
+      difficultyLevelCode: this.addHikingTrailForm.value.difficultyLevel,
       endTime: endDate,
+      images: this.files,
       locationLatitude: this.addHikingTrailForm.value.locationLatitude,
       locationLongitude: this.addHikingTrailForm.value.locationLongitude,
-      metrics: createMetrics
+      metrics: createMetrics,
+      name: this.addHikingTrailForm.value.name,
+      petFriendly: this.addHikingTrailForm.value.petFriendly,
+      startTime: startDate,
+      terrainTypeCode: this.addHikingTrailForm.value.terrainType,
+      trailTypeCode: this.addHikingTrailForm.value.trailType,
     });
 
     this.hikingTrailService
@@ -340,6 +351,73 @@ export class AddActivityManuallyCardComponent implements AfterViewInit, OnDestro
     if (this.map) {
       this.map.remove();
     }
+
+    for (const p of this.previews) {
+      URL.revokeObjectURL(p.url);
+    }
+  }
+
+  onDragOver(evt: DragEvent) {
+    evt.preventDefault();
+    evt.stopPropagation();
+    this.isDragOver = true;
+  }
+
+  onDragLeave(evt: DragEvent) {
+    evt.preventDefault();
+    evt.stopPropagation();
+    this.isDragOver = false;
+  }
+
+  onDrop(evt: DragEvent) {
+    evt.preventDefault();
+    evt.stopPropagation();
+    this.isDragOver = false;
+
+    const dt = evt.dataTransfer;
+    if (!dt)
+      return;
+
+    const dropped = Array.from(dt.files || []);
+    this.handleFiles(dropped);
+  }
+
+  onFileInput(evt: Event) {
+    const input = evt.target as HTMLInputElement;
+    const selected = Array.from(input.files ?? []);
+    this.handleFiles(selected);
+    input.value = '';
+  }
+
+  private handleFiles(files: File[]) {
+    const accepted: File[] = [];
+
+    for (const file of files) {
+      if (this.isValidImage(file))
+        accepted.push(file);
+    }
+
+    this.files = [...this.files, ...accepted];
+
+    const newPreviews: Preview[] = accepted.map(file => ({
+      file,
+      url: URL.createObjectURL(file)
+    }));
+    this.previews = [...this.previews, ...newPreviews];
+  }
+
+  private isValidImage(file: File): boolean {
+    if (!this.allowedTypes.includes(file.type)) {
+      this.errorUploadFile = this.translateService.instant('card.hiking-trail-form.error-file-not-supported');
+      return false;
+    }
+
+    if (file.size > this.maxSizeMB * 1024 * 1024) {
+      this.errorUploadFile = this.translateService.instant('card.hiking-trail-form.error-file-too-large', { maxSize: this.maxSizeMB });
+      return false;
+    }
+
+    return true;
   }
 
 }

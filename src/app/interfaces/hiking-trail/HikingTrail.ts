@@ -42,6 +42,7 @@ export interface CreateHikingTrail {
   locationLatitude?: number;
   locationLongitude?: number;
   metrics: Partial<CreateMetrics>;
+  images: File[];
 }
 
 export interface UpdateHikingTrail {
