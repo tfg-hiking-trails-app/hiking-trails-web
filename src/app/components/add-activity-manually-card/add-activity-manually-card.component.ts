@@ -41,6 +41,7 @@ import { isDarkMode, removeEmptyFields } from '../../Utils/Utils';
 import { LoadingSpinnerComponent } from "../loading-spinner/loading-spinner.component";
 import { TerrainType } from '../../interfaces/hiking-trail/TerrainType';
 import { TrailType } from '../../interfaces/hiking-trail/TrailType';
+import { AddImagesComponent } from '../add-images/add-images.component';
 
 interface Combos {
   difficultyLevels: DifficultyLevel[];
@@ -48,11 +49,10 @@ interface Combos {
   trailTypes: TrailType[];
 }
 
-type Preview = { file: File; url: string };
-
 @Component({
   selector: 'app-add-activity-manually-card',
   imports: [
+    AddImagesComponent,
     CommonModule,
     FormsModule,
     LoadingSpinnerComponent,
@@ -70,18 +70,12 @@ export class AddActivityManuallyCardComponent implements AfterViewInit, OnDestro
 
   addHikingTrailForm: FormGroup;
   difficultyLevels: DifficultyLevel[] = [];
-  errorUploadFile: string = '';
   files: File[] = [];
   isCreating = signal<boolean>(false);
-  isDragOver = false;
   isLoading = signal<boolean>(true);
-  previews: Preview[] = [];
   submitted: boolean = false;
   terrainTypes: TerrainType[] = [];
   trailTypes: TrailType[] = [];
-
-  readonly maxSizeMB = 10;
-  readonly allowedTypes = ['image/png', 'image/jpeg'];
 
   private map!: L.Map;
   private resizeObserver?: ResizeObserver;
@@ -353,77 +347,14 @@ export class AddActivityManuallyCardComponent implements AfterViewInit, OnDestro
     this.dialogRef.close();
   }
 
+  onSelectedImages(files: File[]): void {
+    this.files = files;
+  }
+
   ngOnDestroy(): void {
     if (this.map) {
       this.map.remove();
     }
-
-    for (const p of this.previews) {
-      URL.revokeObjectURL(p.url);
-    }
-  }
-
-  onDragOver(evt: DragEvent) {
-    evt.preventDefault();
-    evt.stopPropagation();
-    this.isDragOver = true;
-  }
-
-  onDragLeave(evt: DragEvent) {
-    evt.preventDefault();
-    evt.stopPropagation();
-    this.isDragOver = false;
-  }
-
-  onDrop(evt: DragEvent) {
-    evt.preventDefault();
-    evt.stopPropagation();
-    this.isDragOver = false;
-
-    const dt = evt.dataTransfer;
-    if (!dt)
-      return;
-
-    const dropped = Array.from(dt.files || []);
-    this.handleFiles(dropped);
-  }
-
-  onFileInput(evt: Event) {
-    const input = evt.target as HTMLInputElement;
-    const selected = Array.from(input.files ?? []);
-    this.handleFiles(selected);
-    input.value = '';
-  }
-
-  private handleFiles(files: File[]) {
-    const accepted: File[] = [];
-
-    for (const file of files) {
-      if (this.isValidImage(file))
-        accepted.push(file);
-    }
-
-    this.files = [...this.files, ...accepted];
-
-    const newPreviews: Preview[] = accepted.map(file => ({
-      file,
-      url: URL.createObjectURL(file)
-    }));
-    this.previews = [...this.previews, ...newPreviews];
-  }
-
-  private isValidImage(file: File): boolean {
-    if (!this.allowedTypes.includes(file.type)) {
-      this.errorUploadFile = this.translateService.instant('card.hiking-trail-form.error-file-not-supported');
-      return false;
-    }
-
-    if (file.size > this.maxSizeMB * 1024 * 1024) {
-      this.errorUploadFile = this.translateService.instant('card.hiking-trail-form.error-file-too-large', { maxSize: this.maxSizeMB });
-      return false;
-    }
-
-    return true;
   }
 
 }
