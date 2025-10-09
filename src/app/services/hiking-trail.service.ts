@@ -44,9 +44,24 @@ export class HikingTrailService {
 
     const formData = new FormData();
 
-    for (const [key, value] of Object.entries(hikingTrail)) {
+    const { images, metrics, ...rest } = hikingTrail;
+
+    for (const [key, value] of Object.entries(rest)) {
       if (value !== null && value !== undefined)
-        formData.append(key, value);
+        formData.append(key, String(value));
+    }
+
+    if (metrics) {
+      for (const [key, value] of Object.entries(metrics)) {
+        if (value !== null && value !== undefined)
+          formData.append(`metrics.${ key }`, String(value));
+      }
+    }
+
+    if (images?.length) {
+      for (let i = 0; i < images.length; i++) {
+        formData.append('images', images[i], images[i].name);
+      }
     }
 
     return this.apiService.post<HikingTrail>(url, formData);
@@ -57,9 +72,24 @@ export class HikingTrailService {
 
     const formData = new FormData();
 
-    for (const [key, value] of Object.entries(hikingTrail)) {
+    const { images, metrics, ...rest } = hikingTrail;
+
+    for (const [key, value] of Object.entries(rest)) {
       if (value !== null && value !== undefined)
-        formData.append(key, value);
+        formData.append(key, String(value));
+    }
+
+    if (metrics) {
+      for (const [key, value] of Object.entries(metrics)) {
+        if (value !== null && value !== undefined)
+          formData.append(`metrics.${ key }`, String(value));
+      }
+    }
+
+    if (images?.length) {
+      for (let i = 0; i < images.length; i++) {
+        formData.append('images', images[i], images[i].name);
+      }
     }
 
     return this.apiService.put<HikingTrail>(url, formData);

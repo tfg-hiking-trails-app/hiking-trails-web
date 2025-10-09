@@ -344,7 +344,8 @@ export class EditActivityManuallyCardComponent implements AfterViewInit, OnDestr
       endTime: endDate,
       locationLatitude: this.editHikingTrailForm.value.locationLatitude,
       locationLongitude: this.editHikingTrailForm.value.locationLongitude,
-      metrics: createMetrics
+      metrics: createMetrics,
+      images: this.editHikingTrailForm.value.images,
     });
 
     this.hikingTrailService

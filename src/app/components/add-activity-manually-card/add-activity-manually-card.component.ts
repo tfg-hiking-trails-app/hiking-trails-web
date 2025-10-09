@@ -33,7 +33,7 @@ import {
 
 import { AlertManagerService } from '../../services/alert-manager.service';
 import { AuthService } from '../../services/auth.service';
-import { CreateHikingTrail } from '../../interfaces/hiking-trail/HikingTrail';
+import { CreateHikingTrail, HikingTrail } from '../../interfaces/hiking-trail/HikingTrail';
 import { CreateMetrics } from '../../interfaces/hiking-trail/Metrics';
 import { DifficultyLevel } from '../../interfaces/hiking-trail/DifficultyLevel';
 import { HikingTrailService } from '../../services/hiking-trail.service';
@@ -72,6 +72,7 @@ export class AddActivityManuallyCardComponent implements AfterViewInit, OnDestro
   difficultyLevels: DifficultyLevel[] = [];
   errorUploadFile: string = '';
   files: File[] = [];
+  isCreating = signal<boolean>(false);
   isDragOver = false;
   isLoading = signal<boolean>(true);
   previews: Preview[] = [];
@@ -310,31 +311,36 @@ export class AddActivityManuallyCardComponent implements AfterViewInit, OnDestro
       accountCode: this.authService.getUserCode() || '',
       description: this.addHikingTrailForm.value.description,
       difficultyLevelCode: this.addHikingTrailForm.value.difficultyLevel,
-      endTime: endDate,
+      endTime: endDate.toISOString(),
       images: this.files,
       locationLatitude: this.addHikingTrailForm.value.locationLatitude,
       locationLongitude: this.addHikingTrailForm.value.locationLongitude,
       metrics: createMetrics,
       name: this.addHikingTrailForm.value.name,
       petFriendly: this.addHikingTrailForm.value.petFriendly,
-      startTime: startDate,
+      startTime: startDate.toISOString(),
       terrainTypeCode: this.addHikingTrailForm.value.terrainType,
       trailTypeCode: this.addHikingTrailForm.value.trailType,
     });
 
+    this.isCreating.set(true);
+
     this.hikingTrailService
       .add(createHikingTrail)
-      .subscribe({
-        next: (response) => {
+      .pipe(
+        tap((hikingTrail: HikingTrail) => {
           const message: string = this.translateService.instant('card.hiking-trail-form.added-success');
           this.alertManagerService.alertSuccess(message);
-          this.router.navigate(['/hiking-trail', response.code]);
+          this.router.navigate(['/hiking-trail', hikingTrail.code]);
           this.close();
-        },
-        error: (error) => {
+        }),
+        catchError(error => {
           this.alertManagerService.manageError(error);
-        }
-      });
+          return of(null);
+        }),
+        finalize(() => this.isCreating.set(false))
+      )
+      .subscribe();
   }
 
   private combineDates(date: Date, time: Date): Date {
