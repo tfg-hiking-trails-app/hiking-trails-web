@@ -16,7 +16,6 @@ export interface Account {
   dateOfBirth?: Date;
   weight?: number;
   height?: number;
-  private?: boolean;
   profilePicture?: string;
 }
 
@@ -32,7 +31,6 @@ export interface AccountUpdate {
   dateOfBirth?: string;
   weight?: number;
   height?: number;
-  private?: boolean;
   profilePicture?: string;
   uploadImage?: File;
   removedImage?: boolean;

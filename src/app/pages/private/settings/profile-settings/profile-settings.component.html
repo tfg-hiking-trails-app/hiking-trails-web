@@ -8,16 +8,6 @@
     <app-loading-spinner />
   } @else {
     <form class="mt-4" [formGroup]="editProfileInfoForm">
-      <!-- Private Profile -->
-      <mat-slide-toggle
-        class="mb-5"
-        formControlName="privateProfile"
-      >
-        <span class="font-medium text-xl ml-2">
-          {{ 'settings.profile.private-profile' | translate }}
-        </span>
-      </mat-slide-toggle>
-
       <!-- First Name / Last Name -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
         <mat-form-field class="w-full" appearance="fill">

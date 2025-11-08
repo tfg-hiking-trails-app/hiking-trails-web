@@ -99,6 +99,9 @@
     "username-already-exists": "Este nombre de usuario ya existe"
   },
   "expand-all": "Expandir todo",
+  "explore": {
+    "title": "Últimas rutas de senderismo añadidas"
+  },
   "feed": {
     "error": "Ha ocurrido un error al cargar las rutas de senderismo",
     "no-following": "¡No sigues a ningún usuario! Sigue a alguien para ver su actividad"

@@ -4,6 +4,7 @@ import {
   Component,
   DestroyRef,
   ElementRef,
+  OnDestroy,
   OnInit,
   signal,
   ViewChild
@@ -47,8 +48,7 @@ import { UpButtonComponent } from '../../shared/up-button/up-button.component';
   styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProfileComponent implements OnInit, AfterViewInit {
-
+export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
   account = signal<Account | null>(null);
   accountLoggedCode = signal<string | null>(null);
   followedCount = signal<number>(0);
@@ -158,20 +158,17 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     this.destroyRef.onDestroy(() => this.observer?.disconnect());
   }
 
+  ngOnDestroy(): void {
+    this.observer?.disconnect();
+  }
+
+
   getDefaultProfileImageUrl(gender?: string): string {
     return getDefaultProfileImageUrl(gender);
   }
 
-  isPrivateProfile(): boolean {
-    if (this.accountLoggedCode() && this.accountLoggedCode() === this.account()?.code) {
-      return false;
-    }
-
-    return this.account()?.private || false;
-  }
-
   canSeeFollowButton(): boolean {
-    if (this.accountLoggedCode() && this.accountLoggedCode() === this.account()?.code) {
+    if (this.isUserLogged()) {
       return false;
     }
 
@@ -180,7 +177,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   }
 
   canSeeUnfollowButton(): boolean {
-    if (this.accountLoggedCode() && this.accountLoggedCode() === this.account()?.code) {
+    if (this.isUserLogged()) {
       return false;
     }
 
@@ -231,6 +228,10 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       return false;
 
     return this.page() > this.totalPages()!;
+  }
+
+  private isUserLogged(): boolean {
+    return !!this.accountLoggedCode() && this.accountLoggedCode() === this.account()?.code;
   }
 
 }

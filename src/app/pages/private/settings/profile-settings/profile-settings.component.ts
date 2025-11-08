@@ -122,8 +122,7 @@ export class ProfileSettingsComponent {
       biography: this.editProfileInfoControls['biography'].value,
       dateOfBirth: formatDate(this.editProfileInfoControls['dateOfBirth'].value, 'yyyy-MM-dd', 'en-US'),
       weight: this.editProfileInfoControls['weight'].value,
-      height: this.editProfileInfoControls['height'].value,
-      private: this.editProfileInfoControls['privateProfile'].value
+      height: this.editProfileInfoControls['height'].value
     };
 
     const dialogRef = this.dialog.open(DialogConfirmComponent, {
@@ -202,8 +201,7 @@ export class ProfileSettingsComponent {
               biography: account.biography,
               dateOfBirth: account.dateOfBirth,
               weight: account.weight,
-              height: account.height,
-              privateProfile: account.private
+              height: account.height
             });
 
             if (account.country?.code && !isEmptyCode(account.country.code))

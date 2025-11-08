@@ -53,33 +53,24 @@
     </div>
   </div>
   <div>
-    @if (isPrivateProfile()) {
-      <div class="mt-28 px-3 md:px-0 w-full flex flex-col justify-center items-center gap-3">
-        <mat-icon class="text-white scale-500">lock</mat-icon>
-        <span class="text-white text-4xl mt-14">
-          {{ 'profile.private-profile' | translate }}
-        </span>
-      </div>
-    } @else {
-      <div class="mt-5 px-3 md:px-0 w-full flex flex-col justify-center items-center gap-3">
-        @for (hikingTrail of hikingTrails(); track $index) {
-          <app-hiking-trail-card
-            [hikingTrail]="hikingTrail"
-            [belongLoggedUser]="accountLoggedCode() === hikingTrail.account?.code"
-            [showResume]="true"
-          />
-        }
+    <div class="mt-5 px-3 md:px-0 w-full flex flex-col justify-center items-center gap-3">
+      @for (hikingTrail of hikingTrails(); track $index) {
+        <app-hiking-trail-card
+          [hikingTrail]="hikingTrail"
+          [belongLoggedUser]="accountLoggedCode() === hikingTrail.account?.code"
+          [showResume]="true"
+        />
+      }
 
-        <app-up-button />
+      <app-up-button />
 
-        @if (isLoadingHikingTrails()) {
-          <app-loading-spinner />
-        }
+      @if (isLoadingHikingTrails()) {
+        <app-loading-spinner />
+      }
 
-      </div>
+    </div>
 
-      <div #sentinela class="h-1 w-full"></div>
-    }
+    <div #sentinela class="h-1 w-full"></div>
   </div>
 }
 

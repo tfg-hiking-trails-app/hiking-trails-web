@@ -1,1 +1,20 @@
-<h1 class="dark:text-white text-4xl">Explorador en construcción</h1>
+<div class="mt-5 px-3 md:px-0 w-full flex flex-col justify-center items-center gap-3">
+  <h1>{{ 'explore.title' | translate }}</h1>
+
+  @for (hikingTrail of hikingTrails(); track $index) {
+    <app-hiking-trail-card
+      [hikingTrail]="hikingTrail"
+      [belongLoggedUser]="false"
+      [showResume]="true"
+    />
+  }
+
+  <app-up-button />
+
+  @if (isLoading()) {
+    <app-loading-spinner />
+  }
+
+</div>
+
+<div #sentinela class="h-1 w-full"></div>

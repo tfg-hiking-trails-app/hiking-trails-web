@@ -37,7 +37,7 @@ export class TokenInterceptor implements HttpInterceptor {
     const isAuthLogin = request.url.includes('/auth/login');
     const isAuthRefresh = request.url.includes('/auth/refresh');
 
-    if (!isAuthLogin && !isAuthRefresh) {
+    if (!isAuthLogin) {
       // embed the token in the request
       const token = this.tokenService.getToken();
 
@@ -57,6 +57,7 @@ export class TokenInterceptor implements HttpInterceptor {
           return this.handleAuthError(request, next);
         }
 
+        // Refresh token expired
         if ((err.status === 401 || err.status === 403) && isAuthRefresh) {
           this.tokenService.clearToken();
           this.router.navigate(['auth']);
