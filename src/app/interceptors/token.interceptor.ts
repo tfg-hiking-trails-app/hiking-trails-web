@@ -10,10 +10,10 @@ import {
   BehaviorSubject,
   catchError,
   filter,
+  finalize,
   Observable,
   switchMap,
   take,
-  tap,
   throwError
 } from "rxjs";
 
@@ -34,24 +34,34 @@ export class TokenInterceptor implements HttpInterceptor {
   ) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // the login does not carry the token
-    if (request.url.includes('/auth/login')) {
-      return next.handle(request);
-    }
+    const isAuthLogin = request.url.includes('/auth/login');
+    const isAuthRefresh = request.url.includes('/auth/refresh');
 
-    // embed the token in the request
-    request = request.clone({
-      setHeaders: {
-        Authorization: `Bearer ${ this.tokenService.getToken() }`
+    if (!isAuthLogin && !isAuthRefresh) {
+      // embed the token in the request
+      const token = this.tokenService.getToken();
+
+      if (token) {
+        request = request.clone({
+          setHeaders: {
+            Authorization: `Bearer ${ token }`
+          }
+        });
       }
-    });
+    }
 
     return next.handle(request).pipe(
       //if the access_token is expired start the refresh process
       catchError(err => {
-        if (err.status === 401 || err.status === 403) {
+        if ((err.status === 401 || err.status === 403) && !isAuthLogin && !isAuthRefresh) {
           return this.handleAuthError(request, next);
         }
+
+        if ((err.status === 401 || err.status === 403) && isAuthRefresh) {
+          this.tokenService.clearToken();
+          this.router.navigate(['auth']);
+        }
+
         return throwError(() => err);
       })
     );
@@ -63,12 +73,12 @@ export class TokenInterceptor implements HttpInterceptor {
         filter(token => token !== null),
         take(1),
         switchMap((token: string | null) => {
-          const request = originalRequest.clone({
+          const retried = originalRequest.clone({
             setHeaders: {
               Authorization: `Bearer ${ token }`
             }
           });
-          return next.handle(request);
+          return next.handle(retried);
         })
       );
     }
@@ -77,15 +87,13 @@ export class TokenInterceptor implements HttpInterceptor {
     this.refreshSubject.next(null);
 
     return this.authService.refresh().pipe(
-      tap((response: LoginResponse) => {
+      switchMap((response: LoginResponse) => {
         // the new access token is obtained
         const newToken = response.access_token;
 
         this.tokenService.setToken(newToken, JSON.parse(localStorage.getItem('remember') || 'false'));
         this.refreshSubject.next(newToken);
-        this.isRefreshing = false;
-      }),
-      switchMap((response: LoginResponse) => {
+
         // the request is re-requested with the new token.
         const request = originalRequest.clone({
           setHeaders: {
@@ -97,12 +105,12 @@ export class TokenInterceptor implements HttpInterceptor {
       }),
       catchError(err => {
         // an error occurred while trying to refresh the token
-        this.isRefreshing = false;
         this.tokenService.clearToken();
         this.router.navigate(['auth']);
 
         return throwError(() => err);
-      })
+      }),
+      finalize(() => this.isRefreshing = false)
     );
   }
 
