@@ -135,7 +135,7 @@ export class ExploreComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe();
   }
 
-   isLastPage(): boolean {
+  isLastPage(): boolean {
     if (!this.totalPages())
       return false;
 
