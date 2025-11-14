@@ -1,14 +1,22 @@
 <mat-card class="w-screen sm:w-xl md:w-2xl xl:w-3xl" appearance="raised">
   <mat-card-header [routerLink]="['/hiking-trail', hikingTrail.code]" class="relative flex flex-2/3 items-start dark:bg-neutral-900 cursor-pointer">
     <!-- Avatar -->
-    <div mat-card-avatar>
+    <div
+      mat-card-avatar
+      [routerLink]="['/profile', hikingTrail.account?.code]"
+      (click)="$event.stopPropagation()"
+    >
       <app-profile-picture [account]="hikingTrail.account" />
     </div>
 
     <!-- User -->
     @if (hikingTrail.account?.firstName) {
       <mat-card-title class="w-full">
-        <span class="font-medium dark:text-white">
+        <span
+          class="font-medium dark:text-white"
+          [routerLink]="['/profile', hikingTrail.account?.code]"
+          (click)="$event.stopPropagation()"
+        >
           {{ hikingTrail.account?.firstName }} {{ hikingTrail.account?.lastName }}
         </span>
       </mat-card-title>

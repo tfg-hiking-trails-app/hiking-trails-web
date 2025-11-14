@@ -5,9 +5,9 @@ import { Account, AccountUpdate } from '../interfaces/account/Account';
 import { ApiService } from './api.service';
 import { environment } from '../../environments/environment';
 import { Gender } from '../interfaces/account/Gender';
-import { CountrySummary } from '../interfaces/account/Country';
-import { StateSummary } from '../interfaces/account/State';
-import { CitySummary } from '../interfaces/account/City';
+import { CountrySummary } from '../interfaces/location/Country';
+import { StateSummary } from '../interfaces/location/State';
+import { CitySummary } from '../interfaces/location/City';
 
 @Injectable({
   providedIn: 'root'
