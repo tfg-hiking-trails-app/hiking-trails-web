@@ -13,6 +13,7 @@ import { Pagination } from "../interfaces/common/Pagination";
 import { TerrainType } from "../interfaces/hiking-trail/TerrainType";
 import { TrailType } from "../interfaces/hiking-trail/TrailType";
 import { HttpParams } from "@angular/common/http";
+import { Recommender } from "../interfaces/hiking-trail/Recommender";
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +36,7 @@ export class HikingTrailService {
     getByAccountCodesPaged: `${ environment.apiGatewayUrl }/hiking-trail/account-codes`,
     getByCode: (code: string) => `${ environment.apiGatewayUrl }/hiking-trail/${ code }`,
     getNewestPaged: `${ environment.apiGatewayUrl }/hiking-trail/newest`,
+    getRecommendedPaged: `${ environment.apiGatewayUrl }/hiking-trail/recommender`,
     removeComment: (code: string) => `${ environment.apiGatewayUrl }/comment/${ code }`,
     removePrestige: `${ environment.apiGatewayUrl }/prestige`,
     search: (query: string, numberResults: number) => `${ environment.apiGatewayUrl }/hiking-trail/searcher?search=${ encodeURIComponent(query) }&numberResults=${ numberResults }`,
@@ -124,6 +126,18 @@ export class HikingTrailService {
     }});
 
     return this.apiService.get<Pagination<HikingTrail>>(url, { params });
+  }
+
+  getRecommendedPaged(recommenderDto: Recommender, filter: Filter): Observable<Pagination<HikingTrail>> {
+    const url: string = this.routes.getRecommendedPaged;
+    const params = new HttpParams({ fromObject: {
+      pageNumber: filter.pageNumber ?? 1,
+      pageSize: filter.pageSize ?? 10,
+      sortField: filter.sortField ?? 'StartTime',
+      sortDirection: filter.sortDirection ?? 'desc',
+    }});
+
+    return this.apiService.post<Pagination<HikingTrail>>(url, recommenderDto, { params });
   }
 
   getAllDifficultyLevels(): Observable<DifficultyLevel[]> {

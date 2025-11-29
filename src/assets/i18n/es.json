@@ -213,6 +213,9 @@
     "private-profile": "Perfil privado",
     "unfollow": "Dejar de seguir"
   },
+  "recommender": {
+    "title": "Rutas de senderismo recomendadas para ti"
+  },
   "register": {
     "confirmPassword": "Confirmar contraseña",
     "confirmPasswordRequired": "La confirmación de la contraseña es obligatoria",
