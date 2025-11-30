@@ -1,0 +1,41 @@
+<mat-accordion class="" multi>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{ 'metrics-score.title' |  translate }}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    @if (isLoading()) {
+      <app-loading-spinner />
+    } @else {
+      <div class="grid grid-cols-2 gap-10">
+        @for (metric of metrics; track $index) {
+          <div class="w-full">
+            <div class="flex justify-between">
+              <label class="text-xl md:text-nowrap">{{ metric.label |  translate }}</label>
+              <label class="text-xl">{{slider.value}}</label>
+            </div>
+            <mat-slider
+                class="w-full"
+                [disabled]="disabled"
+                [max]="max"
+                [min]="min"
+                [step]="step"
+                [discrete]="thumbLabel"
+                [showTickMarks]="showTicks">
+              <input matSliderThumb [(ngModel)]="metric.value" #slider>
+            </mat-slider>
+          </div>
+        }
+      </div>
+    }
+
+    <div class="w-full">
+      <button class="w-full" matButton="filled" (click)="saveChanges()">
+        {{ 'metrics-score.save-changes' | translate}}
+      </button>
+    </div>
+
+  </mat-expansion-panel>
+</mat-accordion>

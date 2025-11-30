@@ -5,7 +5,6 @@ import {
   DestroyRef,
   ElementRef,
   OnDestroy,
-  OnInit,
   signal,
   ViewChild
 } from '@angular/core';
@@ -24,31 +23,34 @@ import {
 
 import { HikingTrailCardComponent } from '../../../components/hiking-trail-card/hiking-trail-card.component';
 import { LoadingSpinnerComponent } from '../../../components/loading-spinner/loading-spinner.component';
+import { MetricsScoreSlider } from '../../../components/metrics-score-slider/metrics-score-slider';
 import { Filter } from '../../../interfaces/common/Filter';
 import { Pagination } from '../../../interfaces/common/Pagination';
 import { HikingTrail } from '../../../interfaces/hiking-trail/HikingTrail';
+import { Recommender } from '../../../interfaces/hiking-trail/Recommender';
 import { AccountService } from '../../../services/account.service';
+import { AuthService } from '../../../services/auth.service';
 import { HikingTrailService } from '../../../services/hiking-trail.service';
 import { UpButtonComponent } from '../../shared/up-button/up-button.component';
-import { Recommender } from '../../../interfaces/hiking-trail/Recommender';
-import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-recommender',
   imports: [
-    MaterialModules,
-    LoadingSpinnerComponent,
-    TranslatePipe,
     HikingTrailCardComponent,
-    UpButtonComponent
+    LoadingSpinnerComponent,
+    MaterialModules,
+    MetricsScoreSlider,
+    TranslatePipe,
+    UpButtonComponent,
   ],
   templateUrl: './recommender.component.html',
   styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RecommenderComponent implements OnInit, AfterViewInit, OnDestroy {
+export class RecommenderComponent implements AfterViewInit, OnDestroy {
 
   isLoading = signal<boolean>(false);
+  canLoadHikingTrails = signal<boolean>(false);
 
   // lazy load hiking trails
   error = signal<string | null>(null);
@@ -67,10 +69,6 @@ export class RecommenderComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroyRef: DestroyRef,
     private hikingTrailService: HikingTrailService
   ) { }
-
-  ngOnInit(): void {
-    this.loadNextPage();
-  }
 
   ngAfterViewInit(): void {
     this.observer = new IntersectionObserver(entries => {
@@ -92,7 +90,7 @@ export class RecommenderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   loadNextPage(): void {
-    if (this.isLoading() || this.isLastPage())
+    if (this.isLoading() || this.isLastPage() || !this.canLoadHikingTrails())
       return;
 
     this.isLoading.set(true);

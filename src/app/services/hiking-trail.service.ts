@@ -1,19 +1,20 @@
 import { Injectable } from "@angular/core";
+import { HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
 
-import { ApiService } from "./api.service";
-import { Comment, CreateComment } from "../interfaces/hiking-trail/Comment";
-import { CreatePrestige, DeletePrestige, Prestige } from "../interfaces/hiking-trail/Prestige";
-import { DifficultyLevel } from "../interfaces/hiking-trail/DifficultyLevel";
 import { environment } from "../../environments/environment";
 import { Filter } from "../interfaces/common/Filter";
+import { Pagination } from "../interfaces/common/Pagination";
+import { Comment, CreateComment } from "../interfaces/hiking-trail/Comment";
+import { DifficultyLevel } from "../interfaces/hiking-trail/DifficultyLevel";
 import { CreateHikingTrail, HikingTrail, UpdateHikingTrail } from "../interfaces/hiking-trail/HikingTrail";
 import { HikingTrailFilter } from "../interfaces/hiking-trail/HikingTrailFilter";
-import { Pagination } from "../interfaces/common/Pagination";
+import { MetricsScore } from "../interfaces/hiking-trail/MetricsScore";
+import { CreatePrestige, DeletePrestige, Prestige } from "../interfaces/hiking-trail/Prestige";
+import { Recommender } from "../interfaces/hiking-trail/Recommender";
 import { TerrainType } from "../interfaces/hiking-trail/TerrainType";
 import { TrailType } from "../interfaces/hiking-trail/TrailType";
-import { HttpParams } from "@angular/common/http";
-import { Recommender } from "../interfaces/hiking-trail/Recommender";
+import { ApiService } from "./api.service";
 
 @Injectable({
   providedIn: 'root'
@@ -28,13 +29,15 @@ export class HikingTrailService {
     add: `${ environment.apiGatewayUrl }/hiking-trail`,
     addComment: `${ environment.apiGatewayUrl }/comment`,
     addPrestige: `${ environment.apiGatewayUrl }/prestige`,
-    edit: (code: string) => `${ environment.apiGatewayUrl }/hiking-trail/${ code }`,
     delete: (code: string) => `${ environment.apiGatewayUrl }/hiking-trail/${ code }`,
+    edit: (code: string) => `${ environment.apiGatewayUrl }/hiking-trail/${ code }`,
+    editMetricsScore: `${ environment.apiGatewayUrl }/metrics-score/account`,
     getAllDifficultyLevels: `${ environment.apiGatewayUrl }/difficulty-level/all`,
     getAllTerrainTypes: `${ environment.apiGatewayUrl }/terrain-type/all`,
     getAllTrailTypes: `${ environment.apiGatewayUrl }/trail-type/all`,
     getByAccountCodesPaged: `${ environment.apiGatewayUrl }/hiking-trail/account-codes`,
     getByCode: (code: string) => `${ environment.apiGatewayUrl }/hiking-trail/${ code }`,
+    getMetricsScoreByAccountCode: (accountCode: string) => `${ environment.apiGatewayUrl }/metrics-score/account/${ accountCode }`,
     getNewestPaged: `${ environment.apiGatewayUrl }/hiking-trail/newest`,
     getRecommendedPaged: `${ environment.apiGatewayUrl }/hiking-trail/recommender`,
     removeComment: (code: string) => `${ environment.apiGatewayUrl }/comment/${ code }`,
@@ -99,6 +102,11 @@ export class HikingTrailService {
     return this.apiService.put<HikingTrail>(url, formData);
   }
 
+  updateMetricsScore(metricsScore: MetricsScore): Observable<void> {
+    const url: string = this.routes.editMetricsScore;
+    return this.apiService.put<void>(url, metricsScore);
+  }
+
   delete(code: string): Observable<void> {
     const url: string = this.routes.delete(code);
     return this.apiService.delete<void>(url);
@@ -114,6 +122,11 @@ export class HikingTrailService {
     const body: HikingTrailFilter = { accountCodes, filter };
 
     return this.apiService.post<Pagination<HikingTrail>>(url, body);
+  }
+
+  getMetricsScoreByAccountCode(accountCode: string): Observable<MetricsScore> {
+    const url: string = this.routes.getMetricsScoreByAccountCode(accountCode);
+    return this.apiService.get<MetricsScore>(url);
   }
 
   getNewestPaged(filter: Filter): Observable<Pagination<HikingTrail>> {

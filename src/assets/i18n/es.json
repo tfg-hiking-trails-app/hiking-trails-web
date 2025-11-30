@@ -175,6 +175,19 @@
     "totalAscent": "Ascenso total",
     "totalDescent": "Descenso total"
   },
+  "metrics-score": {
+    "title": "Importancia de las métricas en las recomendaciones",
+    "distance": "Distancia",
+    "duration": "Duración",
+    "steps": "Pasos",
+    "calories": "Calorías",
+    "pace": "Ritmo",
+    "elevation": "Desnivel",
+    "heart_rate": "Frecuencia cardíaca",
+    "speed": "Velocidad",
+    "save-changes": "Guardar cambios",
+    "changes-saved-successfully": "Cambios guardados con éxito"
+  },
   "navbar": {
     "add-activity-menu": {
       "add-activity": "Añadir actividad",
