@@ -176,7 +176,7 @@
     "totalDescent": "Descenso total"
   },
   "metrics-score": {
-    "title": "Importancia de las métricas en las recomendaciones",
+    "title": "Importancia de las métricas",
     "distance": "Distancia",
     "duration": "Duración",
     "steps": "Pasos",
@@ -227,7 +227,10 @@
     "unfollow": "Dejar de seguir"
   },
   "recommender": {
-    "title": "Rutas de senderismo recomendadas para ti"
+    "title": "Rutas de senderismo recomendadas para ti",
+    "filter-options": {
+      "title": "Filtros de recomendación"
+    }
   },
   "register": {
     "confirmPassword": "Confirmar contraseña",

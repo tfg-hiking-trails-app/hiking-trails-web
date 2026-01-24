@@ -1,9 +1,28 @@
 <div class="mt-5 px-3 md:px-0 w-full flex flex-col justify-center items-center gap-3">
-  <h1 class="font-medium text-3xl text-center text-white">
-    {{ 'recommender.title' | translate }}
-  </h1>
+  <mat-accordion class="example-headers-align">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>{{ 'recommender.title' | translate }}</mat-panel-title>
+      </mat-expansion-panel-header>
 
-  <app-metrics-score-slider class="md:w-xl" />
+      <mat-tab-group
+        class="md:w-2xl"
+        mat-stretch-tabs="false"
+        mat-align-tabs="center">
+
+        <mat-tab [label]="'metrics-score.title' | translate">
+          <app-metrics-score-slider></app-metrics-score-slider>
+        </mat-tab>
+
+        <mat-tab [label]="'recommender.filter-options.title' | translate">
+          Content 2
+        </mat-tab>
+
+      </mat-tab-group>
+    </mat-expansion-panel>
+
+  </mat-accordion>
+
 
   @for (hikingTrail of hikingTrails(); track $index) {
     <app-hiking-trail-card

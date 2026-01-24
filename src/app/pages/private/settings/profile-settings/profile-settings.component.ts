@@ -25,6 +25,7 @@ import { AlertManagerService } from '../../../../services/alert-manager.service'
 import { AuthService } from '../../../../services/auth.service';
 import { isEmptyCode } from '../../../../Utils/Utils';
 import { UploadProfileImageComponent } from './upload-profile-image/upload-profile-image.component';
+import { LocationService } from '../../../../services/location.service';
 
 @Component({
   selector: 'app-profile-settings',
@@ -61,6 +62,7 @@ export class ProfileSettingsComponent {
     private destroyRef: DestroyRef,
     private dialog: MatDialog,
     private formBuilder: FormBuilder,
+    private locationService: LocationService,
     private translateService: TranslateService
   ) {
     this.editProfileInfoForm = this.formBuilder.group({
@@ -237,7 +239,7 @@ export class ProfileSettingsComponent {
   }
 
   private loadCountries(): Observable<CountrySummary[]> {
-    return this.accountService
+    return this.locationService
       .getAllCountriesSummary()
         .pipe(
         tap((countries: CountrySummary[]) => {
@@ -253,7 +255,7 @@ export class ProfileSettingsComponent {
   }
 
   private loadStates(countryCode: string): void {
-    this.accountService
+    this.locationService
       .getStatesByCountrySummary(countryCode)
         .pipe(
         tap((states: StateSummary[]) => {
@@ -270,7 +272,7 @@ export class ProfileSettingsComponent {
   }
 
   private loadCities(stateCode: string): void {
-    this.accountService
+    this.locationService
       .getCitiesByStateSummary(stateCode)
         .pipe(
         tap((cities: CitySummary[]) => {
