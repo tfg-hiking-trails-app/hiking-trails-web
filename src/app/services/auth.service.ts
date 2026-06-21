@@ -29,11 +29,10 @@ export class AuthService {
     private router: Router
   ) { }
 
-  register(request: RegisterRequest): Observable<LoginResponse> {
-    return this.apiService.post<LoginResponse>(
+  register(request: RegisterRequest): Observable<void> {
+    return this.apiService.post<void>(
       this.routes.registerPath,
-      request,
-      { withCredentials: true }
+      request
     );
   }
 

@@ -29,6 +29,7 @@ export class AuthComponent {
     { code: 'en', label: 'auth.english', icon: 'images/en.png' }
   ];
   currentLang = signal(this.langService.getLocale());
+  selectedTabIndex = signal(0);
 
   setLanguage(lang: string): void {
     this.langService.setLanguage(lang);

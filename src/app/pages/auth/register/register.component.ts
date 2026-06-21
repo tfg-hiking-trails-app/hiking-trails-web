@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Output, signal } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -13,12 +13,11 @@ import {
 } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MaterialModules } from '@material/material.modules';
-import { TranslatePipe } from '@ngx-translate/core';
-import { Router } from '@angular/router';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 import { RegisterRequest } from '../../../interfaces/auth/Register';
+import { AlertManagerService } from '../../../services/alert-manager.service';
 import { AuthService } from '../../../services/auth.service';
-import { TokenService } from '../../../services/token.service';
 
 @Component({
   selector: 'app-register',
@@ -33,6 +32,8 @@ import { TokenService } from '../../../services/token.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterComponent {
+  @Output() registered = new EventEmitter<void>();
+
   registerForm: FormGroup;
   submitted: boolean = false;
   showPassword = signal(false);
@@ -42,8 +43,8 @@ export class RegisterComponent {
   constructor(
     private authService: AuthService,
     private formBuilder: FormBuilder,
-    private router: Router,
-    private tokenService: TokenService
+    private alertManagerService: AlertManagerService,
+    private translateService: TranslateService
   ) {
     this.registerForm = this.formBuilder.group({
       username: ['test3', [
@@ -82,12 +83,18 @@ export class RegisterComponent {
     };
 
     this.authService.register(registerDto).subscribe({
-      next: (response) => {
-        const { access_token } = response;
+      next: () => {
+        // No auto-login: notify the user and switch to the login tab so they can sign in.
+        this.alertManagerService.alertSuccess(
+          this.translateService.instant('register.registerSuccess')
+        );
 
-        this.tokenService.setToken(access_token, false);
-
-        this.router.navigate(['feed']);
+        this.registerForm.reset();
+        this.submitted = false;
+        this.registered.emit();
+      },
+      error: (error) => {
+        this.alertManagerService.manageError(error);
       }
     });
   }

@@ -27,7 +27,9 @@
   <!-- Login/Register -->
   <div class="w-full h-full flex justify-center items-center">
     <div class="bg-white dark:bg-dark-mode px-6 pb-4 rounded-lg shadow-lg w-full max-w-md mx-2 md:mx-0">
-      <mat-tab-group animationDuration="250ms">
+      <mat-tab-group animationDuration="250ms"
+        [selectedIndex]="selectedTabIndex()"
+        (selectedIndexChange)="selectedTabIndex.set($event)">
         <mat-tab>
           <ng-template mat-tab-label>
             <span class="text-xl sm:text-2xl">
@@ -45,7 +47,7 @@
             </span>
           </ng-template>
           <!-- Register Component -->
-          <app-register class="m-4" />
+          <app-register class="m-4" (registered)="selectedTabIndex.set(0)" />
         </mat-tab>
       </mat-tab-group>
     </div>
