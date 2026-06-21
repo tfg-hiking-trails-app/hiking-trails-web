@@ -33,11 +33,11 @@ interface MetricsScoreDisplay {
     MaterialModules,
     TranslatePipe,
   ],
-  templateUrl: './metrics-score-slider.html',
-  styleUrl: './metrics-score-slider.css',
+  templateUrl: './metrics-score-slider.component.html',
+  styleUrl: './metrics-score-slider.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MetricsScoreSlider implements OnInit {
+export class MetricsScoreSliderComponent implements OnInit {
 
   isLoading = signal<boolean>(false);
   error = signal<string | null>(null);

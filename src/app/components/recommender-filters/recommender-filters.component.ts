@@ -28,11 +28,11 @@ export type RecommenderFiltersValue = Pick<Recommender, 'kilometers' | 'location
     ReactiveFormsModule,
     TranslatePipe,
   ],
-  templateUrl: './recommender-filters.html',
+  templateUrl: './recommender-filters.component.html',
   styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RecommenderFilters implements AfterViewInit, OnDestroy {
+export class RecommenderFiltersComponent implements AfterViewInit, OnDestroy {
 
   // Kept in sync with the backend validation ([Range(1, 25)] on RecommenderDto.Kilometers)
   readonly minKilometers = 1;

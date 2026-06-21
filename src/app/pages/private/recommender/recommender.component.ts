@@ -23,8 +23,8 @@ import {
 
 import { HikingTrailCardComponent } from '../../../components/hiking-trail-card/hiking-trail-card.component';
 import { LoadingSpinnerComponent } from '../../../components/loading-spinner/loading-spinner.component';
-import { MetricsScoreSlider } from '../../../components/metrics-score-slider/metrics-score-slider';
-import { RecommenderFilters, RecommenderFiltersValue } from '../../../components/recommender-filters/recommender-filters';
+import { MetricsScoreSliderComponent } from '../../../components/metrics-score-slider/metrics-score-slider.component';
+import { RecommenderFiltersComponent, RecommenderFiltersValue } from '../../../components/recommender-filters/recommender-filters.component';
 import { Filter } from '../../../interfaces/common/Filter';
 import { Pagination } from '../../../interfaces/common/Pagination';
 import { HikingTrail } from '../../../interfaces/hiking-trail/HikingTrail';
@@ -40,8 +40,8 @@ import { UpButtonComponent } from '../../shared/up-button/up-button.component';
     HikingTrailCardComponent,
     LoadingSpinnerComponent,
     MaterialModules,
-    MetricsScoreSlider,
-    RecommenderFilters,
+    MetricsScoreSliderComponent,
+    RecommenderFiltersComponent,
     TranslatePipe,
     UpButtonComponent,
   ],
