@@ -206,7 +206,7 @@
     },
     "recommender": "Recomendador",
     "search-bar": {
-      "placeholder": "Busca Ubicaciones, Usuarios...",
+      "placeholder": "Busca Rutas, Usuarios...",
       "accounts": "Cuentas",
       "no-accounts-found": "No se han encontrado cuentas",
       "hiking-trails": "Rutas de senderismo",

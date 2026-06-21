@@ -67,15 +67,8 @@
             ></textarea>
           </mat-form-field>
 
-          <!-- Images -->
-          <mat-form-field class="w-full md:col-span-2" subscriptSizing="dynamic">
-            <mat-label for="images">{{ 'card.hiking-trail-form.images' | translate}}</mat-label>
-            <input
-              matInput
-              formControlName="images"
-              autocomplete="off"
-            />
-          </mat-form-field>
+          <!-- Images upload -->
+          <app-add-images class="md:col-span-2" (filesChange)="onSelectedImages($event)" />
 
           <!-- Trail Type -->
           <mat-form-field class="w-full" subscriptSizing="dynamic">
@@ -148,6 +141,9 @@
               placeholder="HH:mm"
               required
             >
+            @if (submitted && editHikingTrailControls['startTime'].hasError('required')) {
+              <mat-error>{{ 'card.hiking-trail-form.start-time-required' | translate }}</mat-error>
+            }
             <mat-timepicker #startTimepicker interval="5m"></mat-timepicker>
             <mat-timepicker-toggle [for]="startTimepicker" matSuffix />
           </mat-form-field>
@@ -178,6 +174,9 @@
               placeholder="HH:mm"
               required
             >
+            @if (submitted && editHikingTrailControls['endTime'].hasError('required')) {
+              <mat-error>{{ 'card.hiking-trail-form.end-time-required' | translate }}</mat-error>
+            }
             <mat-timepicker #endTimepicker interval="5m"></mat-timepicker>
             <mat-timepicker-toggle [for]="endTimepicker" matSuffix />
           </mat-form-field>

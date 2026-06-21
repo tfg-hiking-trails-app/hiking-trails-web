@@ -291,6 +291,7 @@ export class AddActivityManuallyCardComponent implements AfterViewInit, OnDestro
     this.submitted = true;
 
     if (this.addHikingTrailForm.invalid) {
+      this.addHikingTrailForm.markAllAsTouched();
       return;
     }
 

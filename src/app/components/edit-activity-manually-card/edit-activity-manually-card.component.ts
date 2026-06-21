@@ -31,6 +31,7 @@ import {
   tap
 } from 'rxjs';
 
+import { AddImagesComponent } from '../add-images/add-images.component';
 import { AlertManagerService } from '../../services/alert-manager.service';
 import { AuthService } from '../../services/auth.service';
 import { CreateMetrics, Metrics } from '../../interfaces/hiking-trail/Metrics';
@@ -54,6 +55,7 @@ interface Combos {
 @Component({
   selector: 'app-add-activity-manually-card',
   imports: [
+    AddImagesComponent,
     FormsModule,
     MaterialModules,
     ReactiveFormsModule,
@@ -298,6 +300,7 @@ export class EditActivityManuallyCardComponent implements AfterViewInit, OnDestr
     this.submitted = true;
 
     if (this.editHikingTrailForm.invalid) {
+      this.editHikingTrailForm.markAllAsTouched();
       return;
     }
 
@@ -369,6 +372,10 @@ export class EditActivityManuallyCardComponent implements AfterViewInit, OnDestr
     const combined = new Date(date);
     combined.setHours(time.getHours(), time.getMinutes(), time.getSeconds(), time.getMilliseconds());
     return combined;
+  }
+
+  onSelectedImages(files: File[]): void {
+    this.editHikingTrailForm.patchValue({ images: files });
   }
 
   close(): void {

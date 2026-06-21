@@ -141,6 +141,9 @@
               placeholder="HH:mm"
               required
             >
+            @if (submitted && addHikingTrailControls['startTime'].hasError('required')) {
+              <mat-error>{{ 'card.hiking-trail-form.start-time-required' | translate }}</mat-error>
+            }
             <mat-timepicker #startTimepicker interval="5m"></mat-timepicker>
             <mat-timepicker-toggle [for]="startTimepicker" matSuffix />
           </mat-form-field>
@@ -171,6 +174,9 @@
               placeholder="HH:mm"
               required
             >
+            @if (submitted && addHikingTrailControls['endTime'].hasError('required')) {
+              <mat-error>{{ 'card.hiking-trail-form.end-time-required' | translate }}</mat-error>
+            }
             <mat-timepicker #endTimepicker interval="5m"></mat-timepicker>
             <mat-timepicker-toggle [for]="endTimepicker" matSuffix />
           </mat-form-field>
