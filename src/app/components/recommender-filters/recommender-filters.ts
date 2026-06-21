@@ -38,6 +38,9 @@ export class RecommenderFilters implements AfterViewInit, OnDestroy {
   readonly minKilometers = 1;
   readonly maxKilometers = 25;
 
+  // Fallback map center (Madrid) used until the browser geolocation resolves
+  private readonly defaultCenter: L.LatLngTuple = [40.41650000, -3.70256000];
+
   @Output() search = new EventEmitter<RecommenderFiltersValue>();
 
   @ViewChild('mapContainer', { static: false }) mapContainer?: ElementRef<HTMLDivElement>;
@@ -56,6 +59,7 @@ export class RecommenderFilters implements AfterViewInit, OnDestroy {
 
   private map!: L.Map;
   private marker?: L.Marker;
+  private destroyed = false;
   private resizeObserver?: ResizeObserver;
   private resizeRaf?: number;
 
@@ -74,7 +78,7 @@ export class RecommenderFilters implements AfterViewInit, OnDestroy {
       }
 
       this.map = L.map(this.mapContainer.nativeElement, {
-        center: [40.41650000, -3.70256000],
+        center: this.defaultCenter,
         zoom: 12,
         scrollWheelZoom: false
       });
@@ -105,9 +109,29 @@ export class RecommenderFilters implements AfterViewInit, OnDestroy {
       this.resizeObserver.observe(this.mapContainer.nativeElement);
 
       window.addEventListener('theme-changed', this.onThemeChange as EventListener);
+
+      this.centerOnBrowserLocation();
     };
 
     load();
+  }
+
+  private centerOnBrowserLocation(): void {
+    if (!navigator.geolocation)
+      return;
+
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        if (this.destroyed)
+          return;
+
+        const { latitude, longitude } = position.coords;
+        this.map.setView([latitude, longitude], 13);
+      },
+      // Permission denied or location unavailable: keep the default center
+      () => { },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
   }
 
   private registerClickHandler(): void {
@@ -168,6 +192,8 @@ export class RecommenderFilters implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.destroyed = true;
+
     window.removeEventListener('theme-changed', this.onThemeChange as EventListener);
 
     if (this.resizeRaf)

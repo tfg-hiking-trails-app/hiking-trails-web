@@ -78,8 +78,12 @@ export class AddActivityManuallyCardComponent implements AfterViewInit, OnDestro
   trailTypes: TrailType[] = [];
 
   private map!: L.Map;
+  private destroyed = false;
   private resizeObserver?: ResizeObserver;
   private resizeRaf?: number;
+
+  // Fallback map center (Madrid) used until the browser geolocation resolves
+  private readonly defaultCenter: L.LatLngTuple = [40.41650000, -3.70256000];
 
   private lightTileLayer!: L.TileLayer;
   private darkTileLayer!: L.TileLayer;
@@ -162,7 +166,7 @@ export class AddActivityManuallyCardComponent implements AfterViewInit, OnDestro
       }
 
       this.map = L.map(this.mapContainer?.nativeElement, {
-        center: [40.41650000, -3.70256000],
+        center: this.defaultCenter,
         zoom: 12,
         scrollWheelZoom: false
       });
@@ -193,9 +197,29 @@ export class AddActivityManuallyCardComponent implements AfterViewInit, OnDestro
       this.resizeObserver.observe(this.mapContainer.nativeElement);
 
       window.addEventListener('theme-changed', this.onThemeChange as EventListener);
+
+      this.centerOnBrowserLocation();
     };
 
     load();
+  }
+
+  private centerOnBrowserLocation(): void {
+    if (!navigator.geolocation)
+      return;
+
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        if (this.destroyed)
+          return;
+
+        const { latitude, longitude } = position.coords;
+        this.map.setView([latitude, longitude], 13);
+      },
+      // Permission denied or location unavailable: keep the default center
+      () => { },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
   }
 
   private drawMap(): void {
@@ -352,6 +376,8 @@ export class AddActivityManuallyCardComponent implements AfterViewInit, OnDestro
   }
 
   ngOnDestroy(): void {
+    this.destroyed = true;
+
     if (this.map) {
       this.map.remove();
     }
