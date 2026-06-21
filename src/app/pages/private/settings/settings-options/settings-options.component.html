@@ -1,4 +1,4 @@
-<div class="flex flex-col rounded-lg w-full">
+<div class="flex flex-col rounded-xl overflow-hidden ring-1 ring-white/10 shadow-sm w-full">
   @for (option of options; track $index) {
     <div
       [routerLink]="['/settings', option.key]"
@@ -11,7 +11,7 @@
           : 'hover:bg-light-mode-secondary hover:dark:bg-neutral-950 ') +
         ($index === 0 ? 'rounded-t-sm ' : '') +
         ($index === options.length - 1 ? 'rounded-b-sm ' : '') +
-        'h-12 flex justify-start items-center cursor-pointer w-full'
+        'h-12 flex justify-start items-center cursor-pointer w-full transition-colors'
       "
     >
       <span class="text-white ml-6 material-icons"

@@ -1,17 +1,17 @@
-<div class="dark:bg-dark-mode">
-  <div class="py-4">
-    <span class="font-medium text-2xl ml-3 text-white">{{ 'laps.laps' | translate }}</span>
+<div class="rounded-2xl bg-white/5 dark:bg-dark-mode ring-1 ring-white/10 shadow-sm p-4">
+  <div class="pb-4">
+    <span class="font-semibold tracking-tight text-2xl text-white">{{ 'laps.laps' | translate }}</span>
   </div>
   <div class="flex gap-2 mb-3">
     <button
-      class="bg-amber-400 hover:bg-amber-500 dark:bg-blue-500 dark:hover:bg-blue-700 dark:text-white font-medium py-2 px-4 rounded-full cursor-pointer"
+      class="bg-amber-400 hover:bg-amber-500 dark:bg-blue-500 dark:hover:bg-blue-700 dark:text-white font-medium py-2 px-4 rounded-full cursor-pointer shadow-sm transition-colors"
       (click)="accordion().openAll()"
     >
       <span class="mdi mdi-expand-all text-xl"></span>
       {{ 'expand-all' | translate }}
     </button>
     <button
-      class="bg-amber-400 hover:bg-amber-500 dark:bg-blue-500 dark:hover:bg-blue-700 dark:text-white font-medium py-2 px-4 rounded-full cursor-pointer"
+      class="bg-amber-400 hover:bg-amber-500 dark:bg-blue-500 dark:hover:bg-blue-700 dark:text-white font-medium py-2 px-4 rounded-full cursor-pointer shadow-sm transition-colors"
       (click)="accordion().closeAll()"
     >
       <span class="mdi mdi-collapse-all text-xl"></span>
@@ -36,12 +36,12 @@
         <div class="grid grid-cols-2 md:grid-cols-3 gap-4 gap-x-16 justify-items-start items-center">
           @for (metric of metricsDisplay; track metric.key) {
             @if (metric.display && getMetricValue(lapIndex, metric.key)) {
-              <div>
-                <span class="dark:text-gray-700 text-sm">{{ metric.label | translate }}</span>
+              <div class="flex flex-col gap-0.5">
+                <span class="text-gray-500 dark:text-gray-400 text-xs font-medium uppercase tracking-wide">{{ metric.label | translate }}</span>
                 <div class="flex items-center" [matTooltip]="(metric.label | translate)">
-                  <span [class]="'mdi ' + metric.icon + ' text-2xl font-medium'">
-                    <span class="text-xl font-medium">
-                      {{ getMetricValue(lapIndex, metric.key) }} <span class="text-lg">{{ metric.unit }}</span>
+                  <span [class]="'mdi ' + metric.icon + ' text-light-mode-primary dark:text-gray-200 text-2xl'">
+                    <span class="ml-1 text-xl font-semibold">
+                      {{ getMetricValue(lapIndex, metric.key) }} <span class="text-sm font-normal text-gray-400">{{ metric.unit }}</span>
                     </span>
                   </span>
                 </div>

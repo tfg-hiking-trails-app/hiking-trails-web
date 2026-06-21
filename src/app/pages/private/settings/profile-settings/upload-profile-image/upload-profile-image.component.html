@@ -5,7 +5,7 @@
     <div class="grid place-items-center">
       <div
         [matTooltip]="'settings.profile.upload-image' | translate"
-        class="relative w-32 h-32 rounded-full overflow-hidden group cursor-pointer"
+        class="relative w-32 h-32 rounded-full overflow-hidden group cursor-pointer ring-4 ring-white/20 shadow-lg"
       >
         @if (file || previewUrl()) {
           <img
@@ -14,7 +14,7 @@
             class="object-cover w-full h-full"
           />
         } @else {
-          <div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500">
+          <div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500 dark:bg-neutral-700 dark:text-gray-300">
             <mat-icon class="scale-150">person</mat-icon>
           </div>
         }

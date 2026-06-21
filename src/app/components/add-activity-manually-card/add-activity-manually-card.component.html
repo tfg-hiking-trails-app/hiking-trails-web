@@ -1,5 +1,5 @@
 <div class="sm:min-w-[400px] flex justify-between items-center">
-  <h2 mat-dialog-title>{{ 'card.hiking-trail-form.title' | translate }}</h2>
+  <h2 mat-dialog-title class="!font-semibold text-gray-800 dark:text-white">{{ 'card.hiking-trail-form.title' | translate }}</h2>
   <button
     class="mr-3"
     mat-icon-button
@@ -179,7 +179,7 @@
           <div
             #mapContainer
             id="map"
-            class="rounded-2xl z-0 w-full h-64 col-span-2">
+            class="rounded-2xl overflow-hidden shadow-md ring-1 ring-black/5 z-0 w-full h-64 col-span-2">
           </div>
         </div>
 

@@ -1,4 +1,4 @@
-<div class="mt-5 px-3 md:px-0 w-full flex flex-col justify-center items-center gap-3">
+<div class="mt-6 px-3 md:px-0 pb-12 w-full flex flex-col justify-center items-center gap-6">
   <mat-accordion class="example-headers-align">
     <mat-expansion-panel>
       <mat-expansion-panel-header>
@@ -15,7 +15,9 @@
         </mat-tab>
 
         <mat-tab [label]="'recommender.filter-options.title' | translate">
-          Content 2
+          <ng-template matTabContent>
+            <app-recommender-filters (search)="onSearch($event)" />
+          </ng-template>
         </mat-tab>
 
       </mat-tab-group>
@@ -30,6 +32,12 @@
       [belongLoggedUser]="false"
       [showResume]="true"
     />
+  }
+
+  @if (hasSearched() && !isLoading() && hikingTrails().length === 0) {
+    <p class="text-center opacity-70">
+      {{ 'recommender.filter-options.no-results' | translate }}
+    </p>
   }
 
   <app-up-button />

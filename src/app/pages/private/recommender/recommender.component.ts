@@ -24,6 +24,7 @@ import {
 import { HikingTrailCardComponent } from '../../../components/hiking-trail-card/hiking-trail-card.component';
 import { LoadingSpinnerComponent } from '../../../components/loading-spinner/loading-spinner.component';
 import { MetricsScoreSlider } from '../../../components/metrics-score-slider/metrics-score-slider';
+import { RecommenderFilters, RecommenderFiltersValue } from '../../../components/recommender-filters/recommender-filters';
 import { Filter } from '../../../interfaces/common/Filter';
 import { Pagination } from '../../../interfaces/common/Pagination';
 import { HikingTrail } from '../../../interfaces/hiking-trail/HikingTrail';
@@ -40,6 +41,7 @@ import { UpButtonComponent } from '../../shared/up-button/up-button.component';
     LoadingSpinnerComponent,
     MaterialModules,
     MetricsScoreSlider,
+    RecommenderFilters,
     TranslatePipe,
     UpButtonComponent,
   ],
@@ -51,6 +53,10 @@ export class RecommenderComponent implements AfterViewInit, OnDestroy {
 
   isLoading = signal<boolean>(false);
   canLoadHikingTrails = signal<boolean>(false);
+  hasSearched = signal<boolean>(false);
+
+  // recommendation filters (location + search radius) selected by the user
+  private filters = signal<RecommenderFiltersValue | null>(null);
 
   // lazy load hiking trails
   error = signal<string | null>(null);
@@ -89,8 +95,23 @@ export class RecommenderComponent implements AfterViewInit, OnDestroy {
     this.observer?.disconnect();
   }
 
+  onSearch(filters: RecommenderFiltersValue): void {
+    // Reset the accumulated results so every search starts from a clean state
+    this.filters.set(filters);
+    this.hikingTrails.set([]);
+    this.page.set(1);
+    this.totalPages.set(null);
+    this.error.set(null);
+    this.hasSearched.set(true);
+    this.canLoadHikingTrails.set(true);
+
+    this.loadNextPage();
+  }
+
   loadNextPage(): void {
-    if (this.isLoading() || this.isLastPage() || !this.canLoadHikingTrails())
+    const filters = this.filters();
+
+    if (this.isLoading() || this.isLastPage() || !this.canLoadHikingTrails() || !filters)
       return;
 
     this.isLoading.set(true);
@@ -98,9 +119,9 @@ export class RecommenderComponent implements AfterViewInit, OnDestroy {
 
     const recommenderDto: Recommender = {
       accountCode: this.authService.getUserCode(),
-      kilometers: 5,
-      locationLatitude: 48.856600,
-      locationLongitude: 2.352200
+      kilometers: filters.kilometers,
+      locationLatitude: filters.locationLatitude,
+      locationLongitude: filters.locationLongitude
     }
 
     const filter: Filter = {

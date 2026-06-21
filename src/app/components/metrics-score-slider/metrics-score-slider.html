@@ -2,12 +2,12 @@
   @if (isLoading()) {
     <app-loading-spinner />
   } @else {
-    <div class="grid grid-cols-2 gap-10">
+    <div class="grid grid-cols-2 gap-x-6 gap-y-4">
       @for (metric of metrics; track $index) {
-        <div class="w-full">
-          <div class="flex justify-between">
-            <label class="text-xl md:text-nowrap">{{ metric.label |  translate }}</label>
-            <label class="text-xl">{{slider.value}}</label>
+        <div class="w-full min-w-0">
+          <div class="flex justify-between gap-2">
+            <label class="text-xl min-w-0 break-words">{{ metric.label |  translate }}</label>
+            <label class="text-xl shrink-0">{{slider.value}}</label>
           </div>
           <mat-slider
               class="w-full"

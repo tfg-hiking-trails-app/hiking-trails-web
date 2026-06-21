@@ -29,13 +29,13 @@
       <!-- Left section -->
       <div class="flex flex-1 items-center justify-center lg:items-stretch lg:justify-start">
         <a routerLink="/feed" class="flex items-center gap-2 shrink-0">
-          <span class="text-white text-2xl font-medium">HikingTrailApp</span>
+          <span class="text-white text-2xl font-semibold tracking-tight">HikingTrailApp</span>
         </a>
         <a
           routerLink="/explore"
           routerLinkActive="text-white"
           [routerLinkActiveOptions]="{ exact: true }"
-          class="hidden ml-6 lg:flex items-center shrink-0 text-gray-300 hover:text-white"
+          class="hidden ml-6 lg:flex items-center shrink-0 text-gray-300 hover:text-white transition-colors font-medium"
         >
           <span class="text-lg">{{ 'navbar.explore' | translate }}</span>
         </a>
@@ -43,7 +43,7 @@
           routerLink="/recommender"
           routerLinkActive="text-white"
           [routerLinkActiveOptions]="{ exact: true }"
-          class="hidden ml-6 lg:flex items-center shrink-0 text-gray-300 hover:text-white"
+          class="hidden ml-6 lg:flex items-center shrink-0 text-gray-300 hover:text-white transition-colors font-medium"
         >
           <span class="text-lg">{{ 'navbar.recommender' | translate }}</span>
         </a>

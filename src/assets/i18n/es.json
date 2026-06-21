@@ -229,7 +229,16 @@
   "recommender": {
     "title": "Rutas de senderismo recomendadas para ti",
     "filter-options": {
-      "title": "Filtros de recomendación"
+      "title": "Filtros de recomendación",
+      "map-hint": "Haz clic en el mapa para elegir el punto de búsqueda",
+      "selected-location": "Ubicación seleccionada",
+      "no-location": "Aún no has seleccionado ninguna ubicación en el mapa",
+      "kilometers": "Radio de búsqueda (km)",
+      "kilometers-hint": "Entre 1 y 25 km",
+      "kilometers-required": "El radio de búsqueda es obligatorio",
+      "kilometers-range": "El radio debe estar entre 1 y 25 km",
+      "search": "Buscar rutas recomendadas",
+      "no-results": "No se han encontrado rutas dentro del rango de búsqueda"
     }
   },
   "register": {
