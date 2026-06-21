@@ -61,7 +61,7 @@
     @if (submitted && form['confirmPassword'].hasError('required')) {
       <mat-error>{{ 'register.confirmPasswordRequired' | translate }}</mat-error>
     }
-    @if (submitted && form['password'] !== form['confirmPassword']) {
+    @if (submitted && !form['confirmPassword'].hasError('required') && registerForm.hasError('passwordMismatch')) {
       <mat-error>{{ 'register.passwordMismatch' | translate }}</mat-error>
     }
   </mat-form-field>
