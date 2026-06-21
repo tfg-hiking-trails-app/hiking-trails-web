@@ -1,5 +1,5 @@
 @if (graphicsData.length > 0) {
-  <div class="w-full lg:w-11/12 lg:m-auto">
+  <div class="w-full lg:w-11/12 lg:m-auto space-y-4 rounded-2xl bg-white/5 dark:bg-neutral-900/40 ring-1 ring-white/10 shadow-sm p-4">
     <!-- Carga diferida: cada gráfico se monta cuando el hilo está ocioso / entra en viewport -->
     @defer (on idle) {
       <app-line-chart [labels]="labels" [datasets]="heartRateData" />

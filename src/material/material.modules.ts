@@ -24,6 +24,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTimepickerModule } from '@angular/material/timepicker';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSliderModule } from '@angular/material/slider';
 
 export const MaterialModules = [
   DatePipe,
@@ -48,6 +49,7 @@ export const MaterialModules = [
   MatProgressSpinnerModule,
   MatSelectModule,
   MatSidenavModule,
+  MatSliderModule,
   MatSlideToggleModule,
   MatSnackBarModule,
   MatTabsModule,

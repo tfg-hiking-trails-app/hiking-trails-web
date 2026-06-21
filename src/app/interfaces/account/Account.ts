@@ -1,7 +1,4 @@
-import { CitySummary } from "./City";
-import { CountrySummary } from "./Country";
 import { Gender } from "./Gender";
-import { StateSummary } from "./State";
 
 export interface Account {
   code: string;
@@ -9,14 +6,13 @@ export interface Account {
   username: string;
   firstName?: string;
   lastName?: string;
-  country?: CountrySummary;
-  state?: StateSummary;
-  city?: CitySummary;
+  countryCode?: string;
+  stateCode?: string;
+  cityCode?: string;
   biography?: string;
   dateOfBirth?: Date;
   weight?: number;
   height?: number;
-  private?: boolean;
   profilePicture?: string;
 }
 
@@ -32,7 +28,6 @@ export interface AccountUpdate {
   dateOfBirth?: string;
   weight?: number;
   height?: number;
-  private?: boolean;
   profilePicture?: string;
   uploadImage?: File;
   removedImage?: boolean;

@@ -1,0 +1,73 @@
+<!-- Images -->
+<div
+  class="flex items-center justify-center w-full"
+  (dragover)="onDragOver($event)"
+  (dragleave)="onDragLeave($event)"
+  (drop)="onDrop($event)"
+>
+  <label
+    for="dropzone-file"
+    [class]="'flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg cursor-pointer bg-gray-50 ' +
+          'dark:hover:bg-neutral-800 dark:bg-neutral-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 ' +
+          'transition-colors ' + (isDragOver ? 'border-blue-500 bg-blue-50' : '')"
+    role="button"
+    tabindex="0"
+    (keydown.enter)="fileInput.click()"
+    (keydown.space)="fileInput.click()"
+  >
+    <div class="flex flex-col items-center justify-center pt-5 pb-6">
+      <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+      </svg>
+      <p class="mb-2 text-center text-sm text-gray-500 dark:text-gray-400">
+        <span class="font-semibold">{{ 'card.hiking-trail-form.click-to-upload' | translate }}</span>
+        {{ 'card.hiking-trail-form.drag-and-drop' | translate }}
+      </p>
+      <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG</p>
+    </div>
+
+    <input
+      #fileInput
+      id="dropzone-file"
+      type="file"
+      class="hidden"
+      multiple
+      accept="image/png,image/jpeg"
+      (change)="onFileInput($event)"
+    />
+  </label>
+</div>
+
+@if (errorUploadFile.length > 0) {
+  <div class="col-span-2 text-red-600 text-sm text-center">
+    {{ errorUploadFile }}
+  </div>
+}
+
+<!-- Image Previews -->
+@if (previews.length) {
+  <div class="col-span-2">
+    <div
+      cdkDropList
+      [cdkDropListData]="previews"
+      (cdkDropListDropped)="drop($event)"
+      class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3"
+    >
+      @for (preview of previews; track preview) {
+        <div cdkDrag class="relative touch-none">
+          <img [src]="preview.url" [alt]="preview.file.name" class="w-full h-32 object-cover rounded-lg shadow-sm ring-1 ring-gray-200 dark:ring-neutral-700">
+          <div class="text-xs text-gray-500 truncate flex flex-col items-center mt-1 gap-1">
+            {{ preview.file.name }}
+            <button
+              matMiniFab
+              (click)="removePreview(preview)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+}

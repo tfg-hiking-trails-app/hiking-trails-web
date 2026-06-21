@@ -7,21 +7,25 @@ import {
   signal
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router, RouterModule } from '@angular/router';
 import { MaterialModules } from '@material/material.modules';
-import { RouterModule } from '@angular/router';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
+import { AlertManagerService } from '../../services/alert-manager.service';
 import { AuthService } from '../../services/auth.service';
 import { CarouselImagesComponent } from '../../pages/shared/carousel-images/carousel-images.component';
 import { CommentsCardComponent } from '../comments-card/comments-card.component';
 import { CreatePrestige, DeletePrestige, Prestige } from '../../interfaces/hiking-trail/Prestige';
+import { DialogConfirmComponent } from '../dialog-confirm/dialog-confirm.component';
+import { EditActivityManuallyCardComponent } from '../edit-activity-manually-card/edit-activity-manually-card.component';
+import { EventBusService } from '../../services/event-bus.service';
 import { FriendlyDatePipe } from '../../pipes/FriendlyDatePipe';
+import { getWindowWidth } from '../../Utils/Utils';
 import { HikingTrail } from '../../interfaces/hiking-trail/HikingTrail';
 import { HikingTrailService } from '../../services/hiking-trail.service';
 import { Metric } from '../../interfaces/display/Metric';
 import { Metrics } from '../../interfaces/hiking-trail/Metrics';
 import { ProfilePictureComponent } from '../../pages/shared/profile-picture/profile-picture.component';
-import { getWindowWidth } from '../../Utils/Utils';
 
 @Component({
   selector: 'app-hiking-trail-card',
@@ -47,13 +51,30 @@ export class HikingTrailCardComponent implements OnInit {
   prestiges = signal<Prestige[]>([]);
 
   constructor(
+    private alertManagerService: AlertManagerService,
     private authService: AuthService,
     private cdr: ChangeDetectorRef,
     private dialog: MatDialog,
+    private eventBusService: EventBusService,
     private hikingService: HikingTrailService,
+    private router: Router,
+    private translateService: TranslateService,
   ) { }
 
   ngOnInit(): void {
+    this.eventBusService.refreshHikingTrailDetail$
+      .subscribe(() => {
+        this.hikingService.getByCode(this.hikingTrail.code)
+          .subscribe({
+            next: (hikingTrail: HikingTrail) => {
+              this.hikingTrail = hikingTrail;
+              this.checkPrestige();
+              this.prestiges.set(this.hikingTrail.prestiges || []);
+              this.cdr.markForCheck();
+            }
+          });
+      });
+
     this.metricsValues = {
       distance: this.distance,
       calories: this.calories,
@@ -116,7 +137,48 @@ export class HikingTrailCardComponent implements OnInit {
     this.userGavePrestige.set(prestiges.some(p => p?.giverAccountCode === userCode));
   }
 
-  public openCommentsDialog(): void {
+  edit(): void {
+    this.dialog.open(EditActivityManuallyCardComponent, {
+      width: getWindowWidth(),
+      maxHeight: '80vh',
+      data: this.hikingTrail
+    });
+  }
+
+  delete(): void {
+    const dialogRef = this.dialog.open(DialogConfirmComponent, {
+      data: {
+        title: this.translateService.instant('hiking-trail-card.delete-hiking-trail-title'),
+        message: this.translateService.instant('hiking-trail-card.delete-hiking-trail-message'),
+        focusCancel: true
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) {
+        return;
+      }
+
+      this.hikingService
+        .delete(this.hikingTrail.code)
+        .subscribe({
+          next: () => {
+            const message = this.translateService.instant('hiking-trail-card.delete-success');
+            this.alertManagerService.alertSuccess(message);
+
+            if (this.router.url === '/feed')
+              this.eventBusService.refreshFeed();
+            else
+              this.router.navigate(['/feed']);
+          },
+          error: (error) => {
+            this.alertManagerService.manageError(error);
+          }
+        });
+    });
+  }
+
+  openCommentsDialog(): void {
     const dialogRef = this.dialog.open(CommentsCardComponent, {
       data: this.hikingTrail,
       width: getWindowWidth()

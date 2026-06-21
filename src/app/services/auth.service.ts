@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { environment } from '../../environments/environment';
 import { LoginRequest, LoginResponse } from '../interfaces/auth/Login';
+import { RegisterRequest } from '../interfaces/auth/Register';
 import { ApiService } from './api.service';
 import { TokenService } from './token.service';
 import { EditPasswordRequest, EditUsernameRequest } from '../interfaces/auth/Auth';
@@ -14,6 +15,7 @@ import { EditPasswordRequest, EditUsernameRequest } from '../interfaces/auth/Aut
 export class AuthService {
 
   private routes = {
+    registerPath: `${ environment.apiGatewayUrl }/auth/register`,
     loginPath: `${ environment.apiGatewayUrl }/auth/login`,
     refreshPath: `${ environment.apiGatewayUrl }/auth/refresh`,
     logoutPath: `${ environment.apiGatewayUrl }/auth/logout`,
@@ -26,6 +28,13 @@ export class AuthService {
     private tokenService: TokenService,
     private router: Router
   ) { }
+
+  register(request: RegisterRequest): Observable<void> {
+    return this.apiService.post<void>(
+      this.routes.registerPath,
+      request
+    );
+  }
 
   login(request: LoginRequest): Observable<LoginResponse> {
     return this.apiService.post<LoginResponse>(

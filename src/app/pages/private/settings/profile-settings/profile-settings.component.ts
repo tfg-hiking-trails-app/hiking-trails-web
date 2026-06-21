@@ -13,18 +13,19 @@ import { MaterialModules } from '@material/material.modules';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { finalize, forkJoin, Observable, switchMap, tap } from 'rxjs';
 
+import { DialogConfirmComponent } from '../../../../components/dialog-confirm/dialog-confirm.component';
+import { LoadingSpinnerComponent } from '../../../../components/loading-spinner/loading-spinner.component';
 import { Account, AccountUpdate } from '../../../../interfaces/account/Account';
+import { Gender } from '../../../../interfaces/account/Gender';
+import { CitySummary } from '../../../../interfaces/location/City';
+import { CountrySummary } from '../../../../interfaces/location/Country';
+import { StateSummary } from '../../../../interfaces/location/State';
 import { AccountService } from '../../../../services/account.service';
 import { AlertManagerService } from '../../../../services/alert-manager.service';
 import { AuthService } from '../../../../services/auth.service';
-import { CitySummary } from '../../../../interfaces/account/City';
-import { CountrySummary } from '../../../../interfaces/account/Country';
-import { DialogConfirmComponent } from '../../../../components/dialog-confirm/dialog-confirm.component';
-import { Gender } from '../../../../interfaces/account/Gender';
-import { LoadingSpinnerComponent } from '../../../../components/loading-spinner/loading-spinner.component';
-import { StateSummary } from '../../../../interfaces/account/State';
-import { UploadProfileImageComponent } from './upload-profile-image/upload-profile-image.component';
 import { isEmptyCode } from '../../../../Utils/Utils';
+import { UploadProfileImageComponent } from './upload-profile-image/upload-profile-image.component';
+import { LocationService } from '../../../../services/location.service';
 
 @Component({
   selector: 'app-profile-settings',
@@ -61,6 +62,7 @@ export class ProfileSettingsComponent {
     private destroyRef: DestroyRef,
     private dialog: MatDialog,
     private formBuilder: FormBuilder,
+    private locationService: LocationService,
     private translateService: TranslateService
   ) {
     this.editProfileInfoForm = this.formBuilder.group({
@@ -122,8 +124,7 @@ export class ProfileSettingsComponent {
       biography: this.editProfileInfoControls['biography'].value,
       dateOfBirth: formatDate(this.editProfileInfoControls['dateOfBirth'].value, 'yyyy-MM-dd', 'en-US'),
       weight: this.editProfileInfoControls['weight'].value,
-      height: this.editProfileInfoControls['height'].value,
-      private: this.editProfileInfoControls['privateProfile'].value
+      height: this.editProfileInfoControls['height'].value
     };
 
     const dialogRef = this.dialog.open(DialogConfirmComponent, {
@@ -185,32 +186,28 @@ export class ProfileSettingsComponent {
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           tap((account: Account) => {
-            if (account.country && !isEmptyCode(account.country.code)) {
-              this.editProfileInfoControls['state'].enable();
-            }
-            if (account.state && !isEmptyCode(account.state.code)) {
-              this.editProfileInfoControls['city'].enable();
-            }
-
             this.editProfileInfoForm.patchValue({
               gender: account.gender?.code,
               firstName: account.firstName,
               lastName: account.lastName,
-              country: account.country?.code,
-              state: account.state?.code,
-              city: account.city?.code,
+              country: account.countryCode,
+              state: account.stateCode,
+              city: account.cityCode,
               biography: account.biography,
               dateOfBirth: account.dateOfBirth,
               weight: account.weight,
-              height: account.height,
-              privateProfile: account.private
+              height: account.height
             });
 
-            if (account.country?.code && !isEmptyCode(account.country.code))
-              this.loadStates(account.country.code);
+            if (!isEmptyCode(account.countryCode)) {
+              this.editProfileInfoControls['state'].enable();
+              this.loadStates(account.countryCode!);
+            }
 
-            if (account.state?.code && !isEmptyCode(account.state.code))
-              this.loadCities(account.state.code);
+            if (!isEmptyCode(account.stateCode)){
+              this.editProfileInfoControls['city'].enable();
+              this.loadCities(account.stateCode!);
+            }
 
             this.accountUpdate = {
               ...this.editProfileInfoForm.getRawValue(),
@@ -242,7 +239,7 @@ export class ProfileSettingsComponent {
   }
 
   private loadCountries(): Observable<CountrySummary[]> {
-    return this.accountService
+    return this.locationService
       .getAllCountriesSummary()
         .pipe(
         tap((countries: CountrySummary[]) => {
@@ -258,7 +255,7 @@ export class ProfileSettingsComponent {
   }
 
   private loadStates(countryCode: string): void {
-    this.accountService
+    this.locationService
       .getStatesByCountrySummary(countryCode)
         .pipe(
         tap((states: StateSummary[]) => {
@@ -275,7 +272,7 @@ export class ProfileSettingsComponent {
   }
 
   private loadCities(stateCode: string): void {
-    this.accountService
+    this.locationService
       .getCitiesByStateSummary(stateCode)
         .pipe(
         tap((cities: CitySummary[]) => {

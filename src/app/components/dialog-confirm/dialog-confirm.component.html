@@ -1,7 +1,7 @@
-<h2 mat-dialog-title>{{ data.title }}</h2>
+<h2 mat-dialog-title class="!font-semibold text-gray-800 dark:text-white">{{ data.title }}</h2>
 
 <mat-dialog-content class="mat-typography">
-  <p>{{ data.message }}</p>
+  <p class="text-gray-600 dark:text-gray-300 leading-relaxed">{{ data.message }}</p>
 </mat-dialog-content>
 
 @if (focusCancel) {
@@ -15,6 +15,7 @@
     </button>
     <button
       mat-button
+      class="!text-red-600 dark:!text-red-400 !font-medium"
       [mat-dialog-close]="true"
       (click)="deleteConfirmed()"
     >
@@ -31,6 +32,7 @@
     </button>
     <button
       mat-button
+      class="!text-red-600 dark:!text-red-400 !font-medium"
       [mat-dialog-close]="true"
       (click)="deleteConfirmed()"
       cdkFocusInitial

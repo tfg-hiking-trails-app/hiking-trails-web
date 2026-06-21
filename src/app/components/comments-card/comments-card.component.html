@@ -15,26 +15,29 @@
   <div class="max-h-[500px] overflow-y-auto">
     @if (hikingTrail()) {
       @if (hikingTrail()!.comments.length === 0) {
-        <span class="dark:text-white text-lg sm:text-xl md:px-10">
-          {{ 'card.comments.no-comments' | translate }}
-        </span>
+        <div class="flex flex-col items-center justify-center gap-2 py-10 text-center">
+          <span class="material-icons text-gray-300 dark:text-neutral-600 text-5xl">forum</span>
+          <span class="text-gray-500 dark:text-gray-400 text-lg sm:text-xl">
+            {{ 'card.comments.no-comments' | translate }}
+          </span>
+        </div>
       }
       @for (comment of hikingTrail()!.comments; track $index) {
         @let account = accounts.get(comment.code);
 
-        <div class="mb-4 p-4 mr-4 border border-gray-300 rounded-lg dark:border-gray-700">
+        <div class="mb-4 p-4 mr-4 border border-gray-200 rounded-xl bg-gray-50 shadow-sm dark:border-gray-700 dark:bg-neutral-800/40">
           <div class="flex justify-between items-center">
             <div class="flex items-center mb-2">
               <img
                 [src]="account?.profilePicture || defaultProfileImage(account?.gender?.genderValue || '')"
                 alt="Profile Picture"
-                class="w-10 h-10 rounded-full mr-4"
+                class="w-10 h-10 rounded-full mr-4 object-cover ring-1 ring-gray-200 dark:ring-neutral-700"
               >
               <div class="flex flex-col">
-                <span class="font-medium text-lg dark:text-white">
+                <span class="font-semibold text-lg text-gray-800 dark:text-white">
                   {{ account?.username || '' }}
                 </span>
-                <span class="font-medium text-sm dark:text-gray-400">
+                <span class="text-sm text-gray-500 dark:text-gray-400">
                   {{ comment.createdAt | date:'dd/MM/yyyy HH:mm' }}
                 </span>
               </div>
@@ -47,7 +50,7 @@
               <mat-icon>delete</mat-icon>
             </button>
           </div>
-          <p class="dark:text-white whitespace-pre-line">
+          <p class="text-gray-700 dark:text-gray-200 whitespace-pre-line leading-relaxed">
             {{ comment.commentText }}
           </p>
         </div>

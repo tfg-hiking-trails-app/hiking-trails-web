@@ -23,6 +23,7 @@
       "average-pace": "Ritmo medio (min/km)",
       "average-speed": "Velocidad media (km/h)",
       "calories": "Calorías",
+      "click-to-upload": "Clic para subir imágenes",
       "description": "Descripción",
       "description-required": "La descripción es obligatoria",
       "difficulty-level": "Nivel de dificultad",
@@ -30,12 +31,16 @@
       "distance-min": "La distancia debe ser un valor positivo en kilómetros",
       "distance": "Distancia (km)",
       "duration": "Duración",
+      "drag-and-drop": "o arrastra y suelta imágenes aquí",
+      "edit-success": "Ruta de senderismo editada con éxito",
       "elevation-gain": "Desnivel positivo (m)",
       "elevation-loss": "Desnivel negativo (m)",
       "end-date-required": "La fecha de fin es obligatoria",
       "end-date": "Fecha de fin",
       "end-time-required": "La hora de fin es obligatoria",
       "end-time": "Hora de fin",
+      "error-file-not-supported": "Tipo de archivo no soportado",
+      "error-file-too-large": "El archivo es demasiado grande (máx {{ maxSizeMB }} MB)",
       "images": "Imágenes",
       "invalid-dates": "La fecha y hora de fin deben ser posteriores a las de inicio",
       "location": "Ubicación",
@@ -94,6 +99,9 @@
     "username-already-exists": "Este nombre de usuario ya existe"
   },
   "expand-all": "Expandir todo",
+  "explore": {
+    "title": "Últimas rutas de senderismo añadidas"
+  },
   "feed": {
     "error": "Ha ocurrido un error al cargar las rutas de senderismo",
     "no-following": "¡No sigues a ningún usuario! Sigue a alguien para ver su actividad"
@@ -112,19 +120,22 @@
     "start": "Inicio"
   },
   "hiking-trail-card": {
+    "delete-hiking-trail-message": "¿Estás seguro de que quieres eliminar esta ruta de senderismo?",
+    "delete-hiking-trail-title": "Eliminar ruta de senderismo",
+    "delete-success": "Ruta de senderismo eliminada con éxito",
     "difficulty-level": "Nivel de dificultad",
     "distance": "Distancia",
     "duration": "Duración",
     "end-time": "Hora de finalización",
     "hours": "Horas",
+    "multiple-comments": "comentarios",
+    "multiple-prestiges": "prestigios",
     "pet-friendly": "Apto para mascotas",
+    "single-comment": "comentario",
+    "single-prestige": "prestigio",
     "start-time": "Hora de inicio",
     "terrain-type": "Tipo de terreno",
-    "trail-type": "Tipo de ruta",
-    "single-prestige": "prestigio",
-    "multiple-prestiges": "prestigios",
-    "single-comment": "comentario",
-    "multiple-comments": "comentarios"
+    "trail-type": "Tipo de ruta"
   },
   "laps": {
     "kilometer": "Kilómetro",
@@ -164,6 +175,19 @@
     "totalAscent": "Ascenso total",
     "totalDescent": "Descenso total"
   },
+  "metrics-score": {
+    "title": "Importancia de las métricas",
+    "distance": "Distancia",
+    "duration": "Duración",
+    "steps": "Pasos",
+    "calories": "Calorías",
+    "pace": "Ritmo",
+    "elevation": "Desnivel",
+    "heart_rate": "Frecuencia cardíaca",
+    "speed": "Velocidad",
+    "save-changes": "Guardar cambios",
+    "changes-saved-successfully": "Cambios guardados con éxito"
+  },
   "navbar": {
     "add-activity-menu": {
       "add-activity": "Añadir actividad",
@@ -182,7 +206,7 @@
     },
     "recommender": "Recomendador",
     "search-bar": {
-      "placeholder": "Busca Ubicaciones, Usuarios...",
+      "placeholder": "Busca Rutas, Usuarios...",
       "accounts": "Cuentas",
       "no-accounts-found": "No se han encontrado cuentas",
       "hiking-trails": "Rutas de senderismo",
@@ -202,6 +226,21 @@
     "private-profile": "Perfil privado",
     "unfollow": "Dejar de seguir"
   },
+  "recommender": {
+    "title": "Rutas de senderismo recomendadas para ti",
+    "filter-options": {
+      "title": "Filtros de recomendación",
+      "map-hint": "Haz clic en el mapa para elegir el punto de búsqueda",
+      "selected-location": "Ubicación seleccionada",
+      "no-location": "Aún no has seleccionado ninguna ubicación en el mapa",
+      "kilometers": "Radio de búsqueda (km)",
+      "kilometers-hint": "Entre 1 y 25 km",
+      "kilometers-required": "El radio de búsqueda es obligatorio",
+      "kilometers-range": "El radio debe estar entre 1 y 25 km",
+      "search": "Buscar rutas recomendadas",
+      "no-results": "No se han encontrado rutas dentro del rango de búsqueda"
+    }
+  },
   "register": {
     "confirmPassword": "Confirmar contraseña",
     "confirmPasswordRequired": "La confirmación de la contraseña es obligatoria",
@@ -210,9 +249,10 @@
     "emailRequired": "El correo electrónico es obligatorio",
     "hidePasswordTooltip": "Ocultar contraseña",
     "password": "Contraseña",
-    "passwordMinLength": "La contraseña debe tener al menos 6 caracteres",
+    "passwordMinLength": "La contraseña debe tener al menos 8 caracteres",
     "passwordMismatch": "Las contraseñas no coinciden",
     "passwordRequired": "La contraseña es obligatoria",
+    "registerSuccess": "Cuenta creada correctamente. Inicia sesión para continuar.",
     "showPasswordTooltip": "Mostrar contraseña",
     "submit": "Registrarse",
     "username": "Nombre de usuario",

@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
+  Inject,
   OnDestroy,
   signal,
   ViewChild
@@ -14,10 +15,9 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { MatDialogRef } from '@angular/material/dialog';
-import { MaterialModules } from '@material/material.modules';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { MaterialModules } from '@material/material.modules';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import * as L from 'leaflet';
 import {
@@ -31,17 +31,20 @@ import {
   tap
 } from 'rxjs';
 
+import { AddImagesComponent } from '../add-images/add-images.component';
 import { AlertManagerService } from '../../services/alert-manager.service';
 import { AuthService } from '../../services/auth.service';
-import { CreateHikingTrail, HikingTrail } from '../../interfaces/hiking-trail/HikingTrail';
-import { CreateMetrics } from '../../interfaces/hiking-trail/Metrics';
+import { CreateMetrics, Metrics } from '../../interfaces/hiking-trail/Metrics';
 import { DifficultyLevel } from '../../interfaces/hiking-trail/DifficultyLevel';
+import { EventBusService } from '../../services/event-bus.service';
+import { formatDate } from '@angular/common';
+import { HikingTrail, UpdateHikingTrail } from '../../interfaces/hiking-trail/HikingTrail';
 import { HikingTrailService } from '../../services/hiking-trail.service';
 import { isDarkMode, removeEmptyFields } from '../../Utils/Utils';
+import { LangService } from '../../services/lang.service';
 import { LoadingSpinnerComponent } from "../loading-spinner/loading-spinner.component";
 import { TerrainType } from '../../interfaces/hiking-trail/TerrainType';
 import { TrailType } from '../../interfaces/hiking-trail/TrailType';
-import { AddImagesComponent } from '../add-images/add-images.component';
 
 interface Combos {
   difficultyLevels: DifficultyLevel[];
@@ -53,37 +56,31 @@ interface Combos {
   selector: 'app-add-activity-manually-card',
   imports: [
     AddImagesComponent,
-    CommonModule,
     FormsModule,
-    LoadingSpinnerComponent,
     MaterialModules,
     ReactiveFormsModule,
     TranslatePipe,
-  ],
-  templateUrl: './add-activity-manually-card.component.html',
+    LoadingSpinnerComponent,
+],
+  templateUrl: './edit-activity-manually-card.component.html',
   styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddActivityManuallyCardComponent implements AfterViewInit, OnDestroy {
+export class EditActivityManuallyCardComponent implements AfterViewInit, OnDestroy {
 
   @ViewChild('mapContainer', { static: false }) mapContainer?: ElementRef<HTMLDivElement>;
 
-  addHikingTrailForm: FormGroup;
+  editHikingTrailForm: FormGroup;
   difficultyLevels: DifficultyLevel[] = [];
-  files: File[] = [];
-  isCreating = signal<boolean>(false);
   isLoading = signal<boolean>(true);
   submitted: boolean = false;
   terrainTypes: TerrainType[] = [];
   trailTypes: TrailType[] = [];
 
+  private marker!: L.Marker;
   private map!: L.Map;
-  private destroyed = false;
   private resizeObserver?: ResizeObserver;
   private resizeRaf?: number;
-
-  // Fallback map center (Madrid) used until the browser geolocation resolves
-  private readonly defaultCenter: L.LatLngTuple = [40.41650000, -3.70256000];
 
   private lightTileLayer!: L.TileLayer;
   private darkTileLayer!: L.TileLayer;
@@ -93,44 +90,50 @@ export class AddActivityManuallyCardComponent implements AfterViewInit, OnDestro
   };
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) public data: HikingTrail,
     private alertManagerService: AlertManagerService,
     private authService: AuthService,
-    private dialogRef: MatDialogRef<AddActivityManuallyCardComponent>,
+    private dialogRef: MatDialogRef<EditActivityManuallyCardComponent>,
+    private eventBusService: EventBusService,
     private formBuilder: FormBuilder,
     private hikingTrailService: HikingTrailService,
+    private langService: LangService,
     private router: Router,
     private translateService: TranslateService,
   ) {
-    this.addHikingTrailForm = this.formBuilder.group({
-      averageCadence: ['', []],
-      averageHeartRate: ['', []],
-      averagePace: ['', []],
-      averageSpeed: ['', []],
-      calories: ['', []],
-      description: ['', []],
-      difficultyLevel: ['', []],
-      distance: ['', [Validators.required, Validators.min(0)]],
-      duration: ['', []],
-      elevationGain: ['', []],
-      elevationLoss: ['', []],
-      endDate: ['', [Validators.required]],
-      endTime: ['', [Validators.required]],
-      locationLatitude: ['', []],
-      locationLongitude: ['', []],
-      maxAltitude: ['', []],
-      maxCadence: ['', []],
-      maxHeartRate: ['', []],
-      maxPace: ['', []],
-      maxSpeed: ['', []],
-      minAltitude: ['', []],
-      minHeartRate: ['', []],
-      name: ['', [Validators.required]],
-      petFriendly: [false],
-      startDate: ['', [Validators.required]],
-      startTime: ['', [Validators.required]],
-      steps: ['', []],
-      terrainType: ['', []],
-      trailType: ['', []],
+    const metrics: Metrics = data.metrics.length ? data.metrics[0] : {} as Metrics;
+
+    this.editHikingTrailForm = this.formBuilder.group({
+      averageCadence: [{value: metrics.averageCadence, disabled: !!data.generatedByFitFile}, []],
+      averageHeartRate: [{value: metrics.averageHeartRate, disabled: data.generatedByFitFile}, []],
+      averagePace: [{value: metrics.averagePace, disabled: data.generatedByFitFile}, []],
+      averageSpeed: [{value: metrics.averageSpeed, disabled: data.generatedByFitFile}, []],
+      calories: [{value: metrics.calories, disabled: data.generatedByFitFile}, []],
+      description: [data.description, []],
+      difficultyLevel: [data.difficultyLevel.code, []],
+      distance: [{value: metrics.distance, disabled: data.generatedByFitFile}, [Validators.required, Validators.min(0)]],
+      duration: [{value: metrics.duration, disabled: data.generatedByFitFile}, []],
+      elevationGain: [{value: metrics.elevationGain, disabled: data.generatedByFitFile}, []],
+      elevationLoss: [{value: metrics.elevationLoss, disabled: data.generatedByFitFile}, []],
+      endDate: [{value: formatDate(data.endTime, 'yyyy-MM-dd', this.langService.getLocale()), disabled: data.generatedByFitFile}, [Validators.required]],
+      endTime: [{value: data.endTime, disabled: data.generatedByFitFile}, [Validators.required]],
+      images: [null],
+      locationLatitude: [data.locationLatitude, []],
+      locationLongitude: [data.locationLongitude, []],
+      maxAltitude: [{value: metrics.maxAltitude, disabled: data.generatedByFitFile}, []],
+      maxCadence: [{value: metrics.maxCadence, disabled: data.generatedByFitFile}, []],
+      maxHeartRate: [{value: metrics.maxHeartRate, disabled: data.generatedByFitFile}, []],
+      maxPace: [{value: metrics.maxPace, disabled: data.generatedByFitFile}, []],
+      maxSpeed: [{value: metrics.maxSpeed, disabled: data.generatedByFitFile}, []],
+      minAltitude: [{value: metrics.minAltitude, disabled: data.generatedByFitFile}, []],
+      minHeartRate: [{value: metrics.minHeartRate, disabled: data.generatedByFitFile}, []],
+      name: [data.name, [Validators.required]],
+      petFriendly: [data.petFriendly, []],
+      startDate: [{value: formatDate(data.startTime, 'yyyy-MM-dd', this.langService.getLocale()), disabled: data.generatedByFitFile}, [Validators.required]],
+      startTime: [{value: data.startTime, disabled: data.generatedByFitFile}, [Validators.required]],
+      steps: [{value: metrics.steps, disabled: data.generatedByFitFile}, []],
+      terrainType: [data.terrainType.code, []],
+      trailType: [data.trailType.code, []],
     });
 
     this.loadCombos()
@@ -165,9 +168,15 @@ export class AddActivityManuallyCardComponent implements AfterViewInit, OnDestro
         return;
       }
 
+      const lat = this.editHikingTrailForm.value.locationLatitude || null;
+      const lng = this.editHikingTrailForm.value.locationLongitude || null;
+
       this.map = L.map(this.mapContainer?.nativeElement, {
-        center: this.defaultCenter,
-        zoom: 12,
+        center: [
+          lat || 40.416775,
+          lng || -3.703790
+        ],
+        zoom: 14,
         scrollWheelZoom: false
       });
 
@@ -188,6 +197,26 @@ export class AddActivityManuallyCardComponent implements AfterViewInit, OnDestro
 
       this.drawMap();
 
+      if (lat && lng) {
+        const icon = L.icon({
+          iconUrl: '/images/mark.png',
+          iconSize: [32, 32],
+          iconAnchor: [16, 32],
+          popupAnchor: [0, -32]
+        });
+
+        this.marker = L.marker([lat, lng], { draggable: !this.data.generatedByFitFile, icon })
+          .addTo(this.map);
+
+        this.marker.on('dragend', () => {
+          const pos = (this.marker.getLatLng && this.marker.getLatLng()) as L.LatLng;
+          this.editHikingTrailForm.patchValue({
+            locationLatitude: pos.lat,
+            locationLongitude: pos.lng
+          }, { emitEvent: false });
+        });
+      }
+
       this.resizeObserver = new ResizeObserver(() => {
         if (this.resizeRaf)
           cancelAnimationFrame(this.resizeRaf);
@@ -197,29 +226,9 @@ export class AddActivityManuallyCardComponent implements AfterViewInit, OnDestro
       this.resizeObserver.observe(this.mapContainer.nativeElement);
 
       window.addEventListener('theme-changed', this.onThemeChange as EventListener);
-
-      this.centerOnBrowserLocation();
     };
 
     load();
-  }
-
-  private centerOnBrowserLocation(): void {
-    if (!navigator.geolocation)
-      return;
-
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        if (this.destroyed)
-          return;
-
-        const { latitude, longitude } = position.coords;
-        this.map.setView([latitude, longitude], 13);
-      },
-      // Permission denied or location unavailable: keep the default center
-      () => { },
-      { enableHighAccuracy: true, timeout: 10000 }
-    );
   }
 
   private drawMap(): void {
@@ -242,14 +251,14 @@ export class AddActivityManuallyCardComponent implements AfterViewInit, OnDestro
       clickMarker = L.marker([lat, lng], { icon }).addTo(this.map);
       clickMarker.bindPopup(`${lat.toFixed(6)}, ${lng.toFixed(6)}`).openPopup();
 
-      const ctrlLat = this.addHikingTrailForm.get('locationLatitude');
+      const ctrlLat = this.editHikingTrailForm.get('locationLatitude');
       if (ctrlLat) {
         ctrlLat.setValue(lat);
         ctrlLat.markAsDirty();
         ctrlLat.markAsTouched();
       }
 
-      const ctrlLng = this.addHikingTrailForm.get('locationLongitude');
+      const ctrlLng = this.editHikingTrailForm.get('locationLongitude');
       if (ctrlLng) {
         ctrlLng.setValue(lng);
         ctrlLng.markAsDirty();
@@ -270,8 +279,8 @@ export class AddActivityManuallyCardComponent implements AfterViewInit, OnDestro
       : this.map.addLayer(this.lightTileLayer);
   }
 
-  get addHikingTrailControls() {
-    return this.addHikingTrailForm.controls;
+  get editHikingTrailControls() {
+    return this.editHikingTrailForm.controls;
   }
 
   loadCombos(): Observable<Combos> {
@@ -287,16 +296,18 @@ export class AddActivityManuallyCardComponent implements AfterViewInit, OnDestro
     );
   }
 
-  addHikingTrail(): void {
+  editdHikingTrail(): void {
     this.submitted = true;
 
-    if (this.addHikingTrailForm.invalid) {
-      this.addHikingTrailForm.markAllAsTouched();
+    if (this.editHikingTrailForm.invalid) {
+      this.editHikingTrailForm.markAllAsTouched();
       return;
     }
 
-    const startDate = this.combineDates(new Date(this.addHikingTrailForm.value.startDate), new Date(this.addHikingTrailForm.value.startTime));
-    const endDate = this.combineDates(new Date(this.addHikingTrailForm.value.endDate), new Date(this.addHikingTrailForm.value.endTime));
+    const formValue = this.editHikingTrailForm.getRawValue();
+
+    const startDate = this.combineDates(new Date(formValue.startDate), new Date(formValue.startTime));
+    const endDate = this.combineDates(new Date(formValue.endDate), new Date(formValue.endTime));
 
     if (endDate <= startDate) {
       const message: string = this.translateService.instant('card.hiking-trail-form.invalid-dates');
@@ -307,59 +318,56 @@ export class AddActivityManuallyCardComponent implements AfterViewInit, OnDestro
     const duration = (endDate.getTime() - startDate.getTime());
 
     const createMetrics = removeEmptyFields<CreateMetrics>({
-      distance: this.addHikingTrailForm.value.distance * 1000,
+      distance: formValue.distance * 1000,
       duration,
-      steps: this.addHikingTrailForm.value.steps,
-      calories: this.addHikingTrailForm.value.calories,
-      averagePace: this.addHikingTrailForm.value.averagePace,
-      maxPace: this.addHikingTrailForm.value.maxPace,
-      elevationGain: this.addHikingTrailForm.value.elevationGain,
-      elevationLoss: this.addHikingTrailForm.value.elevationLoss,
-      averageSpeed: this.addHikingTrailForm.value.averageSpeed,
-      maxSpeed: this.addHikingTrailForm.value.maxSpeed,
-      averageHeartRate: this.addHikingTrailForm.value.averageHeartRate,
-      maxHeartRate: this.addHikingTrailForm.value.maxHeartRate,
-      minHeartRate: this.addHikingTrailForm.value.minHeartRate,
-      averageCadence: this.addHikingTrailForm.value.averageCadence,
-      maxCadence: this.addHikingTrailForm.value.maxCadence,
-      maxAltitude: this.addHikingTrailForm.value.maxAltitude,
-      minAltitude: this.addHikingTrailForm.value.minAltitude
+      steps: formValue.steps,
+      calories: formValue.calories,
+      averagePace: formValue.averagePace,
+      maxPace: formValue.maxPace,
+      elevationGain: formValue.elevationGain,
+      elevationLoss: formValue.elevationLoss,
+      averageSpeed: formValue.averageSpeed,
+      maxSpeed: formValue.maxSpeed,
+      averageHeartRate: formValue.averageHeartRate,
+      maxHeartRate: formValue.maxHeartRate,
+      minHeartRate: formValue.minHeartRate,
+      averageCadence: formValue.averageCadence,
+      maxCadence: formValue.maxCadence,
+      maxAltitude: formValue.maxAltitude,
+      minAltitude: formValue.minAltitude
     });
 
-    const createHikingTrail = removeEmptyFields<CreateHikingTrail>({
+    const updateHikingTrail = removeEmptyFields<UpdateHikingTrail>({
       accountCode: this.authService.getUserCode() || '',
-      description: this.addHikingTrailForm.value.description,
-      difficultyLevelCode: this.addHikingTrailForm.value.difficultyLevel,
-      endTime: endDate.toISOString(),
-      images: this.files,
-      locationLatitude: this.addHikingTrailForm.value.locationLatitude,
-      locationLongitude: this.addHikingTrailForm.value.locationLongitude,
-      metrics: createMetrics,
-      name: this.addHikingTrailForm.value.name,
-      petFriendly: this.addHikingTrailForm.value.petFriendly,
+      difficultyLevelCode: formValue.difficultyLevel,
+      terrainTypeCode: formValue.terrainType,
+      trailTypeCode: formValue.trailType,
+      name: formValue.name,
+      description: formValue.description,
+      petFriendly: formValue.petFriendly,
       startTime: startDate.toISOString(),
-      terrainTypeCode: this.addHikingTrailForm.value.terrainType,
-      trailTypeCode: this.addHikingTrailForm.value.trailType,
+      endTime: endDate.toISOString(),
+      locationLatitude: formValue.locationLatitude,
+      locationLongitude: formValue.locationLongitude,
+      metrics: createMetrics,
+      images: formValue.images,
     });
-
-    this.isCreating.set(true);
 
     this.hikingTrailService
-      .add(createHikingTrail)
-      .pipe(
-        tap((hikingTrail: HikingTrail) => {
-          const message: string = this.translateService.instant('card.hiking-trail-form.added-success');
+      .edit(this.data.code, updateHikingTrail)
+      .subscribe({
+        next: () => {
+          const message: string = this.translateService.instant('card.hiking-trail-form.edit-success');
           this.alertManagerService.alertSuccess(message);
-          this.router.navigate(['/hiking-trail', hikingTrail.code]);
+
+          this.eventBusService.refreshHikingTrail();
+          this.router.navigate(['/hiking-trail', this.data.code]);
           this.close();
-        }),
-        catchError(error => {
+        },
+        error: (error) => {
           this.alertManagerService.manageError(error);
-          return of(null);
-        }),
-        finalize(() => this.isCreating.set(false))
-      )
-      .subscribe();
+        }
+      });
   }
 
   private combineDates(date: Date, time: Date): Date {
@@ -368,17 +376,15 @@ export class AddActivityManuallyCardComponent implements AfterViewInit, OnDestro
     return combined;
   }
 
+  onSelectedImages(files: File[]): void {
+    this.editHikingTrailForm.patchValue({ images: files });
+  }
+
   close(): void {
     this.dialogRef.close();
   }
 
-  onSelectedImages(files: File[]): void {
-    this.files = files;
-  }
-
   ngOnDestroy(): void {
-    this.destroyed = true;
-
     if (this.map) {
       this.map.remove();
     }

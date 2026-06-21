@@ -18,7 +18,7 @@
   } @else {
     <!-- Comment box -->
     <div class="max-h-[500px] overflow-y-auto pr-2">
-      <form [formGroup]="addHikingTrailForm">
+      <form [formGroup]="editHikingTrailForm">
         <div class="grid md:grid-cols-2 w-full gap-4 items-start mb-5">
           <!-- Name -->
           <mat-form-field class="w-full" subscriptSizing="dynamic">
@@ -29,7 +29,7 @@
               autocomplete="off"
               required
             />
-            @if (submitted && addHikingTrailControls['name'].hasError('required')) {
+            @if (submitted && editHikingTrailControls['name'].hasError('required')) {
               <mat-error>{{ 'card.hiking-trail-form.name-required' | translate }}</mat-error>
             }
           </mat-form-field>
@@ -46,16 +46,16 @@
               min="0"
               step="0.01"
             />
-            @if (submitted && addHikingTrailControls['distance'].hasError('required')) {
+            @if (submitted && editHikingTrailControls['distance'].hasError('required')) {
               <mat-error>{{ 'card.hiking-trail-form.distance-required' | translate }}</mat-error>
             }
-            @if (submitted && addHikingTrailControls['distance'].hasError('min')) {
+            @if (submitted && editHikingTrailControls['distance'].hasError('min')) {
               <mat-error>{{ 'card.hiking-trail-form.distance-min' | translate }}</mat-error>
             }
           </mat-form-field>
 
           <!-- Description -->
-          <mat-form-field class="w-full col-span-2" subscriptSizing="dynamic">
+          <mat-form-field class="w-full md:col-span-2" subscriptSizing="dynamic">
             <mat-label for="description">{{ 'card.hiking-trail-form.description' | translate}}</mat-label>
             <textarea
               matInput
@@ -68,7 +68,7 @@
           </mat-form-field>
 
           <!-- Images upload -->
-          <app-add-images class="col-span-2" (filesChange)="onSelectedImages($event)" />
+          <app-add-images class="md:col-span-2" (filesChange)="onSelectedImages($event)" />
 
           <!-- Trail Type -->
           <mat-form-field class="w-full" subscriptSizing="dynamic">
@@ -125,7 +125,7 @@
               autocomplete="off"
               required
             />
-            @if (submitted && addHikingTrailControls['startDate'].hasError('required')) {
+            @if (submitted && editHikingTrailControls['startDate'].hasError('required')) {
               <mat-error>{{ 'card.hiking-trail-form.start-date-required' | translate }}</mat-error>
             }
             <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
@@ -141,7 +141,7 @@
               placeholder="HH:mm"
               required
             >
-            @if (submitted && addHikingTrailControls['startTime'].hasError('required')) {
+            @if (submitted && editHikingTrailControls['startTime'].hasError('required')) {
               <mat-error>{{ 'card.hiking-trail-form.start-time-required' | translate }}</mat-error>
             }
             <mat-timepicker #startTimepicker interval="5m"></mat-timepicker>
@@ -158,7 +158,7 @@
               autocomplete="off"
               required
             />
-            @if (submitted && addHikingTrailControls['endDate'].hasError('required')) {
+            @if (submitted && editHikingTrailControls['endDate'].hasError('required')) {
               <mat-error>{{ 'card.hiking-trail-form.end-date-required' | translate }}</mat-error>
             }
             <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
@@ -174,7 +174,7 @@
               placeholder="HH:mm"
               required
             >
-            @if (submitted && addHikingTrailControls['endTime'].hasError('required')) {
+            @if (submitted && editHikingTrailControls['endTime'].hasError('required')) {
               <mat-error>{{ 'card.hiking-trail-form.end-time-required' | translate }}</mat-error>
             }
             <mat-timepicker #endTimepicker interval="5m"></mat-timepicker>
@@ -394,18 +394,13 @@
             </div>
           </mat-expansion-panel>
         </mat-accordion>
-        @if (isCreating()) {
-          <div class="fixed inset-0 flex justify-center items-center bg-black/40 z-50">
-            <app-loading-spinner />
-          </div>
-        }
       </form>
     </div>
   }
 </mat-dialog-content>
 <mat-dialog-actions align="end">
     <button matButton="tonal" (click)="close()">{{ 'close' | translate }}</button>
-    <button matButton="filled" (click)="addHikingTrail()">
-      {{ 'add' | translate }}
+    <button matButton="filled" (click)="editdHikingTrail()">
+      {{ 'edit' | translate }}
     </button>
 </mat-dialog-actions>

@@ -5,9 +5,6 @@ import { Account, AccountUpdate } from '../interfaces/account/Account';
 import { ApiService } from './api.service';
 import { environment } from '../../environments/environment';
 import { Gender } from '../interfaces/account/Gender';
-import { CountrySummary } from '../interfaces/account/Country';
-import { StateSummary } from '../interfaces/account/State';
-import { CitySummary } from '../interfaces/account/City';
 
 @Injectable({
   providedIn: 'root'
@@ -23,9 +20,6 @@ export class AccountService {
     getByCode: (code: string) => `${ environment.apiGatewayUrl }/account/${ code }`,
     update: (code: string) => `${ environment.apiGatewayUrl }/account/${ code }`,
     getAllGenders: `${ environment.apiGatewayUrl }/gender/all`,
-    getAllCountriesSummary: `${ environment.apiGatewayUrl }/country/all/summary`,
-    getStatesByCountrySummary: (countryCode: string) => `${ environment.apiGatewayUrl }/state/country/${ countryCode }/all/summary`,
-    getCitiesByStateSummary: (stateCode: string) => `${ environment.apiGatewayUrl }/city/state/${ stateCode }/all/summary`,
     search: (query: string, numberResults: number = 5) =>
       `${ environment.apiGatewayUrl }/account/searcher?search=${ encodeURIComponent(query) }&numberResults=${ numberResults }`
   };
@@ -54,18 +48,6 @@ export class AccountService {
 
   getAllGenders(): Observable<Gender[]> {
     return this.apiService.get<Gender[]>(this.routes.getAllGenders);
-  }
-
-  getAllCountriesSummary(): Observable<CountrySummary[]> {
-    return this.apiService.get<CountrySummary[]>(this.routes.getAllCountriesSummary);
-  }
-
-  getStatesByCountrySummary(countryCode: string): Observable<StateSummary[]> {
-    return this.apiService.get<StateSummary[]>(this.routes.getStatesByCountrySummary(countryCode));
-  }
-
-  getCitiesByStateSummary(stateCode: string): Observable<CitySummary[]> {
-    return this.apiService.get<CitySummary[]>(this.routes.getCitiesByStateSummary(stateCode));
   }
 
   search(query: string, numberResults: number = 5): Observable<Account[]> {

@@ -37,9 +37,26 @@ export interface CreateHikingTrail {
   name: string;
   description?: string;
   petFriendly?: boolean;
-  startTime: Date;
-  endTime: Date;
+  startTime: string;
+  endTime: string;
   locationLatitude?: number;
   locationLongitude?: number;
   metrics: Partial<CreateMetrics>;
+  images: File[];
+}
+
+export interface UpdateHikingTrail {
+  accountCode: string;
+  difficultyLevelCode?: string;
+  terrainTypeCode?: string;
+  trailTypeCode?: string;
+  name: string;
+  description?: string;
+  petFriendly?: boolean;
+  startTime: string;
+  endTime: string;
+  locationLatitude?: number;
+  locationLongitude?: number;
+  metrics: Partial<CreateMetrics>;
+  images: File[];
 }

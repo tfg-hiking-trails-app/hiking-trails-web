@@ -1,5 +1,5 @@
 @if (hikingTrails().length > 0) {
-  <div class="mt-5 px-3 md:px-0 w-full flex flex-col justify-center items-center gap-3">
+  <div class="mt-6 px-3 md:px-0 pb-12 w-full flex flex-col justify-center items-center gap-6">
 
     @for (hikingTrail of hikingTrails(); track $index) {
       <app-hiking-trail-card
@@ -20,19 +20,22 @@
   @if (loading()) {
     <app-loading-spinner />
   } @else {
-    <div class="flex justify-center items-center">
-      <span class="text-white text-2xl">{{ 'feed.no-following' | translate }}</span>
+    <div class="flex flex-col justify-center items-center gap-3 mt-16 px-6 text-center">
+      <span class="material-icons text-white/70 text-6xl">hiking</span>
+      <span class="text-white text-xl md:text-2xl font-medium max-w-md leading-relaxed">{{ 'feed.no-following' | translate }}</span>
     </div>
   }
 }
 
 @if (error()) {
-  <p class="text-red-500 text-2xl">{{ error() }}</p>
+  <div class="flex justify-center mt-6 px-4">
+    <p class="bg-red-600/90 text-red-50 px-4 py-2 rounded-lg shadow-sm text-base font-medium">{{ error() }}</p>
+  </div>
 }
 
 @if (isLastPage()) {
-  <footer>
-    <p class="text-white">Aqui podria ir un Footer</p>
+  <footer class="w-full flex justify-center py-8">
+    <p class="text-white/60 text-sm">Aqui podria ir un Footer</p>
   </footer>
 }
 

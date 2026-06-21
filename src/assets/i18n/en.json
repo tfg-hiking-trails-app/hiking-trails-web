@@ -95,13 +95,28 @@
       "settings": "Settings"
     },
     "search-bar": {
-      "placeholder": "Search Locations, Users..."
+      "placeholder": "Search Hikes, Users..."
     }
   },
   "open": "Open",
   "pet-friendly": {
     "false": "Not pet-friendly",
     "true": "Pet-friendly"
+  },
+  "recommender": {
+    "title": "Hiking trails recommended for you",
+    "filter-options": {
+      "title": "Recommendation filters",
+      "map-hint": "Click on the map to choose the search point",
+      "selected-location": "Selected location",
+      "no-location": "You haven't selected a location on the map yet",
+      "kilometers": "Search radius (km)",
+      "kilometers-hint": "Between 1 and 25 km",
+      "kilometers-required": "The search radius is required",
+      "kilometers-range": "The radius must be between 1 and 25 km",
+      "search": "Search recommended trails",
+      "no-results": "No trails found within the search range"
+    }
   },
   "register": {
     "confirmPassword": "Confirm password",
@@ -111,9 +126,10 @@
     "emailRequired": "Email is required",
     "hidePasswordTooltip": "Hide password",
     "password": "Password",
-    "passwordMinLength": "Password must be at least 6 characters long",
+    "passwordMinLength": "Password must be at least 8 characters long",
     "passwordMismatch": "Passwords do not match",
     "passwordRequired": "Password is required",
+    "registerSuccess": "Account created successfully. Please sign in to continue.",
     "showPasswordTooltip": "Show password",
     "submit": "Register",
     "username": "Username",

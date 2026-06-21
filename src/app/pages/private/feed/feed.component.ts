@@ -12,19 +12,27 @@ import {
 import { takeUntilDestroyed, } from '@angular/core/rxjs-interop';
 import { MaterialModules } from '@material/material.modules';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { catchError, finalize, map, of, switchMap, tap } from 'rxjs';
+import {
+  catchError,
+  finalize,
+  map,
+  of,
+  switchMap,
+  tap
+} from 'rxjs';
 
-import { HikingTrailCardComponent } from '../../../components/hiking-trail-card/hiking-trail-card.component';
-import { LoadingSpinnerComponent } from '../../../components/loading-spinner/loading-spinner.component';
 import { Account } from '../../../interfaces/account/Account';
-import { Filter } from '../../../interfaces/common/Filter';
-import { Pagination } from '../../../interfaces/common/Pagination';
-import { HikingTrail } from '../../../interfaces/hiking-trail/HikingTrail';
 import { AccountFollowService } from '../../../services/account-follow.service';
 import { AccountService } from '../../../services/account.service';
 import { AuthService } from '../../../services/auth.service';
+import { Filter } from '../../../interfaces/common/Filter';
+import { HikingTrail } from '../../../interfaces/hiking-trail/HikingTrail';
+import { HikingTrailCardComponent } from '../../../components/hiking-trail-card/hiking-trail-card.component';
 import { HikingTrailService } from '../../../services/hiking-trail.service';
+import { LoadingSpinnerComponent } from '../../../components/loading-spinner/loading-spinner.component';
+import { Pagination } from '../../../interfaces/common/Pagination';
 import { UpButtonComponent } from '../../shared/up-button/up-button.component';
+import { EventBusService } from '../../../services/event-bus.service';
 
 @Component({
   selector: 'app-feed',
@@ -59,11 +67,18 @@ export class FeedComponent implements OnInit, AfterViewInit, OnDestroy {
     private accountService: AccountService,
     private authService: AuthService,
     private destroyRef: DestroyRef,
+    private eventBusService: EventBusService,
     private hikingTrailService: HikingTrailService,
     private translate: TranslateService,
   ) { }
 
   ngOnInit(): void {
+    this.eventBusService.refreshFeed$.subscribe(() => {
+      this.hikingTrails.set([]);
+      this.page.set(1);
+      this.loadNextPage();
+    });
+
     this.loadNextPage();
   }
 
