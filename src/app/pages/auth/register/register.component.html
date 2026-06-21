@@ -46,7 +46,7 @@
   <!-- Confirm Password -->
   <mat-form-field class="w-full" appearance="fill">
     <mat-label>{{ 'register.confirmPassword' | translate }}:</mat-label>
-    <input matInput [type]="showConfirmPassword() ? 'text' : 'password'" formControlName="confirmPassword" required>
+    <input matInput [type]="showConfirmPassword() ? 'text' : 'password'" formControlName="confirmPassword" [errorStateMatcher]="confirmPasswordMatcher" required>
     <button
       type="button"
       mat-icon-button
