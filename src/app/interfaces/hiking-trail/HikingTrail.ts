@@ -53,8 +53,8 @@ export interface UpdateHikingTrail {
   name: string;
   description?: string;
   petFriendly?: boolean;
-  startTime: Date;
-  endTime: Date;
+  startTime: string;
+  endTime: string;
   locationLatitude?: number;
   locationLongitude?: number;
   metrics: Partial<CreateMetrics>;

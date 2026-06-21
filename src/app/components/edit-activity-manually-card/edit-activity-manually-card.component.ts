@@ -304,8 +304,10 @@ export class EditActivityManuallyCardComponent implements AfterViewInit, OnDestr
       return;
     }
 
-    const startDate = this.combineDates(new Date(this.editHikingTrailForm.value.startDate), new Date(this.editHikingTrailForm.value.startTime));
-    const endDate = this.combineDates(new Date(this.editHikingTrailForm.value.endDate), new Date(this.editHikingTrailForm.value.endTime));
+    const formValue = this.editHikingTrailForm.getRawValue();
+
+    const startDate = this.combineDates(new Date(formValue.startDate), new Date(formValue.startTime));
+    const endDate = this.combineDates(new Date(formValue.endDate), new Date(formValue.endTime));
 
     if (endDate <= startDate) {
       const message: string = this.translateService.instant('card.hiking-trail-form.invalid-dates');
@@ -316,39 +318,39 @@ export class EditActivityManuallyCardComponent implements AfterViewInit, OnDestr
     const duration = (endDate.getTime() - startDate.getTime());
 
     const createMetrics = removeEmptyFields<CreateMetrics>({
-      distance: this.editHikingTrailForm.value.distance * 1000,
+      distance: formValue.distance * 1000,
       duration,
-      steps: this.editHikingTrailForm.value.steps,
-      calories: this.editHikingTrailForm.value.calories,
-      averagePace: this.editHikingTrailForm.value.averagePace,
-      maxPace: this.editHikingTrailForm.value.maxPace,
-      elevationGain: this.editHikingTrailForm.value.elevationGain,
-      elevationLoss: this.editHikingTrailForm.value.elevationLoss,
-      averageSpeed: this.editHikingTrailForm.value.averageSpeed,
-      maxSpeed: this.editHikingTrailForm.value.maxSpeed,
-      averageHeartRate: this.editHikingTrailForm.value.averageHeartRate,
-      maxHeartRate: this.editHikingTrailForm.value.maxHeartRate,
-      minHeartRate: this.editHikingTrailForm.value.minHeartRate,
-      averageCadence: this.editHikingTrailForm.value.averageCadence,
-      maxCadence: this.editHikingTrailForm.value.maxCadence,
-      maxAltitude: this.editHikingTrailForm.value.maxAltitude,
-      minAltitude: this.editHikingTrailForm.value.minAltitude
+      steps: formValue.steps,
+      calories: formValue.calories,
+      averagePace: formValue.averagePace,
+      maxPace: formValue.maxPace,
+      elevationGain: formValue.elevationGain,
+      elevationLoss: formValue.elevationLoss,
+      averageSpeed: formValue.averageSpeed,
+      maxSpeed: formValue.maxSpeed,
+      averageHeartRate: formValue.averageHeartRate,
+      maxHeartRate: formValue.maxHeartRate,
+      minHeartRate: formValue.minHeartRate,
+      averageCadence: formValue.averageCadence,
+      maxCadence: formValue.maxCadence,
+      maxAltitude: formValue.maxAltitude,
+      minAltitude: formValue.minAltitude
     });
 
     const updateHikingTrail = removeEmptyFields<UpdateHikingTrail>({
       accountCode: this.authService.getUserCode() || '',
-      difficultyLevelCode: this.editHikingTrailForm.value.difficultyLevel,
-      terrainTypeCode: this.editHikingTrailForm.value.terrainType,
-      trailTypeCode: this.editHikingTrailForm.value.trailType,
-      name: this.editHikingTrailForm.value.name,
-      description: this.editHikingTrailForm.value.description,
-      petFriendly: this.editHikingTrailForm.value.petFriendly,
-      startTime: startDate,
-      endTime: endDate,
-      locationLatitude: this.editHikingTrailForm.value.locationLatitude,
-      locationLongitude: this.editHikingTrailForm.value.locationLongitude,
+      difficultyLevelCode: formValue.difficultyLevel,
+      terrainTypeCode: formValue.terrainType,
+      trailTypeCode: formValue.trailType,
+      name: formValue.name,
+      description: formValue.description,
+      petFriendly: formValue.petFriendly,
+      startTime: startDate.toISOString(),
+      endTime: endDate.toISOString(),
+      locationLatitude: formValue.locationLatitude,
+      locationLongitude: formValue.locationLongitude,
       metrics: createMetrics,
-      images: this.editHikingTrailForm.value.images,
+      images: formValue.images,
     });
 
     this.hikingTrailService
