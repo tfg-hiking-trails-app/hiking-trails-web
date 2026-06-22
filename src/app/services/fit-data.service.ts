@@ -17,6 +17,7 @@ export class FitDataService {
   ) { }
 
   private routes = {
+    downloadFitFile: (hikingTrailCode: string) => `${ environment.apiGatewayUrl }/fit-file-data/download/${ hikingTrailCode }`,
     getFileId: (hikingTrailCode: string) => `${ environment.apiGatewayUrl }/fit-file-data/file-id/${ hikingTrailCode }`,
     getLaps: (hikingTrailCode: string) => `${ environment.apiGatewayUrl }/fit-file-data/laps/${ hikingTrailCode }`,
     getCoordinates: (hikingTrailCode: string) => `${ environment.apiGatewayUrl }/fit-file-data/records/${ hikingTrailCode }/coordinates`,
@@ -27,6 +28,12 @@ export class FitDataService {
     getDistanceData: (hikingTrailCode: string) => `${ environment.apiGatewayUrl }/fit-file-data/records/${ hikingTrailCode }/distance`,
     getSpeedData: (hikingTrailCode: string) => `${ environment.apiGatewayUrl }/fit-file-data/records/${ hikingTrailCode }/speed`,
   };
+
+  downloadFitFile(hikingTrailCode: string) {
+    const url: string = this.routes.downloadFitFile(hikingTrailCode);
+
+    return this.apiService.getBlob(url);
+  }
 
   getFileId(hikingTrailCode: string) {
     const url: string = this.routes.getFileId(hikingTrailCode);

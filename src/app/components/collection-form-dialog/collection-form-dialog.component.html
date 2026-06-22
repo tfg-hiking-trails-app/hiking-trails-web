@@ -1,0 +1,30 @@
+<h2 mat-dialog-title class="!font-semibold text-gray-800 dark:text-white">{{ data.title | translate }}</h2>
+
+<mat-dialog-content class="mat-typography">
+  <mat-form-field appearance="outline" class="w-full">
+    <mat-label>{{ 'collections.name' | translate }}</mat-label>
+    <input
+      matInput
+      [formControl]="nameControl"
+      maxlength="100"
+      (keyup.enter)="save()"
+      cdkFocusInitial
+    />
+    @if (nameControl.hasError('required') && nameControl.touched) {
+      <mat-error>{{ 'collections.name-required' | translate }}</mat-error>
+    }
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>
+    {{ 'dialog.no' | translate }}
+  </button>
+  <button
+    mat-button
+    class="!text-light-mode-primary dark:!text-white !font-medium"
+    (click)="save()"
+  >
+    {{ 'collections.save' | translate }}
+  </button>
+</mat-dialog-actions>

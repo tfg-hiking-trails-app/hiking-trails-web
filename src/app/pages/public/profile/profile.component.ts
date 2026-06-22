@@ -26,6 +26,7 @@ import { Account } from '../../../interfaces/account/Account';
 import { AccountFollowService } from '../../../services/account-follow.service';
 import { AccountService } from '../../../services/account.service';
 import { AuthService } from '../../../services/auth.service';
+import { CollectionsPanelComponent } from '../../../components/collections-panel/collections-panel.component';
 import { Filter } from '../../../interfaces/common/Filter';
 import { getDefaultProfileImageUrl } from '../../../Utils/Utils';
 import { HikingTrail } from '../../../interfaces/hiking-trail/HikingTrail';
@@ -42,6 +43,7 @@ import { UpButtonComponent } from '../../shared/up-button/up-button.component';
     TranslatePipe,
     MaterialModules,
     HikingTrailCardComponent,
+    CollectionsPanelComponent,
     UpButtonComponent
 ],
   templateUrl: './profile.component.html',
@@ -168,7 +170,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   canSeeFollowButton(): boolean {
-    if (this.isUserLogged()) {
+    if (this.isOwnProfile()) {
       return false;
     }
 
@@ -177,7 +179,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   canSeeUnfollowButton(): boolean {
-    if (this.isUserLogged()) {
+    if (this.isOwnProfile()) {
       return false;
     }
 
@@ -230,7 +232,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.page() > this.totalPages()!;
   }
 
-  private isUserLogged(): boolean {
+  isOwnProfile(): boolean {
     return !!this.accountLoggedCode() && this.accountLoggedCode() === this.account()?.code;
   }
 

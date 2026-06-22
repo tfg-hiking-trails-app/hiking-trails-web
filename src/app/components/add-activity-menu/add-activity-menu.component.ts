@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { MaterialModules } from '@material/material.modules';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { finalize } from 'rxjs';
 
 import { AlertManagerService } from '../../services/alert-manager.service';
 import { HikingTrailService } from '../../services/hiking-trail.service';
@@ -9,10 +10,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogConfirmComponent } from '../dialog-confirm/dialog-confirm.component';
 import { AddActivityManuallyCardComponent } from '../add-activity-manually-card/add-activity-manually-card.component';
 import { getWindowWidth } from '../../Utils/Utils';
+import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-add-activity-menu',
   imports: [
+    LoadingSpinnerComponent,
     MaterialModules,
     TranslatePipe
   ],
@@ -21,6 +24,8 @@ import { getWindowWidth } from '../../Utils/Utils';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddActivityMenuComponent {
+
+  isUploading = signal<boolean>(false);
 
   constructor(
     private alertManagerService: AlertManagerService,
@@ -60,16 +65,25 @@ export class AddActivityMenuComponent {
         return;
       }
 
-      this.hikingTrailService.uploadFitFile(file).subscribe({
-        next: (code: string) => {
-          const message = this.translateService.instant('navbar.add-activity-menu.hiking-trail-climbed-correctly');
-          this.alertManagerService.alertSuccess(message);
+      this.isUploading.set(true);
 
-          this.router.navigate(['/hiking-trail', code]);
-        },
-        error: (error) => {
-          this.alertManagerService.manageError(error);
-        }
+      this.hikingTrailService.uploadFitFile(file)
+        .pipe(
+          finalize(() => {
+            this.isUploading.set(false);
+            input.value = '';
+          })
+        )
+        .subscribe({
+          next: (code: string) => {
+            const message = this.translateService.instant('navbar.add-activity-menu.hiking-trail-climbed-correctly');
+            this.alertManagerService.alertSuccess(message);
+
+            this.router.navigate(['/hiking-trail', code]);
+          },
+          error: (error) => {
+            this.alertManagerService.manageError(error);
+          }
         });
     });
   }

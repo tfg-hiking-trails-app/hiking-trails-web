@@ -24,6 +24,30 @@ export function isDarkMode(): boolean {
   return document.documentElement.classList.contains('dark');
 }
 
+export function saveFile(blob: Blob, fileName: string): void {
+  const url: string = URL.createObjectURL(blob);
+  const anchor: HTMLAnchorElement = document.createElement('a');
+
+  anchor.href = url;
+  anchor.download = fileName;
+  anchor.click();
+
+  URL.revokeObjectURL(url);
+}
+
+export function sanitizeFileName(name: string, fallback: string): string {
+  const sanitized: string = name
+    .normalize('NFD').replace(/\p{M}+/gu, '')
+    .replace(/[^\p{L}\p{N}\s_-]+/gu, '')
+    .trim()
+    .replace(/\s+/g, '-');
+
+  if (sanitized.length > 0)
+    return sanitized;
+
+  return fallback;
+}
+
 export function removeEmptyFields<T extends object>(obj: T): Partial<T> {
   return Object.entries(obj)
     .filter(([_, v]) => v !== null && v !== undefined && v !== '')

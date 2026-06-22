@@ -2,10 +2,12 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   Input,
   OnInit,
   signal
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { Router, RouterModule } from '@angular/router';
 import { MaterialModules } from '@material/material.modules';
@@ -14,18 +16,21 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { AlertManagerService } from '../../services/alert-manager.service';
 import { AuthService } from '../../services/auth.service';
 import { CarouselImagesComponent } from '../../pages/shared/carousel-images/carousel-images.component';
+import { CollectionService } from '../../services/collection.service';
 import { CommentsCardComponent } from '../comments-card/comments-card.component';
 import { CreatePrestige, DeletePrestige, Prestige } from '../../interfaces/hiking-trail/Prestige';
 import { DialogConfirmComponent } from '../dialog-confirm/dialog-confirm.component';
 import { EditActivityManuallyCardComponent } from '../edit-activity-manually-card/edit-activity-manually-card.component';
 import { EventBusService } from '../../services/event-bus.service';
+import { FitDataService } from '../../services/fit-data.service';
 import { FriendlyDatePipe } from '../../pipes/FriendlyDatePipe';
-import { getWindowWidth } from '../../Utils/Utils';
+import { getWindowWidth, sanitizeFileName, saveFile } from '../../Utils/Utils';
 import { HikingTrail } from '../../interfaces/hiking-trail/HikingTrail';
 import { HikingTrailService } from '../../services/hiking-trail.service';
 import { Metric } from '../../interfaces/display/Metric';
 import { Metrics } from '../../interfaces/hiking-trail/Metrics';
 import { ProfilePictureComponent } from '../../pages/shared/profile-picture/profile-picture.component';
+import { SaveToCollectionDialogComponent } from '../save-to-collection-dialog/save-to-collection-dialog.component';
 
 @Component({
   selector: 'app-hiking-trail-card',
@@ -49,13 +54,17 @@ export class HikingTrailCardComponent implements OnInit {
   metricsValues: Record<string, any | undefined> = {};
   userGavePrestige = signal<boolean>(false);
   prestiges = signal<Prestige[]>([]);
+  savedToCollection = signal<boolean>(false);
 
   constructor(
     private alertManagerService: AlertManagerService,
     private authService: AuthService,
     private cdr: ChangeDetectorRef,
+    private collectionService: CollectionService,
+    private destroyRef: DestroyRef,
     private dialog: MatDialog,
     private eventBusService: EventBusService,
+    private fitDataService: FitDataService,
     private hikingService: HikingTrailService,
     private router: Router,
     private translateService: TranslateService,
@@ -97,6 +106,15 @@ export class HikingTrailCardComponent implements OnInit {
 
     this.checkPrestige();
     this.prestiges.set(this.hikingTrail.prestiges || []);
+
+    if (this.canSaveToCollection) {
+      this.collectionService.getSavedTrailCodes()
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe((savedCodes: Set<string>) => {
+          this.savedToCollection.set(savedCodes.has(this.hikingTrail.code));
+          this.cdr.markForCheck();
+        });
+    }
   }
 
   togglePrestige(): void {
@@ -178,6 +196,29 @@ export class HikingTrailCardComponent implements OnInit {
     });
   }
 
+  downloadFit(): void {
+    this.fitDataService
+      .downloadFitFile(this.hikingTrail.code)
+      .subscribe({
+        next: (response) => {
+          const blob: Blob | null = response.body;
+
+          if (!blob) {
+            return;
+          }
+
+          const fileName: string = `${ sanitizeFileName(this.hikingTrail.name, this.hikingTrail.code) }.fit`;
+          saveFile(blob, fileName);
+
+          const message = this.translateService.instant('hiking-trail-card.download-fit-success');
+          this.alertManagerService.alertSuccess(message);
+        },
+        error: (error) => {
+          this.alertManagerService.manageError(error);
+        }
+      });
+  }
+
   openCommentsDialog(): void {
     const dialogRef = this.dialog.open(CommentsCardComponent, {
       data: this.hikingTrail,
@@ -190,6 +231,22 @@ export class HikingTrailCardComponent implements OnInit {
         this.cdr.markForCheck();
       }
     });
+  }
+
+  openSaveToCollection(): void {
+    this.dialog.open(SaveToCollectionDialogComponent, {
+      data: {
+        hikingTrailCode: this.hikingTrail.code,
+        trailName: this.hikingTrail.name
+      },
+      width: '420px',
+      maxWidth: '90vw',
+      maxHeight: '80vh'
+    });
+  }
+
+  get canSaveToCollection(): boolean {
+    return this.authService.isAuthenticated();
   }
 
   get metricsDisplay(): Metric[] {

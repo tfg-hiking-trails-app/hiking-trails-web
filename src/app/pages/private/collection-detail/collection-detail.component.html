@@ -1,0 +1,59 @@
+@if (isLoading()) {
+  <app-loading-spinner />
+} @else {
+  <div class="flex justify-center w-full">
+    <div class="flex flex-col w-full lg:w-1/2 mx-4 mt-5 p-6 rounded-2xl bg-white/5 dark:bg-neutral-900/40 ring-1 ring-white/10 shadow-sm">
+      <div class="flex items-center gap-4">
+        <button matIconButton (click)="goBack()" [matTooltip]="'collections.back' | translate">
+          <mat-icon class="text-gray-700 dark:text-white">arrow_back</mat-icon>
+        </button>
+        <mat-icon class="!text-light-mode-primary dark:!text-white">
+          {{ collection()?.isDefault ? 'favorite' : 'collections_bookmark' }}
+        </mat-icon>
+        <div>
+          <h2 class="text-3xl xl:text-4xl font-bold tracking-tight text-gray-800 dark:text-white">
+            {{ collection()?.name }}
+          </h2>
+          <p class="text-gray-500 dark:text-gray-300">
+            {{ collection()?.trailCount }}
+            {{ (collection()?.trailCount === 1 ? 'collections.single-trail' : 'collections.multiple-trails') | translate }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="mt-8 px-3 md:px-0 pb-12 w-full flex flex-col justify-center items-center gap-6">
+      @for (hikingTrail of hikingTrails(); track hikingTrail.code) {
+        <div class="relative w-screen sm:w-xl md:w-2xl xl:w-3xl">
+          <button
+            matMiniFab
+            class="!absolute !top-3 !right-3 z-10"
+            (click)="removeTrail(hikingTrail)"
+            [matTooltip]="'collections.remove-trail' | translate"
+          >
+            <mat-icon>bookmark_remove</mat-icon>
+          </button>
+          <app-hiking-trail-card
+            [hikingTrail]="hikingTrail"
+            [belongLoggedUser]="accountLoggedCode() === hikingTrail.accountCode"
+            [showResume]="true"
+          />
+        </div>
+      }
+
+      @if (!isLoadingHikingTrails() && hikingTrails().length === 0) {
+        <p class="text-gray-500 dark:text-gray-400 mt-10">{{ 'collections.empty-trails' | translate }}</p>
+      }
+
+      <app-up-button />
+
+      @if (isLoadingHikingTrails()) {
+        <app-loading-spinner />
+      }
+    </div>
+
+    <div #sentinela class="h-1 w-full"></div>
+  </div>
+}

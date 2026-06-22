@@ -52,6 +52,15 @@
       </div>
     </div>
   </div>
+
+  @if (isOwnProfile()) {
+    <div class="flex justify-center w-full mt-8">
+      <div class="w-full lg:w-1/2 mx-4">
+        <app-collections-panel />
+      </div>
+    </div>
+  }
+
   <div>
     <div class="mt-8 px-3 md:px-0 pb-12 w-full flex flex-col justify-center items-center gap-6">
       @for (hikingTrail of hikingTrails(); track $index) {

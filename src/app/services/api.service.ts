@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from "@angular/common/http";
+import { HttpClient, HttpParams, HttpResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
@@ -19,6 +19,12 @@ export class ApiService {
     options: HttpOptions = {}
   ): Observable<TResponse> {
     return this.http.get<TResponse>(url, options);
+  }
+
+  getBlob(
+    url: string
+  ): Observable<HttpResponse<Blob>> {
+    return this.http.get(url, { observe: 'response', responseType: 'blob' });
   }
 
   getPaged<TResponse>(
