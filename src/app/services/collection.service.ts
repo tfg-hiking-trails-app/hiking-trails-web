@@ -1,6 +1,6 @@
 import { HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { BehaviorSubject, filter, Observable } from "rxjs";
 
 import { environment } from "../../environments/environment";
 import { Collection, CreateCollection, UpdateCollection } from "../interfaces/hiking-trail/Collection";
@@ -18,8 +18,12 @@ export class CollectionService {
     private apiService: ApiService
   ) { }
 
+  private savedTrailCodes$ = new BehaviorSubject<Set<string> | null>(null);
+  private savedRequested = false;
+
   private routes = {
     getLogged: `${ environment.apiGatewayUrl }/collection/logged`,
+    savedTrails: `${ environment.apiGatewayUrl }/collection/saved-trails`,
     getByCode: (code: string) => `${ environment.apiGatewayUrl }/collection/${ code }`,
     getTrails: (code: string) => `${ environment.apiGatewayUrl }/collection/${ code }/trails`,
     create: `${ environment.apiGatewayUrl }/collection`,
@@ -66,6 +70,42 @@ export class CollectionService {
 
   removeTrail(code: string, trailCode: string): Observable<void> {
     return this.apiService.delete<void>(this.routes.removeTrail(code, trailCode));
+  }
+
+  getSavedTrailCodes(): Observable<Set<string>> {
+    if (!this.savedRequested) {
+      this.savedRequested = true;
+      this.loadSavedTrailCodes();
+    }
+
+    return this.savedTrailCodes$.pipe(
+      filter((set): set is Set<string> => set !== null)
+    );
+  }
+
+  markTrailSaved(trailCode: string): void {
+    const set = new Set(this.savedTrailCodes$.value ?? []);
+    set.add(trailCode);
+    this.savedTrailCodes$.next(set);
+  }
+
+  markTrailUnsaved(trailCode: string): void {
+    const set = new Set(this.savedTrailCodes$.value ?? []);
+    set.delete(trailCode);
+    this.savedTrailCodes$.next(set);
+  }
+
+  refreshSavedTrailCodes(): void {
+    this.savedRequested = true;
+    this.loadSavedTrailCodes();
+  }
+
+  private loadSavedTrailCodes(): void {
+    this.apiService.get<string[]>(this.routes.savedTrails)
+      .subscribe({
+        next: (codes: string[]) => this.savedTrailCodes$.next(new Set(codes)),
+        error: () => this.savedTrailCodes$.next(new Set<string>())
+      });
   }
 
 }

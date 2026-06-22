@@ -83,6 +83,7 @@ export class SaveToCollectionDialogComponent implements OnInit {
     this.collectionService.addTrail(collection.code, this.data.hikingTrailCode)
       .subscribe({
         next: () => {
+          this.collectionService.markTrailSaved(this.data.hikingTrailCode);
           const message = this.translateService.instant('collections.saved-success', { name: collection.name });
           this.alertManagerService.alertSuccess(message);
           this.dialogRef.close(true);

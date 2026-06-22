@@ -215,6 +215,7 @@ export class CollectionDetailComponent implements OnInit, AfterViewInit, OnDestr
           next: () => {
             this.hikingTrails.update(prev => prev.filter(t => t.code !== trail.code));
             this.collection.update(c => c ? { ...c, trailCount: Math.max(0, c.trailCount - 1) } : c);
+            this.collectionService.markTrailUnsaved(trail.code);
             this.alertManagerService.alertSuccess(this.translateService.instant('collections.remove-trail-success'));
           },
           error: (error) => this.alertManagerService.manageError(error)

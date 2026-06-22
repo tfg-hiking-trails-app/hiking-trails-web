@@ -165,7 +165,11 @@
             (click)="openSaveToCollection()"
             [matTooltip]="'collections.save-to-collection' | translate"
           >
-            <span class="material-icons text-gray-600 dark:text-white">bookmark_add</span>
+            @if (savedToCollection()) {
+              <span class="material-icons text-yellow-400">bookmark</span>
+            } @else {
+              <span class="material-icons text-gray-600 dark:text-white">bookmark_add</span>
+            }
           </button>
         }
         @if (belongLoggedUser) {

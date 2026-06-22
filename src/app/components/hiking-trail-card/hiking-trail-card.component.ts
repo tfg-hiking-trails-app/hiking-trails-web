@@ -2,10 +2,12 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   Input,
   OnInit,
   signal
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { Router, RouterModule } from '@angular/router';
 import { MaterialModules } from '@material/material.modules';
@@ -14,6 +16,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { AlertManagerService } from '../../services/alert-manager.service';
 import { AuthService } from '../../services/auth.service';
 import { CarouselImagesComponent } from '../../pages/shared/carousel-images/carousel-images.component';
+import { CollectionService } from '../../services/collection.service';
 import { CommentsCardComponent } from '../comments-card/comments-card.component';
 import { CreatePrestige, DeletePrestige, Prestige } from '../../interfaces/hiking-trail/Prestige';
 import { DialogConfirmComponent } from '../dialog-confirm/dialog-confirm.component';
@@ -50,11 +53,14 @@ export class HikingTrailCardComponent implements OnInit {
   metricsValues: Record<string, any | undefined> = {};
   userGavePrestige = signal<boolean>(false);
   prestiges = signal<Prestige[]>([]);
+  savedToCollection = signal<boolean>(false);
 
   constructor(
     private alertManagerService: AlertManagerService,
     private authService: AuthService,
     private cdr: ChangeDetectorRef,
+    private collectionService: CollectionService,
+    private destroyRef: DestroyRef,
     private dialog: MatDialog,
     private eventBusService: EventBusService,
     private hikingService: HikingTrailService,
@@ -98,6 +104,15 @@ export class HikingTrailCardComponent implements OnInit {
 
     this.checkPrestige();
     this.prestiges.set(this.hikingTrail.prestiges || []);
+
+    if (this.canSaveToCollection) {
+      this.collectionService.getSavedTrailCodes()
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe((savedCodes: Set<string>) => {
+          this.savedToCollection.set(savedCodes.has(this.hikingTrail.code));
+          this.cdr.markForCheck();
+        });
+    }
   }
 
   togglePrestige(): void {

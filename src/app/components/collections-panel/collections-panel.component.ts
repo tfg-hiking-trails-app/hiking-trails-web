@@ -137,6 +137,7 @@ export class CollectionsPanelComponent implements OnInit {
         .subscribe({
           next: () => {
             this.collections.update(prev => prev.filter(c => c.code !== collection.code));
+            this.collectionService.refreshSavedTrailCodes();
             this.alertManagerService.alertSuccess(this.translateService.instant('collections.delete-success'));
             this.cdr.markForCheck();
           },
