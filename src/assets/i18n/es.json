@@ -157,6 +157,8 @@
     "delete-success": "Ruta de senderismo eliminada con éxito",
     "difficulty-level": "Nivel de dificultad",
     "distance": "Distancia",
+    "download-fit": "Descargar FIT",
+    "download-fit-success": "Archivo FIT descargado con éxito",
     "duration": "Duración",
     "end-time": "Hora de finalización",
     "hours": "Horas",

@@ -22,8 +22,9 @@ import { CreatePrestige, DeletePrestige, Prestige } from '../../interfaces/hikin
 import { DialogConfirmComponent } from '../dialog-confirm/dialog-confirm.component';
 import { EditActivityManuallyCardComponent } from '../edit-activity-manually-card/edit-activity-manually-card.component';
 import { EventBusService } from '../../services/event-bus.service';
+import { FitDataService } from '../../services/fit-data.service';
 import { FriendlyDatePipe } from '../../pipes/FriendlyDatePipe';
-import { getWindowWidth } from '../../Utils/Utils';
+import { getWindowWidth, sanitizeFileName, saveFile } from '../../Utils/Utils';
 import { HikingTrail } from '../../interfaces/hiking-trail/HikingTrail';
 import { HikingTrailService } from '../../services/hiking-trail.service';
 import { Metric } from '../../interfaces/display/Metric';
@@ -63,6 +64,7 @@ export class HikingTrailCardComponent implements OnInit {
     private destroyRef: DestroyRef,
     private dialog: MatDialog,
     private eventBusService: EventBusService,
+    private fitDataService: FitDataService,
     private hikingService: HikingTrailService,
     private router: Router,
     private translateService: TranslateService,
@@ -192,6 +194,29 @@ export class HikingTrailCardComponent implements OnInit {
           }
         });
     });
+  }
+
+  downloadFit(): void {
+    this.fitDataService
+      .downloadFitFile(this.hikingTrail.code)
+      .subscribe({
+        next: (response) => {
+          const blob: Blob | null = response.body;
+
+          if (!blob) {
+            return;
+          }
+
+          const fileName: string = `${ sanitizeFileName(this.hikingTrail.name, this.hikingTrail.code) }.fit`;
+          saveFile(blob, fileName);
+
+          const message = this.translateService.instant('hiking-trail-card.download-fit-success');
+          this.alertManagerService.alertSuccess(message);
+        },
+        error: (error) => {
+          this.alertManagerService.manageError(error);
+        }
+      });
   }
 
   openCommentsDialog(): void {

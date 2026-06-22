@@ -81,6 +81,8 @@
   "hiking-trail-card": {
     "difficulty-level": "Difficulty level",
     "distance": "Distance",
+    "download-fit": "Download FIT",
+    "download-fit-success": "FIT file downloaded successfully",
     "duration": "Duration",
     "end-time": "End time",
     "hours": "Hours",

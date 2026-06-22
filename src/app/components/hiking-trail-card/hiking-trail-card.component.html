@@ -181,6 +181,12 @@
             <span class="material-icons text-gray-600 dark:text-white">more_vert</span>
           </button>
           <mat-menu #menu="matMenu">
+            @if (hikingTrail.generatedByFitFile) {
+              <button mat-menu-item (click)="downloadFit()">
+                <mat-icon>download</mat-icon>
+                <span>{{ 'hiking-trail-card.download-fit' | translate }}</span>
+              </button>
+            }
             <button mat-menu-item (click)="edit()">
               <mat-icon>edit</mat-icon>
               <span>{{ 'edit' | translate }}</span>
