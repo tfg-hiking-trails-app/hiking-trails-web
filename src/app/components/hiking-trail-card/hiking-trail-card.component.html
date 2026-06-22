@@ -159,6 +159,15 @@
         >
           <span class="material-icons text-gray-600 dark:text-white">comment</span>
         </button>
+        @if (canSaveToCollection) {
+          <button
+            class="cursor-pointer hover:bg-gray-100 dark:hover:bg-neutral-700 rounded-full p-2 transition-colors"
+            (click)="openSaveToCollection()"
+            [matTooltip]="'collections.save-to-collection' | translate"
+          >
+            <span class="material-icons text-gray-600 dark:text-white">bookmark_add</span>
+          </button>
+        }
         @if (belongLoggedUser) {
           <button
             matIconButton

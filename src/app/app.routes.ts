@@ -60,6 +60,11 @@ export const routes: Routes = [
               import('./pages/private/hiking-trail-detail/hiking-trail-detail.component').then(m => m.HikingTrailDetailComponent)
           },
           {
+            path: 'collection/:code',
+            loadComponent: () =>
+              import('./pages/private/collection-detail/collection-detail.component').then(m => m.CollectionDetailComponent)
+          },
+          {
             path: 'recommender',
             loadComponent: () =>
               import('./pages/private/recommender/recommender.component').then(m => m.RecommenderComponent)

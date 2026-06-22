@@ -1,0 +1,51 @@
+<h2 mat-dialog-title class="!font-semibold text-gray-800 dark:text-white">
+  {{ 'collections.save-to-collection' | translate }}
+</h2>
+
+<mat-dialog-content class="mat-typography">
+  @if (loading()) {
+    <app-loading-spinner />
+  } @else {
+    <mat-action-list>
+      <button
+        mat-list-item
+        class="!text-light-mode-primary dark:!text-white"
+        (click)="createNew()"
+        [disabled]="saving()"
+      >
+        <mat-icon matListItemIcon class="!text-light-mode-primary dark:!text-white">add</mat-icon>
+        <span matListItemTitle>{{ 'collections.create-new' | translate }}</span>
+      </button>
+
+      <div class="border-t border-gray-200 dark:border-neutral-700 my-1"></div>
+
+      @for (collection of collections(); track collection.code) {
+        <button
+          mat-list-item
+          (click)="select(collection)"
+          [disabled]="saving()"
+        >
+          <mat-icon matListItemIcon>
+            {{ collection.isDefault ? 'favorite' : 'collections_bookmark' }}
+          </mat-icon>
+          <span matListItemTitle>{{ collection.name }}</span>
+          <span matListItemLine class="text-gray-500 dark:text-gray-400 text-sm">
+            {{ collection.trailCount }} {{ (collection.trailCount === 1 ? 'collections.single-trail' : 'collections.multiple-trails') | translate }}
+          </span>
+        </button>
+      }
+
+      @if (collections().length === 0) {
+        <p class="text-gray-500 dark:text-gray-400 px-2 py-4 text-center">
+          {{ 'collections.empty' | translate }}
+        </p>
+      }
+    </mat-action-list>
+  }
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>
+    {{ 'close' | translate }}
+  </button>
+</mat-dialog-actions>

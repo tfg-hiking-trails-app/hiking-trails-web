@@ -26,6 +26,7 @@ import { HikingTrailService } from '../../services/hiking-trail.service';
 import { Metric } from '../../interfaces/display/Metric';
 import { Metrics } from '../../interfaces/hiking-trail/Metrics';
 import { ProfilePictureComponent } from '../../pages/shared/profile-picture/profile-picture.component';
+import { SaveToCollectionDialogComponent } from '../save-to-collection-dialog/save-to-collection-dialog.component';
 
 @Component({
   selector: 'app-hiking-trail-card',
@@ -190,6 +191,22 @@ export class HikingTrailCardComponent implements OnInit {
         this.cdr.markForCheck();
       }
     });
+  }
+
+  openSaveToCollection(): void {
+    this.dialog.open(SaveToCollectionDialogComponent, {
+      data: {
+        hikingTrailCode: this.hikingTrail.code,
+        trailName: this.hikingTrail.name
+      },
+      width: '420px',
+      maxWidth: '90vw',
+      maxHeight: '80vh'
+    });
+  }
+
+  get canSaveToCollection(): boolean {
+    return this.authService.isAuthenticated();
   }
 
   get metricsDisplay(): Metric[] {
