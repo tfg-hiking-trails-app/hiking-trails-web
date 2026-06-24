@@ -172,17 +172,24 @@
   },
   "recommender": {
     "title": "Hiking trails recommended for you",
+    "metrics": "Metrics",
+    "search-area": "Search area",
+    "empty": {
+      "title": "Discover trails tailored to you",
+      "subtitle": "Drop a point on the map, set the search radius and press \"Search recommended trails\" to see the trails picked for you."
+    },
     "filter-options": {
       "title": "Recommendation filters",
       "map-hint": "Click on the map to choose the search point",
       "selected-location": "Selected location",
       "no-location": "You haven't selected a location on the map yet",
       "kilometers": "Search radius (km)",
-      "kilometers-hint": "Between 1 and 25 km",
+      "kilometers-hint": "Between 1 and 50 km",
       "kilometers-required": "The search radius is required",
-      "kilometers-range": "The radius must be between 1 and 25 km",
+      "kilometers-range": "The radius must be between 1 and 50 km",
       "search": "Search recommended trails",
-      "no-results": "No trails found within the search range"
+      "no-results": "No trails found within the search range",
+      "no-results-area": "No trails were found in the map area you marked. Try increasing the search radius or marking a different location."
     }
   },
   "register": {

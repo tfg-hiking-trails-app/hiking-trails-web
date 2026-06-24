@@ -34,9 +34,9 @@ export type RecommenderFiltersValue = Pick<Recommender, 'kilometers' | 'location
 })
 export class RecommenderFiltersComponent implements AfterViewInit, OnDestroy {
 
-  // Kept in sync with the backend validation ([Range(1, 25)] on RecommenderDto.Kilometers)
+  // Kept in sync with the backend validation ([Range(1, 50)] on RecommenderDto.Kilometers)
   readonly minKilometers = 1;
-  readonly maxKilometers = 25;
+  readonly maxKilometers = 50;
 
   // Fallback map center (Madrid) used until the browser geolocation resolves
   private readonly defaultCenter: L.LatLngTuple = [40.41650000, -3.70256000];

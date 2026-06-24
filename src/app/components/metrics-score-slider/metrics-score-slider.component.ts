@@ -21,6 +21,7 @@ import { AlertManagerService } from '../../services/alert-manager.service';
 interface MetricsScoreDisplay {
   key: keyof Omit<MetricsScore, 'accountCode'>;
   label: string;
+  icon: string;
   value: number;
 }
 
@@ -50,6 +51,18 @@ export class MetricsScoreSliderComponent implements OnInit {
   step: number = 1;
   thumbLabel: boolean = false;
 
+  // Single source of truth for the metrics shown (label + icon), reused on load/error
+  private readonly metricDefinitions: Omit<MetricsScoreDisplay, 'value'>[] = [
+    { key: 'distance',  label: 'metrics-score.distance',   icon: 'straighten' },
+    { key: 'duration',  label: 'metrics-score.duration',   icon: 'schedule' },
+    { key: 'steps',     label: 'metrics-score.steps',      icon: 'directions_walk' },
+    { key: 'calories',  label: 'metrics-score.calories',   icon: 'local_fire_department' },
+    { key: 'pace',      label: 'metrics-score.pace',       icon: 'speed' },
+    { key: 'elevation', label: 'metrics-score.elevation',  icon: 'terrain' },
+    { key: 'heartRate', label: 'metrics-score.heart_rate', icon: 'favorite' },
+    { key: 'speed',     label: 'metrics-score.speed',      icon: 'bolt' },
+  ];
+
   constructor(
     private alertManagerService: AlertManagerService,
     private authService: AuthService,
@@ -78,29 +91,17 @@ export class MetricsScoreSliderComponent implements OnInit {
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         tap((metricsScore: MetricsScore | null) => {
-          this.metrics = [
-            { key: 'distance',    label: 'metrics-score.distance',    value: metricsScore?.distance ?? 0 },
-            { key: 'duration',    label: 'metrics-score.duration',    value: metricsScore?.duration ?? 0 },
-            { key: 'steps',       label: 'metrics-score.steps',       value: metricsScore?.steps ?? 0 },
-            { key: 'calories',    label: 'metrics-score.calories',    value: metricsScore?.calories ?? 0 },
-            { key: 'pace',        label: 'metrics-score.pace',        value: metricsScore?.pace ?? 0 },
-            { key: 'elevation',   label: 'metrics-score.elevation',   value: metricsScore?.elevation ?? 0 },
-            { key: 'heartRate',   label: 'metrics-score.heart_rate',  value: metricsScore?.heartRate ?? 0 },
-            { key: 'speed',       label: 'metrics-score.speed',       value: metricsScore?.speed ?? 0 }
-          ];
+          this.metrics = this.metricDefinitions.map(definition => ({
+            ...definition,
+            value: metricsScore?.[definition.key] ?? 0
+          }));
         }),
         catchError(err => {
           this.error.set('Error loading metrics score');
-          this.metrics = [
-            { key: 'distance',    label: 'metrics-score.distance',    value: 0 },
-            { key: 'duration',    label: 'metrics-score.duration',    value: 0 },
-            { key: 'steps',       label: 'metrics-score.steps',       value: 0 },
-            { key: 'calories',    label: 'metrics-score.calories',    value: 0 },
-            { key: 'pace',        label: 'metrics-score.pace',        value: 0 },
-            { key: 'elevation',   label: 'metrics-score.elevation',   value: 0 },
-            { key: 'heartRate',   label: 'metrics-score.heart_rate',  value: 0 },
-            { key: 'speed',       label: 'metrics-score.speed',       value: 0 }
-          ];
+          this.metrics = this.metricDefinitions.map(definition => ({
+            ...definition,
+            value: 0
+          }));
           return of(null);
         }),
         finalize(() => this.isLoading.set(false))
