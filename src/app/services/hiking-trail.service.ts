@@ -8,6 +8,7 @@ import { Pagination } from "../interfaces/common/Pagination";
 import { Comment, CreateComment } from "../interfaces/hiking-trail/Comment";
 import { DifficultyLevel } from "../interfaces/hiking-trail/DifficultyLevel";
 import { CreateHikingTrail, HikingTrail, UpdateHikingTrail } from "../interfaces/hiking-trail/HikingTrail";
+import { ExploreFilter } from "../interfaces/hiking-trail/ExploreFilter";
 import { HikingTrailFilter } from "../interfaces/hiking-trail/HikingTrailFilter";
 import { MetricsScore } from "../interfaces/hiking-trail/MetricsScore";
 import { CreatePrestige, DeletePrestige, Prestige } from "../interfaces/hiking-trail/Prestige";
@@ -32,6 +33,7 @@ export class HikingTrailService {
     delete: (code: string) => `${ environment.apiGatewayUrl }/hiking-trail/${ code }`,
     edit: (code: string) => `${ environment.apiGatewayUrl }/hiking-trail/${ code }`,
     editMetricsScore: `${ environment.apiGatewayUrl }/metrics-score/account`,
+    explore: `${ environment.apiGatewayUrl }/hiking-trail/explore`,
     getAllDifficultyLevels: `${ environment.apiGatewayUrl }/difficulty-level/all`,
     getAllTerrainTypes: `${ environment.apiGatewayUrl }/terrain-type/all`,
     getAllTrailTypes: `${ environment.apiGatewayUrl }/trail-type/all`,
@@ -127,6 +129,11 @@ export class HikingTrailService {
   getMetricsScoreByAccountCode(accountCode: string): Observable<MetricsScore> {
     const url: string = this.routes.getMetricsScoreByAccountCode(accountCode);
     return this.apiService.get<MetricsScore>(url);
+  }
+
+  getExplorePaged(request: ExploreFilter): Observable<Pagination<HikingTrail>> {
+    const url: string = this.routes.explore;
+    return this.apiService.post<Pagination<HikingTrail>>(url, request);
   }
 
   getNewestPaged(filter: Filter): Observable<Pagination<HikingTrail>> {

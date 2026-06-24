@@ -1,10 +1,107 @@
 <div class="mt-6 px-3 md:px-0 pb-12 w-full flex flex-col justify-center items-center gap-6">
   <header class="text-center mb-2">
     <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-white drop-shadow-sm">
-      {{ 'explore.title' | translate }}
+      {{ titleKey() | translate }}
     </h1>
     <div class="mx-auto mt-3 h-1 w-16 rounded-full bg-white/40"></div>
   </header>
+
+  <!-- Controls: "Mostrar" (sort) + "Filtro" (filter), right aligned -->
+  <div class="w-full sm:w-xl md:w-2xl xl:w-3xl flex justify-end items-center gap-2">
+    <!-- Mostrar (sort) -->
+    <button matButton="elevated" [matMenuTriggerFor]="sortMenu">
+      <mat-icon>sort</mat-icon>
+      {{ 'explore.show.label' | translate }}
+    </button>
+    <mat-menu #sortMenu="matMenu">
+      <button mat-menu-item (click)="setSortMode('newest')">
+        <mat-icon>{{ sortMode() === 'newest' ? 'radio_button_checked' : 'radio_button_unchecked' }}</mat-icon>
+        <span>{{ 'explore.show.newest' | translate }}</span>
+      </button>
+      <button mat-menu-item (click)="setSortMode('most-prestigious')">
+        <mat-icon>{{ sortMode() === 'most-prestigious' ? 'radio_button_checked' : 'radio_button_unchecked' }}</mat-icon>
+        <span>{{ 'explore.show.most-voted' | translate }}</span>
+      </button>
+      <button mat-menu-item (click)="setSortMode('longest')">
+        <mat-icon>{{ sortMode() === 'longest' ? 'radio_button_checked' : 'radio_button_unchecked' }}</mat-icon>
+        <span>{{ 'explore.show.longest' | translate }}</span>
+      </button>
+    </mat-menu>
+
+    <!-- Filtro (filter) -->
+    <div class="relative">
+      <button
+        matButton="elevated"
+        class="relative z-50"
+        [matBadge]="activeFilterCount()"
+        [matBadgeHidden]="activeFilterCount() === 0"
+        matBadgeColor="accent"
+        matBadgeSize="small"
+        (click)="toggleFilterPanel()"
+      >
+        <mat-icon>filter_list</mat-icon>
+        {{ 'explore.filter.label' | translate }}
+      </button>
+
+      @if (filterPanelOpen()) {
+        <!-- backdrop to close on outside click -->
+        <div class="fixed inset-0 z-40" (click)="closeFilterPanel()"></div>
+
+        <div
+          class="absolute right-0 mt-2 z-50 w-72 p-4 rounded-2xl bg-white dark:bg-neutral-900 ring-1 ring-black/10 dark:ring-white/10 shadow-xl flex flex-col gap-3"
+        >
+          <!-- Pet friendly -->
+          <mat-checkbox [(ngModel)]="draftPetFriendly">
+            {{ 'explore.filter.pet-friendly' | translate }}
+          </mat-checkbox>
+
+          <!-- Difficulty level -->
+          <mat-form-field class="w-full" subscriptSizing="dynamic">
+            <mat-label>{{ 'explore.filter.difficulty-level' | translate }}</mat-label>
+            <mat-select [(ngModel)]="draftDifficultyLevelCode">
+              <mat-option [value]="''">{{ 'explore.filter.all' | translate }}</mat-option>
+              @for (level of difficultyLevels; track level.code) {
+                <mat-option [value]="level.code">
+                  {{ `difficulty-level.${ level.difficultyLevelValue }` | translate }}
+                </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+          <!-- Terrain type -->
+          <mat-form-field class="w-full" subscriptSizing="dynamic">
+            <mat-label>{{ 'explore.filter.terrain-type' | translate }}</mat-label>
+            <mat-select [(ngModel)]="draftTerrainTypeCode">
+              <mat-option [value]="''">{{ 'explore.filter.all' | translate }}</mat-option>
+              @for (terrain of terrainTypes; track terrain.code) {
+                <mat-option [value]="terrain.code">
+                  {{ `terrain-type.${ terrain.terrain }` | translate }}
+                </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+          <!-- Trail type -->
+          <mat-form-field class="w-full" subscriptSizing="dynamic">
+            <mat-label>{{ 'explore.filter.trail-type' | translate }}</mat-label>
+            <mat-select [(ngModel)]="draftTrailTypeCode">
+              <mat-option [value]="''">{{ 'explore.filter.all' | translate }}</mat-option>
+              @for (type of trailTypes; track type.code) {
+                <mat-option [value]="type.code">
+                  {{ `trail-type.${ type.trail }` | translate }}
+                </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+          <div class="flex justify-between items-center gap-2 pt-1">
+            <button matButton (click)="clearFilters()">{{ 'explore.filter.clear' | translate }}</button>
+            <button matButton="filled" (click)="applyFilters()">{{ 'explore.filter.apply' | translate }}</button>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
 
   @for (hikingTrail of hikingTrails(); track $index) {
     <app-hiking-trail-card
@@ -12,6 +109,10 @@
       [belongLoggedUser]="false"
       [showResume]="true"
     />
+  }
+
+  @if (!isLoading() && hikingTrails().length === 0) {
+    <p class="text-white/80 mt-4">{{ 'explore.no-results' | translate }}</p>
   }
 
   <app-up-button />

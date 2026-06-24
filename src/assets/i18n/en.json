@@ -61,6 +61,30 @@
     "unknown-error": "An error occurred"
   },
   "expand-all": "Expand all",
+  "explore": {
+    "titles": {
+      "newest": "Latest hiking trails added",
+      "most-voted": "Most voted hiking trails",
+      "longest": "Longest hiking trails"
+    },
+    "no-results": "No trails found with these filters",
+    "show": {
+      "label": "Show",
+      "newest": "Latest added",
+      "most-voted": "Most voted",
+      "longest": "Longest"
+    },
+    "filter": {
+      "label": "Filter",
+      "all": "All",
+      "pet-friendly": "Pet friendly",
+      "difficulty-level": "Difficulty",
+      "terrain-type": "Terrain type",
+      "trail-type": "Trail type",
+      "apply": "Apply",
+      "clear": "Clear"
+    }
+  },
   "feed": {
     "error": "An error occurred while loading hiking trails",
     "no-following": "You are not following any user! Follow someone to see their activity"

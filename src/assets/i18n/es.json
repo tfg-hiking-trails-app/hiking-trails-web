@@ -132,7 +132,28 @@
   },
   "expand-all": "Expandir todo",
   "explore": {
-    "title": "Últimas rutas de senderismo añadidas"
+    "titles": {
+      "newest": "Últimas rutas de senderismo añadidas",
+      "most-voted": "Rutas de senderismo más votadas",
+      "longest": "Rutas de senderismo más largas"
+    },
+    "no-results": "No se han encontrado rutas con estos filtros",
+    "show": {
+      "label": "Mostrar",
+      "newest": "Últimas rutas añadidas",
+      "most-voted": "Más votadas",
+      "longest": "Más largas"
+    },
+    "filter": {
+      "label": "Filtro",
+      "all": "Todas",
+      "pet-friendly": "Apto para mascotas",
+      "difficulty-level": "Dificultad",
+      "terrain-type": "Tipo de terreno",
+      "trail-type": "Tipo de ruta",
+      "apply": "Aplicar",
+      "clear": "Limpiar"
+    }
   },
   "feed": {
     "error": "Ha ocurrido un error al cargar las rutas de senderismo",
