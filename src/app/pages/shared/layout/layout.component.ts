@@ -4,12 +4,14 @@ import { RouterOutlet } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { NavbarPublicComponent } from '../../public/navbar/navbar.component';
 import { NavbarPrivateComponent } from '../../private/navbar/navbar.component';
+import { FooterComponent } from '../footer/footer.component';
 
 @Component({
   selector: 'app-dashboard',
   imports: [
     NavbarPrivateComponent,
     NavbarPublicComponent,
+    FooterComponent,
     RouterOutlet
 ],
   templateUrl: './layout.component.html',

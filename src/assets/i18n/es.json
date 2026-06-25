@@ -159,6 +159,11 @@
     "error": "Ha ocurrido un error al cargar las rutas de senderismo",
     "no-following": "¡No sigues a ningún usuario! Sigue a alguien para ver su actividad"
   },
+  "footer": {
+    "thesis": "Trabajo Fin de Grado",
+    "school": "Escuela de ingeniería informática del software de Oviedo",
+    "github": "Repositorio en GitHub"
+  },
   "go-home": "Ir a inicio",
   "graphics": {
     "altitude": "Altitud (m)",

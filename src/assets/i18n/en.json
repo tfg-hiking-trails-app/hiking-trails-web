@@ -89,6 +89,11 @@
     "error": "An error occurred while loading hiking trails",
     "no-following": "You are not following any user! Follow someone to see their activity"
   },
+  "footer": {
+    "thesis": "Bachelor's Thesis",
+    "school": "School of Computer Software Engineering of Oviedo",
+    "github": "GitHub repository"
+  },
   "go-home": "Go home",
   "graphics": {
     "altitude": "Altitude (m)",
