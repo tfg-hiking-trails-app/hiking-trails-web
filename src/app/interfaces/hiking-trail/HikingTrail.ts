@@ -2,6 +2,7 @@ import { Account } from "../account/Account";
 import { Comment } from "./Comment";
 import { DifficultyLevel } from "./DifficultyLevel";
 import { Images } from "./Images";
+import { Location } from "./Location";
 import { CreateMetrics, Metrics } from "./Metrics";
 import { Prestige } from "./Prestige";
 import { TerrainType } from './TerrainType';
@@ -26,6 +27,7 @@ export interface HikingTrail {
   metrics: Metrics[];
   prestiges: Prestige[];
   comments: Comment[];
+  locations?: Location[];
   productName?: string;
 }
 

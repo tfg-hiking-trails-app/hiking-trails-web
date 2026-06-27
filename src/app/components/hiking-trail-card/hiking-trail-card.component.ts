@@ -70,6 +70,25 @@ export class HikingTrailCardComponent implements OnInit {
     private translateService: TranslateService,
   ) { }
 
+  get locationName(): string | null {
+    const location = this.hikingTrail.locations?.[0];
+
+    if (!location) {
+      return null;
+    }
+
+    const primary = location.city || location.county || location.suburb || location.district || location.street;
+    const secondary = location.state || location.country;
+
+    const parts = [primary, secondary].filter(Boolean);
+
+    if (parts.length) {
+      return parts.join(', ');
+    }
+
+    return location.formattedAddress || location.country || null;
+  }
+
   ngOnInit(): void {
     this.eventBusService.refreshHikingTrailDetail$
       .subscribe(() => {
