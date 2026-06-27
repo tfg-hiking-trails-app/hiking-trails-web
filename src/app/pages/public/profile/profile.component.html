@@ -20,24 +20,38 @@
           <!-- Stats user -->
           <div class="mt-4 min-w-56">
             <div class="flex justify-between mb-4">
-              <div class="flex flex-col items-center">
+              <div
+                class="flex flex-col items-center cursor-pointer hover:opacity-80 transition-opacity"
+                role="button"
+                tabindex="0"
+                (click)="openFollowers()"
+                (keydown.enter)="openFollowers()"
+                (keydown.space)="openFollowers()"
+              >
                 <span class="text-white text-2xl font-bold">{{ followersCount() }}</span>
                 <span class="text-gray-200 dark:text-gray-300 text-sm font-medium">{{ "profile.followers" | translate}}</span>
               </div>
-              <div class="flex flex-col items-center">
+              <div
+                class="flex flex-col items-center cursor-pointer hover:opacity-80 transition-opacity"
+                role="button"
+                tabindex="0"
+                (click)="openFollowed()"
+                (keydown.enter)="openFollowed()"
+                (keydown.space)="openFollowed()"
+              >
                 <span class="text-white text-2xl font-bold">{{ followedCount() }}</span>
                 <span class="text-gray-200 dark:text-gray-300 text-sm font-medium">{{ "profile.followed" | translate}}</span>
               </div>
             </div>
 
             @if (canSeeFollowButton()) {
-              <button matButton="tonal">
+              <button matButton="tonal" (click)="follow()">
                 <mat-icon>add</mat-icon>
                 {{ "profile.follow" | translate }}
               </button>
             }
             @if (canSeeUnfollowButton()) {
-              <button matButton="filled">
+              <button matButton="filled" (click)="unfollow()">
                 <mat-icon>check</mat-icon>
                 {{ "profile.following" | translate }}
               </button>

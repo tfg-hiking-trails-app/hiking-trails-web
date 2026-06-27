@@ -175,6 +175,18 @@
     "false": "Not pet-friendly",
     "true": "Pet-friendly"
   },
+  "profile": {
+    "follow": "Follow",
+    "followed": "Following",
+    "followers": "Followers",
+    "following": "Following",
+    "no-followers": "No followers yet",
+    "no-followed": "Not following anyone yet",
+    "private-profile": "Private profile",
+    "unfollow": "Unfollow",
+    "unfollow-confirm-title": "Unfollow",
+    "unfollow-confirm-message": "Are you sure you want to unfollow {{ username }}?"
+  },
   "recommender": {
     "title": "Hiking trails recommended for you",
     "metrics": "Metrics",

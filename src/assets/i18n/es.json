@@ -283,8 +283,12 @@
     "followed": "Siguiendo",
     "followers": "Seguidores",
     "following": "Siguiendo",
+    "no-followers": "Todavía no tiene seguidores",
+    "no-followed": "Todavía no sigue a nadie",
     "private-profile": "Perfil privado",
-    "unfollow": "Dejar de seguir"
+    "unfollow": "Dejar de seguir",
+    "unfollow-confirm-title": "Dejar de seguir",
+    "unfollow-confirm-message": "¿Seguro que quieres dejar de seguir a {{ username }}?"
   },
   "recommender": {
     "title": "Rutas de senderismo recomendadas para ti",

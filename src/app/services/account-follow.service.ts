@@ -21,6 +21,9 @@ export class AccountFollowService {
     getAllFollowedByAccountCode: (accountCode: string) => `${ environment.apiGatewayUrl }/account-follow/followed/${ accountCode }/all`,
     getFollowedCountByAccountCode: (accountCode: string) => `${ environment.apiGatewayUrl }/account-follow/followed/${ accountCode }/count`,
     getFollowersCountByAccountCode: (accountCode: string) => `${ environment.apiGatewayUrl }/account-follow/followers/${ accountCode }/count`,
+    follow: (accountCode: string) => `${ environment.apiGatewayUrl }/account-follow/follow/${ accountCode }`,
+    unfollow: (accountCode: string) => `${ environment.apiGatewayUrl }/account-follow/unfollow/${ accountCode }`,
+    isFollowing: (accountCode: string) => `${ environment.apiGatewayUrl }/account-follow/is-following/${ accountCode }`,
   };
 
   getFollowersByAccountCode(accountCode: string): Observable<Account[]> {
@@ -51,6 +54,21 @@ export class AccountFollowService {
   getFollowersCountByAccountCode(accountCode: string): Observable<number> {
     const url = this.routes.getFollowersCountByAccountCode(accountCode);
     return this.apiService.get<number>(url);
+  }
+
+  follow(accountCode: string): Observable<void> {
+    const url = this.routes.follow(accountCode);
+    return this.apiService.post<void>(url);
+  }
+
+  unfollow(accountCode: string): Observable<void> {
+    const url = this.routes.unfollow(accountCode);
+    return this.apiService.delete<void>(url);
+  }
+
+  isFollowing(accountCode: string): Observable<boolean> {
+    const url = this.routes.isFollowing(accountCode);
+    return this.apiService.get<boolean>(url);
   }
 
 }
