@@ -11,7 +11,8 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslatePipe } from '@ngx-translate/core';
+import { MatDialog } from '@angular/material/dialog';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { MaterialModules } from '@material/material.modules';
 import {
   catchError,
@@ -24,9 +25,12 @@ import {
 
 import { Account } from '../../../interfaces/account/Account';
 import { AccountFollowService } from '../../../services/account-follow.service';
+import { AccountListDialogComponent } from '../../../components/account-list-dialog/account-list-dialog.component';
 import { AccountService } from '../../../services/account.service';
+import { AlertManagerService } from '../../../services/alert-manager.service';
 import { AuthService } from '../../../services/auth.service';
 import { CollectionsPanelComponent } from '../../../components/collections-panel/collections-panel.component';
+import { DialogConfirmComponent } from '../../../components/dialog-confirm/dialog-confirm.component';
 import { Filter } from '../../../interfaces/common/Filter';
 import { getDefaultProfileImageUrl } from '../../../Utils/Utils';
 import { HikingTrail } from '../../../interfaces/hiking-trail/HikingTrail';
@@ -55,6 +59,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
   accountLoggedCode = signal<string | null>(null);
   followedCount = signal<number>(0);
   followersCount = signal<number>(0);
+  isFollowing = signal<boolean>(false);
   isLoading = signal<boolean>(true);
 
   // lazy load hiking trails
@@ -72,11 +77,14 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private accountFollowService: AccountFollowService,
     private accountService: AccountService,
+    private alertManagerService: AlertManagerService,
     private authService: AuthService,
     private destroyRef: DestroyRef,
+    private dialog: MatDialog,
     private hikingTrailService: HikingTrailService,
     private route: ActivatedRoute,
     private router: Router,
+    private translateService: TranslateService,
   ) { }
 
   ngOnInit(): void {
@@ -92,6 +100,8 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.router.navigate(['/feed']);
             return;
           }
+
+          this.resetHikingTrails();
 
           this.accountService.getByCode(code)
             .pipe(
@@ -111,19 +121,26 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
               switchMap((account: Account) => {
                 this.loadNextPage(account);
 
+                const checkFollowStatus = this.authService.isAuthenticated()
+                  && this.accountLoggedCode() !== account.code;
+
                 return forkJoin({
                     followedCount: this.accountFollowService.getFollowedCountByAccountCode(account.code),
                     followersCount: this.accountFollowService.getFollowersCountByAccountCode(account.code),
+                    isFollowing: checkFollowStatus
+                      ? this.accountFollowService.isFollowing(account.code)
+                      : of(false),
                   }).pipe(
                     catchError(err => {
                       console.error('search error', err);
-                      return of({ followedCount: 0, followersCount: 0, hikingTrails: [] });
+                      return of({ followedCount: 0, followersCount: 0, isFollowing: false });
                     })
                   );
                 }),
-                tap(({ followedCount, followersCount }) => {
+                tap(({ followedCount, followersCount, isFollowing }) => {
                   this.followedCount.set(followedCount);
                   this.followersCount.set(followersCount);
+                  this.isFollowing.set(isFollowing);
                 }),
               finalize(() => this.isLoading.set(false)),
               takeUntilDestroyed(this.destroyRef)
@@ -169,22 +186,102 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     return getDefaultProfileImageUrl(gender);
   }
 
+  openFollowers(): void {
+    this.openAccountList('followers');
+  }
+
+  openFollowed(): void {
+    this.openAccountList('followed');
+  }
+
+  private openAccountList(type: 'followers' | 'followed'): void {
+    const account = this.account();
+
+    if (!account) {
+      return;
+    }
+
+    this.dialog.open(AccountListDialogComponent, {
+      data: { accountCode: account.code, type },
+      width: '420px',
+      maxHeight: '80vh'
+    });
+  }
+
   canSeeFollowButton(): boolean {
-    if (this.isOwnProfile()) {
+    if (this.isOwnProfile() || this.isGuestUser()) {
       return false;
     }
 
-    // TODO: implementar llamada api para ver si el usuario logueado sigue a la cuenta que se está viendo
-    return true;
+    return !this.isFollowing();
   }
 
   canSeeUnfollowButton(): boolean {
-    if (this.isOwnProfile()) {
+    if (this.isOwnProfile() || this.isGuestUser()) {
       return false;
     }
 
-    // TODO: implementar llamada api para ver si el usuario logueado sigue a la cuenta que se está viendo
-    return true;
+    return this.isFollowing();
+  }
+
+  follow(): void {
+    const account = this.account();
+
+    if (!account) {
+      return;
+    }
+
+    this.accountFollowService
+      .follow(account.code)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          this.isFollowing.set(true);
+          this.followersCount.update(count => count + 1);
+        },
+        error: error => this.alertManagerService.manageError(error)
+      });
+  }
+
+  unfollow(): void {
+    const account = this.account();
+
+    if (!account) {
+      return;
+    }
+
+    const dialogRef = this.dialog.open(DialogConfirmComponent, {
+      data: {
+        title: this.translateService.instant('profile.unfollow-confirm-title'),
+        message: this.translateService.instant('profile.unfollow-confirm-message', { username: account.username }),
+        focusCancel: true
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) {
+        return;
+      }
+
+      this.accountFollowService
+        .unfollow(account.code)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: () => {
+            this.isFollowing.set(false);
+            this.followersCount.update(count => Math.max(0, count - 1));
+          },
+          error: error => this.alertManagerService.manageError(error)
+        });
+    });
+  }
+
+  resetHikingTrails(): void {
+    this.hikingTrails.set([]);
+    this.page.set(1);
+    this.totalPages.set(null);
+    this.error.set(null);
+    this.isLoadingHikingTrails.set(false);
   }
 
   loadNextPage(account: Account): void {
@@ -205,6 +302,10 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         tap((pageData: Pagination<HikingTrail>) => {
+          if (this.account()?.code !== account.code) {
+            return;
+          }
+
           pageData.content = pageData.content.map(trail => {
             if (this.account()) {
               trail.account = this.account()!;
@@ -234,6 +335,10 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
   isOwnProfile(): boolean {
     return !!this.accountLoggedCode() && this.accountLoggedCode() === this.account()?.code;
+  }
+
+  isGuestUser() {
+    return !this.authService.isAuthenticated();
   }
 
 }

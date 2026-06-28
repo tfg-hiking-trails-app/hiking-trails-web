@@ -1,30 +1,50 @@
 <div class="mt-6 px-3 md:px-0 pb-12 w-full flex flex-col justify-center items-center gap-6">
-  <mat-accordion class="example-headers-align">
-    <mat-expansion-panel>
+
+  <!-- Header -->
+  <header class="w-full sm:w-xl md:w-2xl text-center">
+    <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-white drop-shadow-sm">
+      {{ 'recommender.title' | translate }}
+    </h1>
+    <div class="mx-auto mt-3 h-1 w-16 rounded-full bg-white/40"></div>
+  </header>
+
+  <!-- Controls: "Métricas" button (right aligned) with a dropdown panel -->
+  <div class="w-full sm:w-xl md:w-2xl flex justify-end items-center">
+    <div class="relative">
+      <button
+        matButton="elevated"
+        class="relative z-50"
+        (click)="toggleMetricsPanel()">
+        <mat-icon>tune</mat-icon>
+        {{ 'recommender.metrics' | translate }}
+      </button>
+
+      @if (metricsPanelOpen()) {
+        <!-- backdrop to close on outside click -->
+        <div class="fixed inset-0 z-40" (click)="closeMetricsPanel()"></div>
+
+        <div
+          class="absolute right-0 mt-2 z-50 w-80 sm:w-[28rem] max-w-[90vw] p-4 rounded-2xl bg-white dark:bg-neutral-900 ring-1 ring-black/10 dark:ring-white/10 shadow-xl">
+          <h2 class="text-base font-semibold mb-3">{{ 'metrics-score.title' | translate }}</h2>
+          <app-metrics-score-slider />
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Search area: map + kilometers, expanded by default -->
+  <mat-accordion class="w-full sm:w-xl md:w-2xl">
+    <mat-expansion-panel [expanded]="true">
       <mat-expansion-panel-header>
-        <mat-panel-title>{{ 'recommender.title' | translate }}</mat-panel-title>
+        <mat-panel-title class="flex items-center gap-2">
+          <mat-icon>map</mat-icon>
+          {{ 'recommender.search-area' | translate }}
+        </mat-panel-title>
       </mat-expansion-panel-header>
 
-      <mat-tab-group
-        class="md:w-2xl"
-        mat-stretch-tabs="false"
-        mat-align-tabs="center">
-
-        <mat-tab [label]="'metrics-score.title' | translate">
-          <app-metrics-score-slider></app-metrics-score-slider>
-        </mat-tab>
-
-        <mat-tab [label]="'recommender.filter-options.title' | translate">
-          <ng-template matTabContent>
-            <app-recommender-filters (search)="onSearch($event)" />
-          </ng-template>
-        </mat-tab>
-
-      </mat-tab-group>
+      <app-recommender-filters (search)="onSearch($event)" />
     </mat-expansion-panel>
-
   </mat-accordion>
-
 
   @for (hikingTrail of hikingTrails(); track $index) {
     <app-hiking-trail-card
@@ -34,10 +54,23 @@
     />
   }
 
+  <!-- Empty state: before the first search -->
+  @if (!hasSearched() && !isLoading() && hikingTrails().length === 0) {
+    <div class="flex flex-col items-center text-center gap-3 mt-8 text-white/90">
+      <mat-icon class="recommender-empty-icon">hiking</mat-icon>
+      <h2 class="text-xl font-semibold">{{ 'recommender.empty.title' | translate }}</h2>
+      <p class="max-w-md opacity-80">{{ 'recommender.empty.subtitle' | translate }}</p>
+    </div>
+  }
+
+  <!-- Empty state: searched but no trails in the marked map area -->
   @if (hasSearched() && !isLoading() && hikingTrails().length === 0) {
-    <p class="text-center opacity-70">
-      {{ 'recommender.filter-options.no-results' | translate }}
-    </p>
+    <div class="flex flex-col items-center text-center gap-3 mt-8 text-white/90">
+      <mat-icon class="recommender-empty-icon">wrong_location</mat-icon>
+      <p class="max-w-md opacity-90">
+        {{ 'recommender.filter-options.no-results-area' | translate }}
+      </p>
+    </div>
   }
 
   <app-up-button />

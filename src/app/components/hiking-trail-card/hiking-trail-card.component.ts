@@ -70,6 +70,25 @@ export class HikingTrailCardComponent implements OnInit {
     private translateService: TranslateService,
   ) { }
 
+  get locationName(): string | null {
+    const location = this.hikingTrail.locations?.[0];
+
+    if (!location) {
+      return null;
+    }
+
+    const primary = location.city || location.county || location.suburb || location.district || location.street;
+    const secondary = location.state || location.country;
+
+    const parts = [primary, secondary].filter(Boolean);
+
+    if (parts.length) {
+      return parts.join(', ');
+    }
+
+    return location.formattedAddress || location.country || null;
+  }
+
   ngOnInit(): void {
     this.eventBusService.refreshHikingTrailDetail$
       .subscribe(() => {
@@ -253,12 +272,12 @@ export class HikingTrailCardComponent implements OnInit {
     const isHidden: boolean = !this.showResume;
     return [
       { key: 'distance',          icon: 'mdi-map-marker-radius',      label: 'metrics.distance',          unit: 'km',       display: true },
-      { key: 'calories',          icon: 'mdi-fire',                   label: 'metrics.calories',          unit: 'Kcal',     display: true },
+      { key: 'elevationGain',     icon: 'mdi-elevation-rise',         label: 'metrics.elevationGain',     unit: 'm',        display: true },
       { key: 'duration',          icon: 'timer',                      label: 'metrics.duration',          unit: '',         display: true },
+      { key: 'calories',          icon: 'mdi-fire',                   label: 'metrics.calories',          unit: 'Kcal',     display: isHidden },
       { key: 'steps',             icon: 'mdi-shoe-print',             label: 'metrics.steps',             unit: '',         display: isHidden },
       { key: 'averagePace',       icon: 'mdi-timer-outline',          label: 'metrics.averagePace',       unit: 'min/km',   display: isHidden },
       { key: 'maxPace',           icon: 'mdi-timer',                  label: 'metrics.maxPace',           unit: 'min/km',   display: isHidden },
-      { key: 'elevationGain',     icon: 'mdi-elevation-rise',         label: 'metrics.elevationGain',     unit: 'm',        display: isHidden },
       { key: 'elevationLoss',     icon: 'mdi-elevation-decline',      label: 'metrics.elevationLoss',     unit: 'm',        display: isHidden },
       { key: 'averageSpeed',      icon: 'mdi-speedometer-medium',     label: 'metrics.averageSpeed',      unit: 'km/h',     display: isHidden },
       { key: 'maxSpeed',          icon: 'mdi-speedometer',            label: 'metrics.maxSpeed',          unit: 'km/h',     display: isHidden },

@@ -1,6 +1,11 @@
-@if (logged()) {
-  <app-private-navbar />
-} @else {
-  <app-public-navbar />
-}
-<router-outlet />
+<div class="flex min-h-screen flex-col">
+  @if (logged()) {
+    <app-private-navbar />
+  } @else {
+    <app-public-navbar />
+  }
+  <main class="flex-1">
+    <router-outlet />
+  </main>
+  <app-footer />
+</div>

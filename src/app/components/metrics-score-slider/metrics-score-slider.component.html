@@ -1,13 +1,17 @@
-<div class="bg-black p-5 rounded-2xl">
+<div class="flex flex-col gap-5">
   @if (isLoading()) {
     <app-loading-spinner />
   } @else {
-    <div class="grid grid-cols-2 gap-x-6 gap-y-4">
-      @for (metric of metrics; track $index) {
-        <div class="w-full min-w-0">
-          <div class="flex justify-between gap-2">
-            <label class="text-xl min-w-0 break-words">{{ metric.label |  translate }}</label>
-            <label class="text-xl shrink-0">{{slider.value}}</label>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
+      @for (metric of metrics; track metric.key) {
+        <div class="flex flex-col gap-1 min-w-0">
+          <div class="flex items-center gap-2 min-w-0">
+            <mat-icon class="shrink-0 text-emerald-600 dark:text-emerald-400">{{ metric.icon }}</mat-icon>
+            <span class="text-sm font-medium min-w-0 break-words">{{ metric.label | translate }}</span>
+            <span
+              class="ml-auto shrink-0 inline-flex items-center justify-center min-w-8 h-7 px-2 rounded-full text-sm font-semibold bg-emerald-600/10 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-300">
+              {{ slider.value }}
+            </span>
           </div>
           <mat-slider
               class="w-full"
@@ -22,11 +26,9 @@
         </div>
       }
     </div>
-  }
 
-  <div class="w-full">
     <button class="w-full" matButton="filled" (click)="saveChanges()">
-      {{ 'metrics-score.save-changes' | translate}}
+      {{ 'metrics-score.save-changes' | translate }}
     </button>
-  </div>
+  }
 </div>

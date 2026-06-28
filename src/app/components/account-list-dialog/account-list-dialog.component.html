@@ -1,0 +1,37 @@
+<h2 mat-dialog-title class="!font-semibold text-gray-800 dark:text-white">{{ titleKey | translate }}</h2>
+
+<mat-dialog-content class="mat-typography">
+  @if (loading()) {
+    <div class="flex justify-center py-6">
+      <app-loading-spinner />
+    </div>
+  } @else if (accounts().length) {
+    <ul class="divide-y divide-gray-200 dark:divide-gray-700">
+      @for (account of accounts(); track account.code) {
+        <li class="hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
+          <a
+            [routerLink]="['/profile', account.code]"
+            (click)="dialogRef.close()"
+            class="flex items-center gap-3 px-2 py-2 cursor-pointer"
+          >
+            <app-profile-picture [account]="account" />
+            <div class="flex flex-col">
+              <span class="text-gray-900 dark:text-gray-100 font-medium">{{ account.username }}</span>
+              @if (account.firstName || account.lastName) {
+                <span class="text-sm text-gray-500 dark:text-gray-400">
+                  {{ account.firstName }} {{ account.lastName }}
+                </span>
+              }
+            </div>
+          </a>
+        </li>
+      }
+    </ul>
+  } @else {
+    <p class="py-6 text-center text-gray-500 dark:text-gray-400">{{ emptyKey | translate }}</p>
+  }
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>{{ 'close' | translate }}</button>
+</mat-dialog-actions>

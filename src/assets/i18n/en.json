@@ -61,9 +61,49 @@
     "unknown-error": "An error occurred"
   },
   "expand-all": "Expand all",
+  "explore": {
+    "titles": {
+      "newest": "Latest hiking trails added",
+      "most-voted": "Most voted hiking trails",
+      "longest": "Longest hiking trails"
+    },
+    "no-results": "No trails found with these filters",
+    "show": {
+      "label": "Show",
+      "newest": "Latest added",
+      "most-voted": "Most voted",
+      "longest": "Longest"
+    },
+    "filter": {
+      "label": "Filter",
+      "all": "All",
+      "pet-friendly": "Pet friendly",
+      "difficulty-level": "Difficulty",
+      "terrain-type": "Terrain type",
+      "trail-type": "Trail type",
+      "date-range": "Date of completion",
+      "date-ranges": {
+        "any": "Any date",
+        "last-30-days": "Last 30 days",
+        "last-3-months": "Last 3 months",
+        "last-12-months": "Last 12 months"
+      },
+      "max-distance": "Max distance",
+      "max-elevation-gain": "Max elevation gain",
+      "max-altitude": "Max altitude",
+      "no-limit": "No limit",
+      "apply": "Apply",
+      "clear": "Clear"
+    }
+  },
   "feed": {
     "error": "An error occurred while loading hiking trails",
     "no-following": "You are not following any user! Follow someone to see their activity"
+  },
+  "footer": {
+    "thesis": "Bachelor's Thesis",
+    "school": "School of Computer Software Engineering of Oviedo",
+    "github": "GitHub repository"
   },
   "go-home": "Go home",
   "graphics": {
@@ -146,19 +186,38 @@
     "false": "Not pet-friendly",
     "true": "Pet-friendly"
   },
+  "profile": {
+    "follow": "Follow",
+    "followed": "Following",
+    "followers": "Followers",
+    "following": "Following",
+    "no-followers": "No followers yet",
+    "no-followed": "Not following anyone yet",
+    "private-profile": "Private profile",
+    "unfollow": "Unfollow",
+    "unfollow-confirm-title": "Unfollow",
+    "unfollow-confirm-message": "Are you sure you want to unfollow {{ username }}?"
+  },
   "recommender": {
     "title": "Hiking trails recommended for you",
+    "metrics": "Metrics",
+    "search-area": "Search area",
+    "empty": {
+      "title": "Discover trails tailored to you",
+      "subtitle": "Drop a point on the map, set the search radius and press \"Search recommended trails\" to see the trails picked for you."
+    },
     "filter-options": {
       "title": "Recommendation filters",
       "map-hint": "Click on the map to choose the search point",
       "selected-location": "Selected location",
       "no-location": "You haven't selected a location on the map yet",
       "kilometers": "Search radius (km)",
-      "kilometers-hint": "Between 1 and 25 km",
+      "kilometers-hint": "Between 1 and 50 km",
       "kilometers-required": "The search radius is required",
-      "kilometers-range": "The radius must be between 1 and 25 km",
+      "kilometers-range": "The radius must be between 1 and 50 km",
       "search": "Search recommended trails",
-      "no-results": "No trails found within the search range"
+      "no-results": "No trails found within the search range",
+      "no-results-area": "No trails were found in the map area you marked. Try increasing the search radius or marking a different location."
     }
   },
   "register": {

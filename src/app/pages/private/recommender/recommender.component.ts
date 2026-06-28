@@ -46,7 +46,7 @@ import { UpButtonComponent } from '../../shared/up-button/up-button.component';
     UpButtonComponent,
   ],
   templateUrl: './recommender.component.html',
-  styles: ``,
+  styleUrl: './recommender.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecommenderComponent implements AfterViewInit, OnDestroy {
@@ -54,6 +54,9 @@ export class RecommenderComponent implements AfterViewInit, OnDestroy {
   isLoading = signal<boolean>(false);
   canLoadHikingTrails = signal<boolean>(false);
   hasSearched = signal<boolean>(false);
+
+  // "Métricas" dropdown panel (importance of metrics) open state
+  metricsPanelOpen = signal<boolean>(false);
 
   // recommendation filters (location + search radius) selected by the user
   private filters = signal<RecommenderFiltersValue | null>(null);
@@ -93,6 +96,14 @@ export class RecommenderComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.observer?.disconnect();
+  }
+
+  toggleMetricsPanel(): void {
+    this.metricsPanelOpen.update(open => !open);
+  }
+
+  closeMetricsPanel(): void {
+    this.metricsPanelOpen.set(false);
   }
 
   onSearch(filters: RecommenderFiltersValue): void {
