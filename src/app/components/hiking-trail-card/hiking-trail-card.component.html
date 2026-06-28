@@ -128,13 +128,17 @@
   <mat-card-actions class="dark:bg-neutral-900 border-t border-gray-100 dark:border-neutral-800">
     <div class="w-full">
       <div [class]="'flex items-center pt-2 text-sm ' + (prestiges().length && hikingTrail.comments.length ? 'justify-around' : 'pl-5')">
-        @if(prestiges().length === 1) {
-          <span class="text-gray-600 dark:text-gray-300 font-medium">
-            {{ prestiges().length }} {{ 'hiking-trail-card.single-prestige' | translate }}
-          </span>
-        } @else if (prestiges().length > 1) {
-          <span class="text-gray-600 dark:text-gray-300 font-medium">
-            {{ prestiges().length }} {{ 'hiking-trail-card.multiple-prestiges' | translate }}
+        @if (prestiges().length >= 1) {
+          <span
+            class="text-gray-600 dark:text-gray-300 font-medium"
+            [class.cursor-pointer]="isAuthenticated"
+            [class.hover:underline]="isAuthenticated"
+            [attr.role]="isAuthenticated ? 'button' : null"
+            [attr.tabindex]="isAuthenticated ? 0 : null"
+            (click)="openPrestigesDialog()"
+          >
+            {{ prestiges().length }}
+            {{ (prestiges().length === 1 ? 'hiking-trail-card.single-prestige' : 'hiking-trail-card.multiple-prestiges') | translate }}
           </span>
         }
 

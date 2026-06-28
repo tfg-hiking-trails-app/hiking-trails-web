@@ -18,6 +18,7 @@ export class AccountService {
   private routes = {
     getAccountLogged: `${ environment.apiGatewayUrl }/account/logged`,
     getByCode: (code: string) => `${ environment.apiGatewayUrl }/account/${ code }`,
+    getByCodes: `${ environment.apiGatewayUrl }/account/by-codes`,
     update: (code: string) => `${ environment.apiGatewayUrl }/account/${ code }`,
     getAllGenders: `${ environment.apiGatewayUrl }/gender/all`,
     search: (query: string, numberResults: number = 5) =>
@@ -30,6 +31,10 @@ export class AccountService {
 
   getByCode(code: string): Observable<Account> {
     return this.apiService.get<Account>(this.routes.getByCode(code));
+  }
+
+  getByCodes(codes: string[]): Observable<Account[]> {
+    return this.apiService.post<Account[]>(this.routes.getByCodes, codes);
   }
 
   update(code: string, account: AccountUpdate): Observable<Account> {

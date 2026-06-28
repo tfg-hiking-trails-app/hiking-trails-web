@@ -11,16 +11,20 @@ import { RouterModule } from '@angular/router';
 import { MaterialModules } from '@material/material.modules';
 import { TranslatePipe } from '@ngx-translate/core';
 
+import { Observable } from 'rxjs';
+
 import { Account } from '../../interfaces/account/Account';
 import { AccountFollowService } from '../../services/account-follow.service';
+import { AccountService } from '../../services/account.service';
 import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
 import { ProfilePictureComponent } from '../../pages/shared/profile-picture/profile-picture.component';
 
-export type AccountListType = 'followers' | 'followed';
+export type AccountListType = 'followers' | 'followed' | 'prestiges';
 
 export interface AccountListData {
-  accountCode: string;
   type: AccountListType;
+  accountCode?: string;
+  accountCodes?: string[];
 }
 
 @Component({
@@ -45,15 +49,12 @@ export class AccountListDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: AccountListData,
     public dialogRef: MatDialogRef<AccountListDialogComponent>,
     private accountFollowService: AccountFollowService,
+    private accountService: AccountService,
     private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
-    const request$ = this.data.type === 'followers'
-      ? this.accountFollowService.getAllFollowersByAccountCode(this.data.accountCode)
-      : this.accountFollowService.getAllFollowedByAccountCode(this.data.accountCode);
-
-    request$.subscribe({
+    this.resolveRequest().subscribe({
       next: (accounts: Account[]) => {
         this.accounts.set(accounts);
         this.loading.set(false);
@@ -68,12 +69,37 @@ export class AccountListDialogComponent implements OnInit {
     });
   }
 
+  private resolveRequest(): Observable<Account[]> {
+    switch (this.data.type) {
+      case 'followers':
+        return this.accountFollowService.getAllFollowersByAccountCode(this.data.accountCode!);
+      case 'followed':
+        return this.accountFollowService.getAllFollowedByAccountCode(this.data.accountCode!);
+      case 'prestiges':
+        return this.accountService.getByCodes(this.data.accountCodes ?? []);
+    }
+  }
+
   get titleKey(): string {
-    return this.data.type === 'followers' ? 'profile.followers' : 'profile.followed';
+    switch (this.data.type) {
+      case 'followers':
+        return 'profile.followers';
+      case 'followed':
+        return 'profile.followed';
+      case 'prestiges':
+        return 'hiking-trail-card.prestiges-title';
+    }
   }
 
   get emptyKey(): string {
-    return this.data.type === 'followers' ? 'profile.no-followers' : 'profile.no-followed';
+    switch (this.data.type) {
+      case 'followers':
+        return 'profile.no-followers';
+      case 'followed':
+        return 'profile.no-followed';
+      case 'prestiges':
+        return 'hiking-trail-card.no-prestiges';
+    }
   }
 
 }

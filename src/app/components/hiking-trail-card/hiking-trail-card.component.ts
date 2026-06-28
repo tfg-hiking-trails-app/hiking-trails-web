@@ -13,6 +13,7 @@ import { Router, RouterModule } from '@angular/router';
 import { MaterialModules } from '@material/material.modules';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
+import { AccountListDialogComponent } from '../account-list-dialog/account-list-dialog.component';
 import { AlertManagerService } from '../../services/alert-manager.service';
 import { AuthService } from '../../services/auth.service';
 import { CarouselImagesComponent } from '../../pages/shared/carousel-images/carousel-images.component';
@@ -236,6 +237,25 @@ export class HikingTrailCardComponent implements OnInit {
           this.alertManagerService.manageError(error);
         }
       });
+  }
+
+  openPrestigesDialog(): void {
+    if (!this.isAuthenticated || !this.prestiges().length) {
+      return;
+    }
+
+    this.dialog.open(AccountListDialogComponent, {
+      data: {
+        type: 'prestiges',
+        accountCodes: this.prestiges().map(prestige => prestige.giverAccountCode)
+      },
+      width: '420px',
+      maxHeight: '80vh'
+    });
+  }
+
+  get isAuthenticated(): boolean {
+    return this.authService.isAuthenticated();
   }
 
   openCommentsDialog(): void {

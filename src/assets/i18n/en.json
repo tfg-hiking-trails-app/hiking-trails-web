@@ -126,7 +126,9 @@
     "duration": "Duration",
     "end-time": "End time",
     "hours": "Hours",
+    "no-prestiges": "No prestige yet",
     "pet-friendly": "Pet-friendly",
+    "prestiges-title": "Prestige",
     "start-time": "Start time",
     "terrain-type": "Terrain type",
     "trail-type": "Trail type"
