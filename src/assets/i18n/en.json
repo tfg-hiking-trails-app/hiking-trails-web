@@ -81,6 +81,17 @@
       "difficulty-level": "Difficulty",
       "terrain-type": "Terrain type",
       "trail-type": "Trail type",
+      "date-range": "Date of completion",
+      "date-ranges": {
+        "any": "Any date",
+        "last-30-days": "Last 30 days",
+        "last-3-months": "Last 3 months",
+        "last-12-months": "Last 12 months"
+      },
+      "max-distance": "Max distance",
+      "max-elevation-gain": "Max elevation gain",
+      "max-altitude": "Max altitude",
+      "no-limit": "No limit",
       "apply": "Apply",
       "clear": "Clear"
     }

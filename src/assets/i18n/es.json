@@ -151,6 +151,17 @@
       "difficulty-level": "Dificultad",
       "terrain-type": "Tipo de terreno",
       "trail-type": "Tipo de ruta",
+      "date-range": "Fecha de realización",
+      "date-ranges": {
+        "any": "Cualquier fecha",
+        "last-30-days": "Últimos 30 días",
+        "last-3-months": "Últimos 3 meses",
+        "last-12-months": "Últimos 12 meses"
+      },
+      "max-distance": "Distancia máx.",
+      "max-elevation-gain": "Desnivel positivo máx.",
+      "max-altitude": "Altitud máxima",
+      "no-limit": "Sin límite",
       "apply": "Aplicar",
       "clear": "Limpiar"
     }

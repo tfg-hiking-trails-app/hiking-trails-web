@@ -27,7 +27,7 @@ import {
 import { HikingTrailCardComponent } from '../../../components/hiking-trail-card/hiking-trail-card.component';
 import { LoadingSpinnerComponent } from '../../../components/loading-spinner/loading-spinner.component';
 import { DifficultyLevel } from '../../../interfaces/hiking-trail/DifficultyLevel';
-import { ExploreFilter, SortMode } from '../../../interfaces/hiking-trail/ExploreFilter';
+import { DateRange, ExploreFilter, SortMode } from '../../../interfaces/hiking-trail/ExploreFilter';
 import { HikingTrail } from '../../../interfaces/hiking-trail/HikingTrail';
 import { Pagination } from '../../../interfaces/common/Pagination';
 import { TerrainType } from '../../../interfaces/hiking-trail/TerrainType';
@@ -61,10 +61,8 @@ export class ExploreComponent implements OnInit, AfterViewInit, OnDestroy {
   pageSize = 10;
   totalPages = signal<number | null>(null);
 
-  // "Mostrar" (sort)
   sortMode = signal<SortMode>('newest');
 
-  // page title changes with the selected sort option
   titleKey = computed<string>(() => {
     switch (this.sortMode()) {
       case 'most-prestigious': return 'explore.titles.most-voted';
@@ -73,19 +71,24 @@ export class ExploreComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   });
 
-  // "Filtro" (filter) catalogs
   difficultyLevels: DifficultyLevel[] = [];
   terrainTypes: TerrainType[] = [];
   trailTypes: TrailType[] = [];
 
-  // "Filtro" panel open state + draft values bound in the panel
+  readonly maxDistanceKmLimit = 50;
+  readonly maxElevationGainLimit = 9000;
+  readonly maxAltitudeLimit = 9000;
+
   filterPanelOpen = signal<boolean>(false);
   draftPetFriendly = false;
   draftDifficultyLevelCode = '';
   draftTerrainTypeCode = '';
   draftTrailTypeCode = '';
+  draftMaxDistanceKm = this.maxDistanceKmLimit;
+  draftMaxElevationGain = this.maxElevationGainLimit;
+  draftMaxAltitude = this.maxAltitudeLimit;
+  draftDateRange: DateRange = 'any';
 
-  // currently applied filter criteria + active count (for the badge)
   private appliedCriteria: Partial<ExploreFilter> = {};
   activeFilterCount = signal<number>(0);
 
@@ -197,7 +200,6 @@ export class ExploreComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.page() > this.totalPages()!;
   }
 
-  // "Mostrar" — change sort and reload from page 1
   setSortMode(mode: SortMode): void {
     if (this.sortMode() === mode)
       return;
@@ -206,7 +208,6 @@ export class ExploreComponent implements OnInit, AfterViewInit, OnDestroy {
     this.reload();
   }
 
-  // "Filtro" — open/close the panel
   toggleFilterPanel(): void {
     this.filterPanelOpen.update(open => !open);
   }
@@ -216,18 +217,40 @@ export class ExploreComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   applyFilters(): void {
+    const maxDistance = this.draftMaxDistanceKm < this.maxDistanceKmLimit
+      ? this.draftMaxDistanceKm * 1000
+      : undefined;
+
+    const maxElevationGain = this.draftMaxElevationGain < this.maxElevationGainLimit
+      ? this.draftMaxElevationGain
+      : undefined;
+
+    const maxAltitude = this.draftMaxAltitude < this.maxAltitudeLimit
+      ? this.draftMaxAltitude
+      : undefined;
+
+    const dateRange = this.draftDateRange !== 'any' ? this.draftDateRange : undefined;
+
     this.appliedCriteria = {
       petFriendly: this.draftPetFriendly ? true : undefined,
       difficultyLevelCode: this.draftDifficultyLevelCode || undefined,
       terrainTypeCode: this.draftTerrainTypeCode || undefined,
       trailTypeCode: this.draftTrailTypeCode || undefined,
+      maxDistance,
+      maxElevationGain,
+      maxAltitude,
+      dateRange,
     };
 
     this.activeFilterCount.set(
       (this.draftPetFriendly ? 1 : 0) +
       (this.draftDifficultyLevelCode ? 1 : 0) +
       (this.draftTerrainTypeCode ? 1 : 0) +
-      (this.draftTrailTypeCode ? 1 : 0)
+      (this.draftTrailTypeCode ? 1 : 0) +
+      (maxDistance !== undefined ? 1 : 0) +
+      (maxElevationGain !== undefined ? 1 : 0) +
+      (maxAltitude !== undefined ? 1 : 0) +
+      (dateRange !== undefined ? 1 : 0)
     );
 
     this.closeFilterPanel();
@@ -239,6 +262,10 @@ export class ExploreComponent implements OnInit, AfterViewInit, OnDestroy {
     this.draftDifficultyLevelCode = '';
     this.draftTerrainTypeCode = '';
     this.draftTrailTypeCode = '';
+    this.draftMaxDistanceKm = this.maxDistanceKmLimit;
+    this.draftMaxElevationGain = this.maxElevationGainLimit;
+    this.draftMaxAltitude = this.maxAltitudeLimit;
+    this.draftDateRange = 'any';
     this.appliedCriteria = {};
     this.activeFilterCount.set(0);
 

@@ -94,6 +94,74 @@
             </mat-select>
           </mat-form-field>
 
+          <!-- Date of completion -->
+          <mat-form-field class="w-full" subscriptSizing="dynamic">
+            <mat-label>{{ 'explore.filter.date-range' | translate }}</mat-label>
+            <mat-select [(ngModel)]="draftDateRange">
+              <mat-option value="any">{{ 'explore.filter.date-ranges.any' | translate }}</mat-option>
+              <mat-option value="last-30-days">{{ 'explore.filter.date-ranges.last-30-days' | translate }}</mat-option>
+              <mat-option value="last-3-months">{{ 'explore.filter.date-ranges.last-3-months' | translate }}</mat-option>
+              <mat-option value="last-12-months">{{ 'explore.filter.date-ranges.last-12-months' | translate }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- Max distance (slider, km). Max value = no limit -->
+          <div class="flex flex-col">
+            <div class="flex justify-between items-baseline">
+              <span class="text-sm text-neutral-700 dark:text-neutral-300">
+                {{ 'explore.filter.max-distance' | translate }}
+              </span>
+              <span class="text-sm font-medium text-neutral-900 dark:text-neutral-100">
+                @if (draftMaxDistanceKm >= maxDistanceKmLimit) {
+                  {{ 'explore.filter.no-limit' | translate }}
+                } @else {
+                  {{ draftMaxDistanceKm }} km
+                }
+              </span>
+            </div>
+            <mat-slider [min]="0" [max]="maxDistanceKmLimit" [step]="1" discrete>
+              <input matSliderThumb [(ngModel)]="draftMaxDistanceKm" />
+            </mat-slider>
+          </div>
+
+          <!-- Max elevation gain (slider, metres). Max value = no limit -->
+          <div class="flex flex-col">
+            <div class="flex justify-between items-baseline">
+              <span class="text-sm text-neutral-700 dark:text-neutral-300">
+                {{ 'explore.filter.max-elevation-gain' | translate }}
+              </span>
+              <span class="text-sm font-medium text-neutral-900 dark:text-neutral-100">
+                @if (draftMaxElevationGain >= maxElevationGainLimit) {
+                  {{ 'explore.filter.no-limit' | translate }}
+                } @else {
+                  {{ draftMaxElevationGain }} m
+                }
+              </span>
+            </div>
+            <mat-slider [min]="0" [max]="maxElevationGainLimit" [step]="100" discrete>
+              <input matSliderThumb [(ngModel)]="draftMaxElevationGain" />
+            </mat-slider>
+          </div>
+
+          <!-- Max altitude (slider, metres). Max value = no limit -->
+          <div class="flex flex-col">
+            <div class="flex justify-between items-baseline">
+              <span class="text-sm text-neutral-700 dark:text-neutral-300">
+                {{ 'explore.filter.max-altitude' | translate }}
+              </span>
+              <span class="text-sm font-medium text-neutral-900 dark:text-neutral-100">
+                @if (draftMaxAltitude >= maxAltitudeLimit) {
+                  {{ 'explore.filter.no-limit' | translate }}
+                } @else {
+                  {{ draftMaxAltitude }} m
+                }
+              </span>
+            </div>
+            <mat-slider [min]="0" [max]="maxAltitudeLimit" [step]="100" discrete>
+              <input matSliderThumb [(ngModel)]="draftMaxAltitude" />
+            </mat-slider>
+          </div>
+
           <div class="flex justify-between items-center gap-2 pt-1">
             <button matButton (click)="clearFilters()">{{ 'explore.filter.clear' | translate }}</button>
             <button matButton="filled" (click)="applyFilters()">{{ 'explore.filter.apply' | translate }}</button>
