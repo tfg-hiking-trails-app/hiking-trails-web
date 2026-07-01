@@ -1,7 +1,9 @@
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  computed,
   OnInit,
   signal
 } from '@angular/core';
@@ -26,7 +28,8 @@ import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.comp
     MaterialModules,
     TranslatePipe,
     RouterModule,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    NgTemplateOutlet
   ],
   templateUrl: './collections-panel.component.html',
   styles: ``,
@@ -36,6 +39,14 @@ export class CollectionsPanelComponent implements OnInit {
 
   collections = signal<Collection[]>([]);
   loading = signal<boolean>(true);
+  expanded = signal<boolean>(false);
+
+  firstCollection = computed(() => this.collections()[0]);
+  restCollections = computed(() => this.collections().slice(1));
+
+  toggleExpanded(): void {
+    this.expanded.update(value => !value);
+  }
 
   constructor(
     private collectionService: CollectionService,

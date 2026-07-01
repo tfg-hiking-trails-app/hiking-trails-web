@@ -38,10 +38,10 @@ export class LoginComponent {
     private tokenService: TokenService
   ) {
     this.loginForm = this.formBuilder.group({
-      username: ['ruben', [
+      username: ['', [
         Validators.required
       ]],
-      password: ['Password_1357$', [
+      password: ['', [
         Validators.required,
         Validators.minLength(6)
       ]],

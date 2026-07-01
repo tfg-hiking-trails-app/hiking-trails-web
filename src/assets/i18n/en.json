@@ -1,15 +1,78 @@
 {
+  "add": "Add",
   "auth": {
     "english": "English",
     "login": "Log in",
     "register": "Register",
     "spanish": "Spanish"
   },
+  "card": {
+    "comments": {
+      "comment": "Comment",
+      "title": "Comments",
+      "required": "The comment cannot be empty",
+      "placeholder": "Write your comment...",
+      "delete-comment-title": "Delete comment",
+      "delete-comment-message": "Are you sure you want to delete this comment?",
+      "no-comments": "There are no comments yet. Be the first to comment!"
+    },
+    "hiking-trail-form": {
+      "added-success": "Hiking trail added successfully",
+      "average-cadence": "Average cadence (steps/min)",
+      "average-heart-rate": "Average heart rate (bpm)",
+      "average-pace": "Average pace (min/km)",
+      "average-speed": "Average speed (km/h)",
+      "calories": "Calories",
+      "click-to-upload": "Click to upload images",
+      "description": "Description",
+      "description-required": "The description is required",
+      "difficulty-level": "Difficulty level",
+      "distance-required": "The distance is required",
+      "distance-min": "The distance must be a positive value in kilometers",
+      "distance": "Distance (km)",
+      "duration": "Duration",
+      "drag-and-drop": "or drag and drop images here",
+      "edit-success": "Hiking trail edited successfully",
+      "elevation-gain": "Elevation gain (m)",
+      "elevation-loss": "Elevation loss (m)",
+      "end-date-required": "The end date is required",
+      "end-date": "End date",
+      "end-time-required": "The end time is required",
+      "end-time": "End time",
+      "error-file-not-supported": "File type not supported",
+      "error-file-too-large": "The file is too large (max {{ maxSizeMB }} MB)",
+      "images": "Images",
+      "invalid-dates": "The end date and time must be after the start date and time",
+      "location": "Location",
+      "max-altitude": "Maximum altitude (m)",
+      "max-cadence": "Maximum cadence (steps/min)",
+      "max-heart-rate": "Maximum heart rate (bpm)",
+      "max-pace": "Maximum pace (min/km)",
+      "max-speed": "Maximum speed (km/h)",
+      "metrics": "Metrics",
+      "min-altitude": "Minimum altitude (m)",
+      "min-heart-rate": "Minimum heart rate (bpm)",
+      "name-required": "The name is required",
+      "name": "Name",
+      "pet-friendly": "Pet friendly",
+      "start-date-required": "The start date is required",
+      "start-date": "Start date",
+      "start-time-required": "The start time is required",
+      "start-time": "Start time",
+      "steps": "Steps",
+      "terrain-type": "Terrain type",
+      "title-add": "Add hiking trail",
+      "title-edit": "Edit hiking trail",
+      "trail-type": "Trail type"
+    }
+  },
+  "clear-data": "Clear data",
   "close": "Close",
   "collapse-all": "Collapse all",
   "collections": {
     "already-in-collection": "The trail is already in this collection",
     "back": "Back",
+    "count": "{{ count }} collections",
     "create-new": "New collection",
     "create-title": "Create collection",
     "delete-message": "Are you sure you want to delete the collection \"{{ name }}\"?",
@@ -31,6 +94,8 @@
     "save": "Save",
     "save-to-collection": "Save to collection",
     "saved-success": "Trail saved to {{ name }}",
+    "show-less": "Show less",
+    "show-more": "Show more",
     "single-trail": "trail"
   },
   "date": {
@@ -39,6 +104,10 @@
     "yesterday_at": "Yesterday at {{ time }}"
   },
   "delete": "Delete",
+  "dialog": {
+    "yes": "Yes",
+    "no": "No"
+  },
   "difficulty-level": {
     "easy": "Easy",
     "hard": "Hard",
@@ -56,9 +125,14 @@
     "forbidden": "You don't have permission to perform this action",
     "internal-server-error": "Internal server error",
     "not-found": "Resource not found",
+    "password-from-user-is-incorrect": "The user's password is incorrect",
     "server-unreachable": "The server is unavailable",
+    "the-passwords-do-not-match": "The passwords do not match",
+    "the-username-field-is-required": "The username field is required",
+    "this-is-your-username": "This is your username",
     "unauthorized": "You are not authorized to perform this action",
-    "unknown-error": "An error occurred"
+    "unknown-error": "An error occurred",
+    "username-already-exists": "This username already exists"
   },
   "expand-all": "Expand all",
   "explore": {
@@ -119,6 +193,9 @@
     "start": "Start"
   },
   "hiking-trail-card": {
+    "delete-hiking-trail-message": "Are you sure you want to delete this hiking trail?",
+    "delete-hiking-trail-title": "Delete hiking trail",
+    "delete-success": "Hiking trail deleted successfully",
     "difficulty-level": "Difficulty level",
     "distance": "Distance",
     "download-fit": "Download FIT",
@@ -126,9 +203,13 @@
     "duration": "Duration",
     "end-time": "End time",
     "hours": "Hours",
+    "multiple-comments": "comments",
+    "multiple-prestiges": "prestiges",
     "no-prestiges": "No prestige yet",
     "pet-friendly": "Pet-friendly",
     "prestiges-title": "Prestige",
+    "single-comment": "comment",
+    "single-prestige": "prestige",
     "start-time": "Start time",
     "terrain-type": "Terrain type",
     "trail-type": "Trail type"
@@ -171,16 +252,42 @@
     "totalAscent": "Total ascent",
     "totalDescent": "Total descent"
   },
+  "metrics-score": {
+    "title": "Metrics importance",
+    "distance": "Distance",
+    "duration": "Duration",
+    "steps": "Steps",
+    "calories": "Calories",
+    "pace": "Pace",
+    "elevation": "Elevation",
+    "heart_rate": "Heart rate",
+    "speed": "Speed",
+    "save-changes": "Save changes",
+    "changes-saved-successfully": "Changes saved successfully"
+  },
   "navbar": {
+    "add-activity-menu": {
+      "add-activity": "Add activity",
+      "add-manually": "Add manually",
+      "upload-fit-file": "Upload FIT file",
+      "confirm-upload-fit-file": "Are you sure you want to upload this FIT file?",
+      "hiking-trail-climbed-correctly": "Hiking trail uploaded successfully"
+    },
     "close-icon": "Close menu",
+    "explore": "Explore",
     "open-icon": "Open menu",
     "profile": {
       "logout": "Log out",
       "open": "My profile",
       "settings": "Settings"
     },
+    "recommender": "Recommender",
     "search-bar": {
-      "placeholder": "Search Hikes, Users..."
+      "placeholder": "Search Hikes, Users...",
+      "accounts": "Accounts",
+      "no-accounts-found": "No accounts found",
+      "hiking-trails": "Hiking trails",
+      "no-hiking-trails-found": "No hiking trails found"
     }
   },
   "open": "Open",
@@ -240,12 +347,63 @@
     "usernameRequired": "Username is required"
   },
   "settings": {
+    "account": {
+      "change-password": "Change password",
+      "change-username": "Change username",
+      "confirm-password-change": "Are you sure you want to change your password?",
+      "confirm-password": "Confirm password",
+      "confirm-username-change": "Are you sure you want to change your username?",
+      "current-password": "Current password",
+      "new-password": "New password",
+      "new-username": "New username",
+      "password-changed-successfully": "Password changed successfully",
+      "save-changes": "Save changes",
+      "username-changed-successfully": "Username changed successfully",
+      "username-required": "The username is required",
+      "delete-account": "Delete account",
+      "delete-account-confirmation": "Are you sure you want to delete your account?",
+      "delete-account-message": "If you delete your account, all your data will be erased and you won't be able to recover it.",
+      "delete-account-success": "Account deleted successfully"
+    },
     "options": {
       "account": "Account",
       "close-options": "Close options",
       "open-options": "Open options",
       "profile": "Profile",
       "screen": "Screen"
+    },
+    "profile": {
+      "change-profile-image": "Change profile image",
+      "upload-image": "Upload image",
+      "remove-image": "Remove image",
+      "remove-image-confirmation": "Remove profile picture?",
+      "remove-image-message": "Your current profile picture will be removed. You can upload a new one whenever you want.",
+      "image-removed-successfully": "Profile picture removed successfully",
+      "gender": {
+        "label": "Gender",
+        "male": "Male",
+        "female": "Female",
+        "non-binary": "Non-binary",
+        "prefer-not-to-say": "Prefer not to say"
+      },
+      "private-profile": "Private profile",
+      "first-name": "First name",
+      "last-name": "Last name",
+      "biography": "Biography",
+      "weight": "Weight",
+      "weightMin": "The weight must be a positive value in kilograms",
+      "weightMax": "The weight cannot exceed 500 kilograms",
+      "height": "Height",
+      "heightMin": "The height must be a positive value in centimeters",
+      "heightMax": "The height cannot exceed 300 centimeters",
+      "birthdate": "Date of birth",
+      "country": "Country",
+      "state": "State",
+      "city": "City",
+      "save-changes": "Save changes",
+      "confirm-changes": "Confirm changes",
+      "profile-updated-successfully": "Profile updated successfully",
+      "none": "None"
     },
     "screen": {
       "theme": "Screen theme",

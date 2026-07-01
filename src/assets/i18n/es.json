@@ -61,7 +61,8 @@
       "start-time": "Hora de inicio",
       "steps": "Pasos",
       "terrain-type": "Tipo de terreno",
-      "title": "Añadir ruta de senderismo",
+      "title-add": "Añadir ruta de senderismo",
+      "title-edit": "Editar ruta de senderismo",
       "trail-type": "Tipo de ruta"
     }
   },
@@ -71,6 +72,7 @@
   "collections": {
     "already-in-collection": "La ruta ya está en esta colección",
     "back": "Volver",
+    "count": "{{ count }} colecciones",
     "create-new": "Nueva colección",
     "create-title": "Crear colección",
     "delete-message": "¿Seguro que quieres eliminar la colección \"{{ name }}\"?",
@@ -92,6 +94,8 @@
     "save": "Guardar",
     "save-to-collection": "Guardar en colección",
     "saved-success": "Ruta guardada en {{ name }}",
+    "show-less": "Ver menos",
+    "show-more": "Mostrar más",
     "single-trail": "ruta"
   },
   "date": {
@@ -372,6 +376,9 @@
       "change-profile-image": "Cambiar imagen de perfil",
       "upload-image": "Subir imagen",
       "remove-image": "Eliminar imagen",
+      "remove-image-confirmation": "¿Eliminar imagen de perfil?",
+      "remove-image-message": "Se quitará tu imagen de perfil actual. Podrás subir una nueva cuando quieras.",
+      "image-removed-successfully": "Imagen de perfil eliminada con éxito",
       "gender": {
         "label": "Género",
         "male": "Masculino",
