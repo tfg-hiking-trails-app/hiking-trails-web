@@ -2,7 +2,7 @@
   <app-loading-spinner />
 } @else {
   <div class="flex justify-center xl:m-0 w-full">
-    <div class="flex flex-col w-full lg:w-1/2 mx-4 mt-5 p-6 rounded-2xl bg-white/5 dark:bg-neutral-900/40 ring-1 ring-white/10 shadow-sm">
+    <div class="flex flex-col w-full lg:w-1/2 mx-4 mt-5 p-6 rounded-2xl bg-white dark:bg-neutral-900/40 ring-1 ring-black/5 dark:ring-white/10 shadow-sm">
       <div class="flex justify-around items-center">
         <img
           [src]="account()?.profilePicture || getDefaultProfileImageUrl(account()?.gender?.genderValue)"
@@ -12,8 +12,8 @@
         <div>
           <!-- Info user -->
           <div>
-            <h2 class="text-4xl xl:text-5xl font-bold tracking-tight text-white">{{ account()?.username }}</h2>
-            <p class="text-lg text-gray-200 dark:text-gray-300">
+            <h2 class="text-4xl xl:text-5xl font-bold tracking-tight text-gray-900 dark:text-white">{{ account()?.username }}</h2>
+            <p class="text-lg text-gray-600 dark:text-gray-300">
               {{ account()?.firstName }} {{ account()?.lastName }}
             </p>
           </div>
@@ -28,8 +28,8 @@
                 (keydown.enter)="openFollowers()"
                 (keydown.space)="openFollowers()"
               >
-                <span class="text-white text-2xl font-bold">{{ followersCount() }}</span>
-                <span class="text-gray-200 dark:text-gray-300 text-sm font-medium">{{ "profile.followers" | translate}}</span>
+                <span class="text-gray-900 dark:text-white text-2xl font-bold">{{ followersCount() }}</span>
+                <span class="text-gray-600 dark:text-gray-300 text-sm font-medium">{{ "profile.followers" | translate}}</span>
               </div>
               <div
                 class="flex flex-col items-center cursor-pointer hover:opacity-80 transition-opacity"
@@ -39,8 +39,8 @@
                 (keydown.enter)="openFollowed()"
                 (keydown.space)="openFollowed()"
               >
-                <span class="text-white text-2xl font-bold">{{ followedCount() }}</span>
-                <span class="text-gray-200 dark:text-gray-300 text-sm font-medium">{{ "profile.followed" | translate}}</span>
+                <span class="text-gray-900 dark:text-white text-2xl font-bold">{{ followedCount() }}</span>
+                <span class="text-gray-600 dark:text-gray-300 text-sm font-medium">{{ "profile.followed" | translate}}</span>
               </div>
             </div>
 
@@ -60,7 +60,7 @@
         </div>
       </div>
       <div class="flex justify-center">
-        <p class="mt-5 text-base text-gray-100 italic text-center max-w-md leading-relaxed">
+        <p class="mt-5 text-base text-gray-700 dark:text-gray-100 italic text-center max-w-md leading-relaxed">
           {{ account()?.biography }}
         </p>
       </div>

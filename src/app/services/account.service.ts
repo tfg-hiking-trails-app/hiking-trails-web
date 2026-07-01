@@ -18,7 +18,9 @@ export class AccountService {
   private routes = {
     getAccountLogged: `${ environment.apiGatewayUrl }/account/logged`,
     getByCode: (code: string) => `${ environment.apiGatewayUrl }/account/${ code }`,
+    getByCodes: `${ environment.apiGatewayUrl }/account/by-codes`,
     update: (code: string) => `${ environment.apiGatewayUrl }/account/${ code }`,
+    deleteProfilePicture: `${ environment.apiGatewayUrl }/account/logged/profile-picture`,
     getAllGenders: `${ environment.apiGatewayUrl }/gender/all`,
     search: (query: string, numberResults: number = 5) =>
       `${ environment.apiGatewayUrl }/account/searcher?search=${ encodeURIComponent(query) }&numberResults=${ numberResults }`
@@ -30,6 +32,10 @@ export class AccountService {
 
   getByCode(code: string): Observable<Account> {
     return this.apiService.get<Account>(this.routes.getByCode(code));
+  }
+
+  getByCodes(codes: string[]): Observable<Account[]> {
+    return this.apiService.post<Account[]>(this.routes.getByCodes, codes);
   }
 
   update(code: string, account: AccountUpdate): Observable<Account> {
@@ -44,6 +50,10 @@ export class AccountService {
       this.routes.update(code),
       formData
     );
+  }
+
+  deleteProfilePicture(): Observable<void> {
+    return this.apiService.delete<void>(this.routes.deleteProfilePicture);
   }
 
   getAllGenders(): Observable<Gender[]> {

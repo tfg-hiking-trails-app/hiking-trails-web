@@ -47,18 +47,18 @@ export class RegisterComponent {
     private translateService: TranslateService
   ) {
     this.registerForm = this.formBuilder.group({
-      username: ['test3', [
+      username: ['', [
         Validators.required
       ]],
-      email: ['test3@test3.com', [
+      email: ['', [
         Validators.required,
         Validators.email
       ]],
-      password: ['12345678', [
+      password: ['', [
         Validators.required,
         Validators.minLength(8)
       ]],
-      confirmPassword: ['12345678', [
+      confirmPassword: ['', [
         Validators.required
       ]],
     }, { validators: passwordsMatchValidator });

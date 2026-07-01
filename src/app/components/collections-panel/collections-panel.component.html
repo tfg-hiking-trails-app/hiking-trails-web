@@ -1,6 +1,6 @@
 <div class="w-full">
   <div class="flex items-center justify-between mb-4">
-    <h3 class="text-2xl font-semibold text-gray-800 dark:text-white">
+    <h3 class="text-2xl font-semibold text-white dark:text-gray-800 dark:text-white">
       {{ 'collections.my-collections' | translate }}
     </h3>
     <button matButton="tonal" (click)="create()">
@@ -14,37 +14,65 @@
   } @else if (collections().length === 0) {
     <p class="text-gray-500 dark:text-gray-400">{{ 'collections.empty' | translate }}</p>
   } @else {
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      @for (collection of collections(); track collection.code) {
-        <div
-          class="relative flex items-center gap-4 p-4 rounded-2xl bg-white/5 dark:bg-neutral-900/40 ring-1 ring-white/10 shadow-sm cursor-pointer hover:bg-gray-50 dark:hover:bg-neutral-800/40 transition-colors"
-          (click)="open(collection)"
-        >
-          <mat-icon class="!text-light-mode-primary dark:!text-white">
-            {{ collection.isDefault ? 'favorite' : 'collections_bookmark' }}
-          </mat-icon>
-          <div class="flex-1 min-w-0">
-            <p class="font-semibold text-gray-800 dark:text-white truncate">{{ collection.name }}</p>
-            <p class="text-sm text-gray-500 dark:text-gray-400">
-              {{ collection.trailCount }}
-              {{ (collection.trailCount === 1 ? 'collections.single-trail' : 'collections.multiple-trails') | translate }}
-            </p>
-          </div>
-          @if (!collection.isDefault) {
-            <button matIconButton [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
-              <mat-icon class="text-gray-600 dark:text-white">more_vert</mat-icon>
+    @if (collections().length > 1) {
+      <div class="flex items-center justify-between mb-4 sm:hidden">
+        <span class="text-sm font-medium text-white dark:text-gray-300">
+          {{ 'collections.count' | translate: { count: collections().length } }}
+        </span>
+        <button matButton class="!text-white" (click)="toggleExpanded()">
+          {{ (expanded() ? 'collections.show-less' : 'collections.show-more') | translate }}
+          <mat-icon iconPositionEnd class="!text-white">{{ expanded() ? 'expand_less' : 'expand_more' }}</mat-icon>
+        </button>
+      </div>
+    }
+
+    <ng-template #card let-collection>
+      <div
+        class="relative flex items-center gap-4 p-4 rounded-2xl bg-white dark:bg-neutral-900/40 ring-1 ring-black/5 dark:ring-white/10 shadow-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-neutral-800/40 transition-colors"
+        (click)="open(collection)"
+      >
+        <mat-icon class="!text-light-mode-primary dark:!text-white">
+          {{ collection.isDefault ? 'favorite' : 'collections_bookmark' }}
+        </mat-icon>
+        <div class="flex-1 min-w-0">
+          <p class="font-semibold text-gray-800 dark:text-white truncate">{{ collection.name }}</p>
+          <p class="text-sm text-gray-500 dark:text-gray-400">
+            {{ collection.trailCount }}
+            {{ (collection.trailCount === 1 ? 'collections.single-trail' : 'collections.multiple-trails') | translate }}
+          </p>
+        </div>
+        @if (!collection.isDefault) {
+          <button matIconButton [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
+            <mat-icon class="text-gray-600 dark:text-white">more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="rename(collection, $event)">
+              <mat-icon>edit</mat-icon>
+              <span>{{ 'collections.rename' | translate }}</span>
             </button>
-            <mat-menu #menu="matMenu">
-              <button mat-menu-item (click)="rename(collection, $event)">
-                <mat-icon>edit</mat-icon>
-                <span>{{ 'collections.rename' | translate }}</span>
-              </button>
-              <button mat-menu-item (click)="delete(collection, $event)">
-                <mat-icon>delete</mat-icon>
-                <span>{{ 'delete' | translate }}</span>
-              </button>
-            </mat-menu>
-          }
+            <button mat-menu-item (click)="delete(collection, $event)">
+              <mat-icon>delete</mat-icon>
+              <span>{{ 'delete' | translate }}</span>
+            </button>
+          </mat-menu>
+        }
+      </div>
+    </ng-template>
+
+    <div class="flex flex-col sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-4">
+      <ng-container [ngTemplateOutlet]="card" [ngTemplateOutletContext]="{ $implicit: firstCollection() }" />
+
+      @if (restCollections().length > 0) {
+        <!-- Mobile: animated accordion (grid-rows 0fr->1fr). Desktop: display:contents so cards rejoin the grid. -->
+        <div
+          class="grid transition-all duration-300 ease-in-out sm:contents"
+          [class]="expanded() ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'"
+        >
+          <div class="min-h-0 overflow-hidden flex flex-col gap-4 pt-4 sm:pt-0 sm:contents">
+            @for (collection of restCollections(); track collection.code) {
+              <ng-container [ngTemplateOutlet]="card" [ngTemplateOutletContext]="{ $implicit: collection }" />
+            }
+          </div>
         </div>
       }
     </div>
